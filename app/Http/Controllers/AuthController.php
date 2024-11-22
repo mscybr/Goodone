@@ -94,18 +94,21 @@ class AuthController extends Controller
     public function edit( Request $request)
     {
         $validation = $request->validate([
+            'years_of_experience' => "numeric",
             'username' => 'unique:users,username',
             'email' => 'email|unique:users,email',
             'password' => 'string',
             'phone' => 'numeric',
             'type' => 'in:customer,worker',
             'full_name' => 'string',
+            'about' => 'string',
             'location' => 'string',
             'cost_per_hour' => 'numeric',
-            'service' => 'nullable',
+            'service' => 'string',
             "picture" => "file",
             "license" => "file",
             "category" => "exists:categories,id",
+            "active" => "boolean"
         ]);
         $validation["id"] = auth("api")->user()->id;
         if($request->file('picture')){

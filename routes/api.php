@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
 
 /*
@@ -41,6 +42,8 @@ Route::group([
 ], function ($router) {
 
     Route::get('categories', [CategoryController::class, "index"])->name("api:get_categories");
+    Route::get('services', [ServiceController::class, "get_services"])->name("api:get_services");
+    Route::get('services/{category_id}', [ServiceController::class, "get_category_services"])->name("api:get_category_services");
     Route::get('service/{user_id}/gallary', [AuthController::class, "get_gallary"])->name("api:get_gallary");
 
 });
