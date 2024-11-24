@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Auth\SmsPasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,5 +62,8 @@ Route::group([
     Route::post('logout', [AuthController::class, "logout"])->name("api:logout");
     Route::post('refresh', [AuthController::class, "refresh"])->name("api:refresh");
     Route::post('me', [AuthController::class, "me"])->name("api:me");
+
+    Route::post('password/reset/code', [SmsPasswordResetController::class, 'sendResetCode']);  // Send SMS reset code
+    Route::post('password/reset', [SmsPasswordResetController::class, 'resetPassword']);  
 
 });

@@ -110,6 +110,7 @@ class AuthController extends Controller
             "category" => "exists:categories,id",
             "active" => "boolean"
         ]);
+        if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
         $validation["id"] = auth("api")->user()->id;
         if($request->file('picture')){
             $file = $request->file('picture');
@@ -159,7 +160,7 @@ class AuthController extends Controller
             "picture" => "file|required",
             "license" => "file",
         ]);
-
+         if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
         if($request->file('picture')){
             $file = $request->file('picture');
             $temp = $file->store('public/images');
