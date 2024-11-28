@@ -16,18 +16,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', "register", "get_gallary"]]);
-    }
-
-    /**
-     * gallary
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function get_gallary( Request $request, $user_id)
-    {
-        $gall = ServiceGallary::Where([["user_id", $user_id]])->get();
-        return response()->json($gall);
+        $this->middleware('auth:api', ['except' => ['login', "register"]]);
     }
 
     /**
