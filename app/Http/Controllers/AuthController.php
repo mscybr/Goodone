@@ -119,8 +119,8 @@ class AuthController extends Controller
 
         if ($validation) {
 
-            User::where('id',auth("api")->user()->id)->update($validation);
-            return response()->json(auth("api")->user());
+            $updated = User::where('id',auth("api")->user()->id)->update($validation);
+            return response()->json($updated);
 
         }else{
             $errors = $validator->errors();
