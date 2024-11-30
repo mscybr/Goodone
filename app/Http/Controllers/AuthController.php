@@ -84,7 +84,6 @@ class AuthController extends Controller
     {
         $validation = $request->validate([
             'years_of_experience' => "numeric",
-            'username' => 'unique:users,username',
             'email' => 'email|unique:users,email',
             'password' => 'string',
             'phone' => 'numeric',
@@ -137,7 +136,6 @@ class AuthController extends Controller
     public function register( Request $request)
     {
         $validation = $request->validate([
-            'username' => 'unique:users,username',
             'email' => 'email|required|unique:users,email',
             'password' => 'required',
             'phone' => 'required|numeric',
