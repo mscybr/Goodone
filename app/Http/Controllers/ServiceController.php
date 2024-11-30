@@ -68,6 +68,11 @@ class ServiceController extends Controller
     public function get_category_services( Request $request, $category_id)
     {
         $services = User::Where([["active", "=", true], ["category", "=", $category_id]])->get();
+         foreach ($services as $key => $service ) {
+            $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
+            // return response()->json($gall);
+            $services[$key]["gallary"] = $gall;
+        }
         return response()->json($services);
     }
 }
