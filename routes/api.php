@@ -32,7 +32,7 @@ Route::group([
     Route::post('account/edit', [AuthController::class, "edit"])->name("api:edit");
     Route::post('account/gallary/add', [AuthController::class, "add_to_gallary"])->name("api:add_to_gallary");
     Route::post('account/gallary/remove', [AuthController::class, "remove_from_gallary"])->name("api:remove_from_gallary");
-
+    Route::post('service/rate', [ServiceController::class, "rate_service"])->name("api:rate_service");
 });
 
 // No auth

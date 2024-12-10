@@ -33,7 +33,10 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-
+    
+    public function Rating(){
+        return $this->hasMany('App\Models\Rating', 'id');
+    }
 
     protected $guarded = ['id'];
 

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreign('service_id')->references('id')->on('users');
             $table->integer('completion_percentage')->default(0);
             $table->string('location');
+             $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();
