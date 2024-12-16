@@ -30,13 +30,13 @@ class ServiceController extends Controller
             //             ->groupBy('users.id')
             //             ->orderBy('total','desc')
             //             ->get();
-            $services = User::Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
+            $services = User::With("Rating")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
             function($a, $b) {
                 return $a <=> $b;
             }
             );
         }else{
-            $services = User::Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get();
+            $services = User::With("Rating")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get();
         }
         // dd($services);
         foreach ($services as $key => $service ) {
@@ -70,7 +70,7 @@ class ServiceController extends Controller
      */
     public function get_category_services( Request $request, $category_id)
     {
-        $services = User::Where([["active", "=", true], ["category", "=", $category_id]])->get();
+        $services = User::With("Rating")->Where([["active", "=", true], ["category", "=", $category_id]])->get();
          foreach ($services as $key => $service ) {
             $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // return response()->json($gall);
