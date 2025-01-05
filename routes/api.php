@@ -33,6 +33,10 @@ Route::group([
     Route::post('account/gallary/add', [AuthController::class, "add_to_gallary"])->name("api:add_to_gallary");
     Route::post('account/gallary/remove', [AuthController::class, "remove_from_gallary"])->name("api:remove_from_gallary");
     Route::post('service/rate', [ServiceController::class, "rate_service"])->name("api:rate_service");
+
+    Route::post('service/order', [ServiceController::class, "order_service"])->name("api:order_service");
+    Route::get('user/orders', [ServiceController::class, "get_orders"])->name("api:get_orders");
+    Route::get('user/order', [ServiceController::class, "get_order"])->name("api:get_order");
 });
 
 // No auth
@@ -47,6 +51,7 @@ Route::group([
     Route::get('services/category/{category_id}', [ServiceController::class, "get_category_services"])->name("api:get_category_services");
     Route::get('services/{id}', [ServiceController::class, "get_service"])->name("api:get_single_service");
     Route::get('service/{user_id}/gallary', [AuthController::class, "get_gallary"])->name("api:get_gallary");
+    Route::get('users/{id}', [ServiceController::class, "get_service"])->name("api:get_single_service");
 
 });
 
