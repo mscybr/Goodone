@@ -51,7 +51,7 @@ Route::group([
     Route::get('services/category/{category_id}', [ServiceController::class, "get_category_services"])->name("api:get_category_services");
     Route::get('services/{id}', [ServiceController::class, "get_service"])->name("api:get_single_service");
     Route::get('service/{user_id}/gallary', [AuthController::class, "get_gallary"])->name("api:get_gallary");
-    Route::get('users/{id}', [ServiceController::class, "get_service"])->name("api:get_single_service");
+    Route::get('users/{id}', [ServiceController::class, "get_user"])->name("api:get_user");
 
 });
 

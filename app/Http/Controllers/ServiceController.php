@@ -77,6 +77,12 @@ class ServiceController extends Controller
         return response()->json($service);
     }
 
+    public function get_user( Request $request, $id)
+    {
+        $service = User::select("full_name", "picture")->Where("id", "=", $id)->first();
+        return response()->json($service);
+    }
+
     /**
      * gallary
      *
