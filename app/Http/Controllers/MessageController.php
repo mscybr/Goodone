@@ -52,11 +52,13 @@ class MessageController extends Controller
     {
         $user_id = auth("api")->user()->id;
         $chats = [];
+        $_chats = [];
         $from_chats = Message::Where("from", "=", $user_id);
         $to_chats = Message::Where("to", "=", $user_id);
         foreach ($from_chats->get() as $_msg ) {
-            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $user_id == $_msg["from"] ? $_msg["to"] : $_msg["from"])->first();
-            $chats[] = [
+            $with_id = $user_id == $_msg["from"] ? $_msg["to"] : $_msg["from"];
+            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $with_id)->first();
+            $_chats[$with_id] = [
                 "with" => $user,
                 "new_messages" => $_msg["seen_by_from"]  == false,
                 "latest_message" =>$_msg["latest_message"],
@@ -64,13 +66,17 @@ class MessageController extends Controller
             ];
         }
         foreach ($to_chats->get() as $_msg ) {
-            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $user_id == $_msg["from"] ? $_msg["to"] : $_msg["from"])->first();
-            $chats[] = [
+            $with_id = $user_id == $_msg["from"] ? $_msg["to"] : $_msg["from"];
+            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", )->first();
+            $_chats[$with_id] = [
                 "with" => $user,
                 "new_messages" => $_msg["seen_by_to"] == false,
                 "latest_message" =>$_msg["latest_message"],
                 "time" => Carbon::parse($_msg->sent_at)->diffForHumans()
             ];
+        }
+        foreach ($_chats  as $value) {
+            $chats[] = $value;
         }
         $from_chats->update(["seen_by_from" => true]);
         $to_chats->update(["seen_by_to" => true]);
