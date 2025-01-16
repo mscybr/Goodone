@@ -64,7 +64,7 @@ class MessageController extends Controller
             ];
         }
         foreach ($to_chats->get() as $_msg ) {
-             $user = User::Where( "id", "=", $_msg["to"])->first();
+            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $_msg["from"])->first();
             $chats[] = [
                 "from" => $user,
                 "new_messages" => $_msg["seen_by_to"] == false,
