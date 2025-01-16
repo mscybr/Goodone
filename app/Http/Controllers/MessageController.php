@@ -16,33 +16,36 @@ class MessageController extends Controller
         $validation = $request->validate([
             "to" => "exists:users,id"
         ]);
-        if(Message::Where([["from", "=", $user_id], ["to", "=", $validation["to"]]] )->count() == 0 && Message::Where([["to", "=", $user_id], ["from", "=", $validation["to"]]])->count() == 0 ){
+        if($user_id != $validation["to"]){
+                
+            if(Message::Where([["from", "=", $user_id], ["to", "=", $validation["to"]]] )->count() == 0 && Message::Where([["to", "=", $user_id], ["from", "=", $validation["to"]]])->count() == 0 ){
 
-            $validation["from"] = $user_id;
-            $validation["latest_message"] = "";
+                $validation["from"] = $user_id;
+                $validation["latest_message"] = "";
 
-            $response = Message::create($validation);
-
-        }else{
-            if(Message::Where([["from", "=", $user_id], ["to", "=", $validation["to"]]] )->count() > 0 ){
-                $response = Message::Where([["from", "=", $user_id], ["to", "=", $validation["to"]]] )->first();
-                // $response->update(["seen_by_from" => true]);
-                $response = [
-                    "id" => $response["id"],
-                    "new_messages" => $response["seen_by_from"] == false,
-                    "latest_message" => $response["latest_message"]
-                ];
+                $response = Message::create($validation);
+                
             }else{
-                $response = Message::Where([["to", "=", $user_id], ["from", "=", $validation["to"]]])->first();
-                $response = [
-                    "id" => $response["id"],
-                    "new_messages" => $response["seen_by_to"] == false,
-                    "latest_message" => $response["latest_message"]
-                ];
-                // $response->update(["seen_by_to" => true]);
+                if(Message::Where([["from", "=", $user_id], ["to", "=", $validation["to"]]] )->count() > 0 ){
+                    $response = Message::Where([["from", "=", $user_id], ["to", "=", $validation["to"]]] )->first();
+                    // $response->update(["seen_by_from" => true]);
+                    $response = [
+                        "id" => $response["id"],
+                        "new_messages" => $response["seen_by_from"] == false,
+                        "latest_message" => $response["latest_message"]
+                    ];
+                }else{
+                    $response = Message::Where([["to", "=", $user_id], ["from", "=", $validation["to"]]])->first();
+                    $response = [
+                        "id" => $response["id"],
+                        "new_messages" => $response["seen_by_to"] == false,
+                        "latest_message" => $response["latest_message"]
+                    ];
+                    // $response->update(["seen_by_to" => true]);
+                }
             }
+            return response()->json($response);
         }
-        return response()->json($response);
     }
 
     public function get_chats(Request $request)
@@ -52,9 +55,8 @@ class MessageController extends Controller
         $from_chats = Message::Where("from", "=", $user_id);
         $to_chats = Message::Where("to", "=", $user_id);
         foreach ($from_chats->get() as $_msg ) {
-            $user = User::Select("email", "full_name", "picture")->Where( "id", "=", $_msg["from"])->first();
+            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $_msg["from"])->first();
             $chats[] = [
-                "id" => $_msg["id"],
                 "from" => $user,
                 "new_messages" => $_msg["seen_by_from"]  == false,
                 "latest_message" =>$_msg["latest_message"],
@@ -64,7 +66,6 @@ class MessageController extends Controller
         foreach ($to_chats->get() as $_msg ) {
              $user = User::Where( "id", "=", $_msg["to"])->first();
             $chats[] = [
-                "id" => $_msg["id"],
                 "from" => $user,
                 "new_messages" => $_msg["seen_by_to"] == false,
                 "latest_message" =>$_msg["latest_message"],
