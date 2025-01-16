@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class MessageController extends Controller
 {
@@ -50,17 +52,23 @@ class MessageController extends Controller
         $from_chats = Message::Where("from", "=", $user_id);
         $to_chats = Message::Where("to", "=", $user_id);
         foreach ($from_chats->get() as $_msg ) {
+            $user = User::Select("email", "full_name", "picture")->Where( "id", "=", $_msg["from"])->first();
             $chats[] = [
                 "id" => $_msg["id"],
+                "from" => $user,
                 "new_messages" => $_msg["seen_by_from"]  == false,
                 "latest_message" =>$_msg["latest_message"],
+                "time" => Carbon::parse($_msg->sent_at)->diffForHumans()
             ];
         }
         foreach ($to_chats->get() as $_msg ) {
+             $user = User::Where( "id", "=", $_msg["to"])->first();
             $chats[] = [
                 "id" => $_msg["id"],
+                "from" => $user,
                 "new_messages" => $_msg["seen_by_to"] == false,
                 "latest_message" =>$_msg["latest_message"],
+                "time" => Carbon::parse($_msg->sent_at)->diffForHumans()
             ];
         }
         $from_chats->update(["seen_by_from" => true]);
@@ -102,6 +110,7 @@ class MessageController extends Controller
                     "new_message_from" => true,
                     "seen_by_from" => true,
                     "seen_by_to" => false,
+                    "sent_at" => time()
                 ]);
             }else{
                 $message = Message::Where("to", "=", $validation["from"] );
@@ -110,6 +119,7 @@ class MessageController extends Controller
                     "new_message_to" => true,
                     "seen_by_to" => true,
                     "seen_by_from" => false,
+                     "sent_at" => time()
                 ]);
             }
 
