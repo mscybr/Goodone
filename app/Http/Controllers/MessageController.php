@@ -67,7 +67,7 @@ class MessageController extends Controller
         }
         foreach ($to_chats->get() as $_msg ) {
             $with_id = $user_id == $_msg["from"] ? $_msg["to"] : $_msg["from"];
-            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", )->first();
+            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $with_id)->first();
             $_chats[$with_id] = [
                 "with" => $user,
                 "new_messages" => $_msg["seen_by_to"] == false,
