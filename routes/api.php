@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Auth\SmsPasswordResetController;
@@ -37,6 +38,11 @@ Route::group([
     Route::post('service/order', [ServiceController::class, "order_service"])->name("api:order_service");
     Route::get('user/orders', [ServiceController::class, "get_orders"])->name("api:get_orders");
     Route::get('user/order', [ServiceController::class, "get_order"])->name("api:get_order");
+
+    // chats
+    Route::get('chat', [MessageController::class, "get_chats"])->name("api:get_chats");
+    Route::post('chat/new_chat', [MessageController::class, "intiate_chat"])->name("api:intiate_chat");
+   
 });
 
 // No auth
@@ -53,6 +59,8 @@ Route::group([
     Route::get('service/{user_id}/gallary', [AuthController::class, "get_gallary"])->name("api:get_gallary");
     Route::get('users/{id}', [ServiceController::class, "get_user"])->name("api:get_user");
 
+    Route::post('chat/update_chat', [MessageController::class, "update_chat"])->name("api:update_chat");
+    
 });
 
 
