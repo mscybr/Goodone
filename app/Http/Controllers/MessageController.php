@@ -55,18 +55,18 @@ class MessageController extends Controller
         $from_chats = Message::Where("from", "=", $user_id);
         $to_chats = Message::Where("to", "=", $user_id);
         foreach ($from_chats->get() as $_msg ) {
-            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $_msg["from"])->first();
+            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $user_id == $_msg["from"] ? $_msg["to"] : $_msg["from"])->first();
             $chats[] = [
-                "from" => $user,
+                "with" => $user,
                 "new_messages" => $_msg["seen_by_from"]  == false,
                 "latest_message" =>$_msg["latest_message"],
                 "time" => Carbon::parse($_msg->sent_at)->diffForHumans()
             ];
         }
         foreach ($to_chats->get() as $_msg ) {
-            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $_msg["from"])->first();
+            $user = User::Select("id", "email", "full_name", "picture")->Where( "id", "=", $user_id == $_msg["from"] ? $_msg["to"] : $_msg["from"])->first();
             $chats[] = [
-                "from" => $user,
+                "with" => $user,
                 "new_messages" => $_msg["seen_by_to"] == false,
                 "latest_message" =>$_msg["latest_message"],
                 "time" => Carbon::parse($_msg->sent_at)->diffForHumans()
