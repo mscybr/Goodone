@@ -39,10 +39,15 @@ Route::group([
     Route::get('user/orders', [ServiceController::class, "get_orders"])->name("api:get_orders");
     Route::get('user/order', [ServiceController::class, "get_order"])->name("api:get_order");
 
+    Route::get('service/orders', [ServiceController::class, "get_service_orders"])->name("api:get_service_orders");
+
+    Route::post('service/order/complete', [ServiceController::class, "complete_order"])->name("api:complete_order");
+    Route::post('service/order/cancel', [ServiceController::class, "cancel_order"])->name("api:cancel_order");
+
     // chats
     Route::get('chat', [MessageController::class, "get_chats"])->name("api:get_chats");
     Route::post('chat/new_chat', [MessageController::class, "intiate_chat"])->name("api:intiate_chat");
-   
+
 });
 
 // No auth

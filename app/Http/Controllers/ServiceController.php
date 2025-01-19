@@ -50,7 +50,7 @@ class ServiceController extends Controller
                     $times_rated++;
                     $ratings += $rating["rate"];
                 }
-                $ratings_object = ["rating" => $ratings / $times_rated, "times_rated" => $times_rated];
+                $ratings_object = ["rating" => ($times_rated > 0 ? $ratings / $times_rated : 0 ), "times_rated" => $times_rated];
                 $services[$key]["ratings"] = $ratings_object;
             }
         return response()->json($services);
@@ -145,14 +145,16 @@ class ServiceController extends Controller
         $validation = $request->validate([
             'total_hours' => 'integer|required',
             'start_at' => 'integer|required',
-            'price' => 'numeric|required',
             'note' => 'string',
             'location' => 'string|required',
             'service_id' => 'integer|required|exists:users,id',
         ]);
+        $service = User::Where("id", "=", $validation["service_id"])->first();
+        $validation["price"] = $service["cost_per_hour"] * $validation["total_hours"];
+        $validation["status"] = 1; //pending
+        $validation["note"] = ""; //pending
         $user_id = auth("api")->user()->id;
         $validation["user_id"] = $user_id;
-        $validation["status"] = 0;
 
         if ($validation) {
             $order = Order::create($validation);
@@ -173,7 +175,20 @@ class ServiceController extends Controller
     {
         $user_id = auth("api")->user()->id;
 
-        $orders = Order::Where(["user_id"=> $user_id])->get();
+        $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
+        return response()->json(['message' => 'Success', 'data' => $orders], 200);
+    }
+
+     /**
+     * order_service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get_service_orders( Request $request)
+    {
+        $user_id = auth("api")->user()->id;
+
+        $orders = Order::Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
     }
 
@@ -185,11 +200,14 @@ class ServiceController extends Controller
     public function get_order( Request $request)
     {
         $validation = $request->validate([
-            'order_id' => 'integer|required|exists:orders,id',
+            'order_id' => 'integer|required|exists:order,id',
         ]);
-        $order = Order::find($validation["order_id"])->get();
+        $order = Order::Where("order_id", "=", $validation["order_id"])->get();
         return response()->json(['message' => 'Success', 'data' => $order], 200);
     }
+
+
+
 
      /**
      * order_service
@@ -204,7 +222,7 @@ class ServiceController extends Controller
             'price' => 'numeric',
             'note' => 'string',
             'location' => 'string',
-            'order_id' => 'integer|required|exists:orders,id',
+            'order_id' => 'integer|required|exists:order,id',
         ]);
         $user_id = auth("api")->user()->id;
 
@@ -215,6 +233,59 @@ class ServiceController extends Controller
         }else{
             $errors = $validator->errors();
             return response()->json(['error' => 'Bad Request', 'details' => $errors], 400);
+        }
+
+    }
+
+    public function complete_order( Request $request ){
+        return $this->change_order_status_by_user($request, 2);
+    }
+    public function cancel_order( Request $request ){
+        return $this->change_order_status_by_worker($request, 3);
+    }
+     /**
+     * order_service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function change_order_status_by_user( Request $request, $status)
+    {
+        $validation = $request->validate([
+            'order_id' => 'integer|required|exists:order,id',
+        ]);
+        $user_id = auth("api")->user()->id;
+
+        $collection = Order::Where([["user_id", "=", $user_id], ["id", "=", $validation["order_id"]]]);
+        if ($collection->count() > 0) {
+            $order = $collection->first();
+            $order->update(["status" => $status]);
+            return response()->json(['message' => 'Success', 'data' => $order], 200);
+        }else{
+            // $errors = $validator->errors();
+            return response()->json(['error' => 'Not Found'], 404);
+        }
+
+    }
+     /**
+     * order_service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function change_order_status_by_worker( Request $request, $status)
+    {
+        $validation = $request->validate([
+            'order_id' => 'integer|required|exists:order,id',
+        ]);
+        $user_id = auth("api")->user()->id;
+
+        $collection = Order::Where([["service_id", "=", $user_id], ["id", "=", $validation["order_id"]]]);
+        if ($collection->count() > 0) {
+            $order = $collection->first();
+            $order->update(["status" => $status]);
+            return response()->json(['message' => 'Success', 'data' => $order], 200);
+        }else{
+            // $errors = $validator->errors();
+            return response()->json(['error' => 'Not Found'], 404);
         }
 
     }
