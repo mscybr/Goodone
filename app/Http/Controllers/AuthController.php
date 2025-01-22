@@ -145,6 +145,7 @@ class AuthController extends Controller
             'location' => 'string',
             'cost_per_hour' => 'numeric',
             'service' => 'nullable',
+            "device_token" => "required",
             "picture" => "file|required",
             "license" => "file",
         ]);
@@ -188,11 +189,13 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $credentials = request(['email', 'password']);
+        $credentials = request(['email', 'password', "device_token"]);
 
         if (! $token = auth("api")->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        $user = User::Where("email", "=", $credentials["email"]);
+        $user->update(["device_token" => $credentials["device_token"]]);
 
         return $this->respondWithToken($token);
     }
