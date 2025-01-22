@@ -50,7 +50,8 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
         'license',
         'reset_token',
-        'reset_token_expiry'
+        'reset_token_expiry',
+        "device_token"
     ];
 
     /**

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PushNotification;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
@@ -43,6 +44,7 @@ Route::group([
 
     Route::post('service/order/complete', [ServiceController::class, "complete_order"])->name("api:complete_order");
     Route::post('service/order/cancel', [ServiceController::class, "cancel_order"])->name("api:cancel_order");
+    
 
     // chats
     Route::get('chat', [MessageController::class, "get_chats"])->name("api:get_chats");
@@ -65,6 +67,9 @@ Route::group([
     Route::get('users/{id}', [ServiceController::class, "get_user"])->name("api:get_user");
 
     Route::post('chat/update_chat', [MessageController::class, "update_chat"])->name("api:update_chat");
+
+    // Route::post('notification/all', [PushNotification::class, "notify_all"])->name("api:notify_all");
+    Route::post('notification/{user_id}', [PushNotification::class, "notify_user"])->name("api:notify_user");
     
 });
 
