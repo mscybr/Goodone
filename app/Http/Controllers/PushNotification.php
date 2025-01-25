@@ -31,7 +31,6 @@ class PushNotification extends Controller
     {
         $url = 'https://fcm.googleapis.com/v1/projects/tlbate-com/messages:send';
         $accessToken =  $this->generateAccessToken('goodone-73cff-70bd80fc69c6.json');
-        dd($accessToken);
         if($accessToken){
 
             // Build the notification payload
@@ -48,8 +47,22 @@ class PushNotification extends Controller
              'Authorization: Bearer ' . $accessToken,
              'Content-Type: application/json',
             ];
-            
-            $response = Http::withHeaders($headers)->post($url, $payload);
+                    // Initialize cURL
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+
+            // Execute the request
+            $response = curl_exec($ch);
+            if ($response === FALSE) {
+                die('FCM Send Error: ' . curl_error($ch));
+            }
+
+            curl_close($ch);
+            dd($response);
             return response()->json(["message"=> "sent notification"], 200 );
         }else{
             return response()->json(["message"=> "couldn't send notification"], 500 );
