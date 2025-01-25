@@ -31,6 +31,7 @@ class PushNotification extends Controller
     {
         $url = 'https://fcm.googleapis.com/v1/projects/tlbate-com/messages:send';
         $accessToken =  $this->generateAccessToken('goodone-73cff-70bd80fc69c6.json');
+        dd($accessToken);
         if($accessToken){
 
             // Build the notification payload
@@ -49,7 +50,6 @@ class PushNotification extends Controller
             ];
             
             $response = Http::withHeaders($headers)->post($url, $payload);
-            dd($response);
             return response()->json(["message"=> "sent notification"], 200 );
         }else{
             return response()->json(["message"=> "couldn't send notification"], 500 );
