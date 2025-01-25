@@ -35,13 +35,11 @@ class PushNotification extends Controller
 
             // Build the notification payload
             $payload = [
-                'message' => [
-                    'topic' => $deviceToken,
+                'to' => $deviceToken,
                 'notification' => [
                     'title' => $title,
                     'body' => $body,
-                    ]
-            ],
+                ]
         ];
          $headers = [
              'Authorization: Bearer ' . $accessToken,
