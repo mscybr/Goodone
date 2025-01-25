@@ -31,28 +31,29 @@ class PushNotification extends Controller
     {
         $url = 'https://fcm.googleapis.com/v1/projects/tlbate-com/messages:send';
         $accessToken =  $this->generateAccessToken('goodone-73cff-70bd80fc69c6.json');
+        if($accessToken){
 
-        // Build the notification payload
-        $payload = [
-            'message' => [
-                'topic' => $topic,
+            // Build the notification payload
+            $payload = [
+                'message' => [
+                    'topic' => $deviceToken,
                 'notification' => [
                     'title' => $title,
                     'body' => $body,
-                ]
+                    ]
             ],
         ];
          $headers = [
-            'Authorization: Bearer ' . $accessToken,
-            'Content-Type: application/json',
-        ];
-
-        $response = Http::withHeaders([
-            'Authorization' => 'key=' . $serverKey,
-            'Content-Type' => 'application/json',
-        ])->post($url, $payload);
-
-        return $response->successful() ? 'Notification Sent!' : $response->body();
+             'Authorization: Bearer ' . $accessToken,
+             'Content-Type: application/json',
+            ];
+            
+            $response = Http::withHeaders($headers)->post($url, $payload);
+            
+            return response()->json(["message"=> "sent notification"], 200 );
+        }else{
+            return response()->json(["message"=> "couldn't send notification"], 500 );
+        }
     }
 
     protected function generateAccessToken($serviceAccountPath) {
@@ -63,7 +64,7 @@ class PushNotification extends Controller
         if (Storage::exists($serviceAccountPath)) {
             // Read the file contents
             $_serviceAccount = Storage::get($serviceAccountPath);
-
+            dd($_serviceAccount);
             $serviceAccount = json_decode($_serviceAccount, true);
 
             $header = json_encode([
