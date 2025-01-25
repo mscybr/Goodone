@@ -64,7 +64,6 @@ class PushNotification extends Controller
         if (Storage::exists($serviceAccountPath)) {
             // Read the file contents
             $_serviceAccount = Storage::get($serviceAccountPath);
-            dd($_serviceAccount);
             $serviceAccount = json_decode($_serviceAccount, true);
 
             $header = json_encode([
