@@ -187,15 +187,15 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login( )
     {
-        $credentials = request(['email', 'password', "device_token"]);
+        $credentials = request(['email', 'password']);
 
         if (! $token = auth("api")->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         $user = User::Where("email", "=", $credentials["email"]);
-        $user->update(["device_token" => $credentials["device_token"]]);
+        $user->update(["device_token" => request("device_token")]);
 
         return $this->respondWithToken($token);
     }
