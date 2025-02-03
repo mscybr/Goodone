@@ -102,7 +102,7 @@ class ServiceController extends Controller
                     $times_rated++;
                     $ratings += $rating["rate"];
                 }
-                $ratings_object = ["rating" => $ratings / $times_rated, "times_rated" => $times_rated];
+                $ratings_object = ["rating" => $times_rated != 0 ? $ratings / $times_rated : 0, "times_rated" => $times_rated];
                 $services[$key]["ratings"] = $ratings_object;
             }
         
