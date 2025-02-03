@@ -30,6 +30,7 @@ class ServiceController extends Controller
             //             ->groupBy('users.id')
             //             ->orderBy('total','desc')
             //             ->get();
+            
             $services = User::With("Rating")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
             function($a, $b) {
                 return $a <=> $b;
@@ -43,6 +44,9 @@ class ServiceController extends Controller
             $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
+            
+            $orders = Order::Where([["service_id", "=", $service["id"]]])->count();
+            $services[$key]["orders"] = $orders;
 
              $ratings = 0;
                 $times_rated = 0;
@@ -65,11 +69,12 @@ class ServiceController extends Controller
     {
         $service = User::Where("id", "=", $id)->first();
         if($service){
-
+            $orders = Order::Where([["service_id", "=", $id]])->count();
             $ratings = Rating::With(['user' => function ($query) {
                 $query->select('id', 'full_name', "picture");
             }])->whereBelongsTo($service)->get();
             $service["rating"] = $ratings;
+            $service["orders"] = $orders;
             $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // return response()->json($gall);
             $service["gallary"] = $gall;
@@ -95,6 +100,8 @@ class ServiceController extends Controller
             $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
+            $orders = Order::Where([["service_id", "=", $service["id"]]])->count();
+            $services[$key]["orders"] = $orders;
 
              $ratings = 0;
                 $times_rated = 0;
