@@ -64,7 +64,7 @@ class PushNotification extends Controller
             curl_close($ch);
             return response()->json(["message"=> "sent notification"], 200 );
         }else{
-            return response()->json(["message"=> "couldn't send notification"], 500 );
+            return response()->json(["message"=> "couldn't send notification, info: $deviceToken, $title, $body "], 500 );
         }
     }
 
