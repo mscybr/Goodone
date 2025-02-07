@@ -70,7 +70,7 @@ class ServiceController extends Controller
         $service = User::Where("id", "=", $id)->first();
         if($service){
             $orders = Order::Where([["service_id", "=", $id]])->count();
-            $ratings = Rating::With(['user' => function ($query) {
+            $ratings = Rating::With(['User' => function ($query) {
                 $query->select('id', 'full_name', "picture");
             }])->whereBelongsTo($service)->get();
             $service["rating"] = $ratings;
