@@ -31,13 +31,13 @@ class ServiceController extends Controller
             //             ->orderBy('total','desc')
             //             ->get();
             
-            $services = User::With("Rating")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
+            $services = User::Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
             function($a, $b) {
                 return $a <=> $b;
             }
             );
         }else{
-            $services = User::With("Rating")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get();
+            $services = User::Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get();
         }
         // dd($services);
         foreach ($services as $key => $service ) {
@@ -49,23 +49,23 @@ class ServiceController extends Controller
             // $orders = Order::Where([["service_id", "=", $service["id"]]])->count();
             // $services[$key]["orders"] = $orders;
 
-            //  $ratings = 0;
-            //     $times_rated = 0;
-            //     foreach ($service["rating"] as $key2 => $rating) {
-            //         $times_rated++;
-            //         $ratings += $rating["rate"];
-            //     }
-            //     $ratings_object = ["rating" => ($times_rated > 0 ? $ratings / $times_rated : 0 ), "times_rated" => $times_rated];
-            //     $services[$key]["ratings"] = $ratings_object;
             $orders = Order::Where([["service_id", "=", $id]])->count();
             $ratings = Rating::With(['User' => function ($query) {
                 $query->select('id', 'full_name', "picture");
             }])->whereBelongsTo($service)->get();
-            $service["rating"] = $ratings;
-            $service["orders"] = $orders;
+             $total_ratings = 0;
+                $times_rated = 0;
+                foreach ($ratings as $key2 => $rating) {
+                    $times_rated++;
+                    $total_ratings += $rating["rate"];
+                }
+                $ratings_object = ["rating" => $times_rated != 0 ? $total_ratings / $times_rated : 0, "times_rated" => $times_rated];
+                $services[$key]["ratings"] = $ratings_object;
+            $services[$key]["rating"] = $ratings;
+            $services[$key]["orders"] = $orders;
             $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // return response()->json($gall);
-            $service["gallary"] = $gall;
+            $services[$key]["gallary"] = $gall;
         }
         return response()->json($services);
     }
@@ -105,7 +105,7 @@ class ServiceController extends Controller
      */
     public function get_category_services( Request $request, $category_id)
     {
-        $services = User::With("Rating")->Where([["active", "=", true], ["category", "=", $category_id]])->get();
+        $services = User::Where([["active", "=", true], ["category", "=", $category_id]])->get();
          foreach ($services as $key => $service ) {
             $id = $service["id"];
             // $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
@@ -114,23 +114,23 @@ class ServiceController extends Controller
             // $orders = Order::Where([["service_id", "=", $service["id"]]])->count();
             // $services[$key]["orders"] = $orders;
 
-            //  $ratings = 0;
-            //     $times_rated = 0;
-            //     foreach ($service["rating"] as $key2 => $rating) {
-            //         $times_rated++;
-            //         $ratings += $rating["rate"];
-            //     }
-            //     $ratings_object = ["rating" => $times_rated != 0 ? $ratings / $times_rated : 0, "times_rated" => $times_rated];
-            //     $services[$key]["ratings"] = $ratings_object;
             $orders = Order::Where([["service_id", "=", $id]])->count();
             $ratings = Rating::With(['User' => function ($query) {
                 $query->select('id', 'full_name', "picture");
             }])->whereBelongsTo($service)->get();
-            $service["rating"] = $ratings;
-            $service["orders"] = $orders;
+             $total_ratings = 0;
+                $times_rated = 0;
+                foreach ($ratings as $key2 => $rating) {
+                    $times_rated++;
+                    $total_ratings += $rating["rate"];
+                }
+                $ratings_object = ["rating" => $times_rated != 0 ? $total_ratings / $times_rated : 0, "times_rated" => $times_rated];
+                $services[$key]["ratings"] = $ratings_object;
+            $services[$key]["rating"] = $ratings;
+            $services[$key]["orders"] = $orders;
             $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // return response()->json($gall);
-            $service["gallary"] = $gall;
+            $services[$key]["gallary"] = $gall;
         }
         
         return response()->json($services);
