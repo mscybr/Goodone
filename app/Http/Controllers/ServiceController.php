@@ -41,6 +41,7 @@ class ServiceController extends Controller
         }
         // dd($services);
         foreach ($services as $key => $service ) {
+             $id = $service["id"];
             // $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // // return response()->json($gall);
             // $services[$key]["gallary"] = $gall;
@@ -106,6 +107,7 @@ class ServiceController extends Controller
     {
         $services = User::With("Rating")->Where([["active", "=", true], ["category", "=", $category_id]])->get();
          foreach ($services as $key => $service ) {
+            $id = $service["id"];
             // $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // // return response()->json($gall);
             // $services[$key]["gallary"] = $gall;
