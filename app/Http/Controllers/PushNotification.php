@@ -107,12 +107,12 @@ class PushNotification extends Controller
 
             // Exchange the JWT for an access token
             $ch = curl_init();
-            
+
             $data = [
                 'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
                 'assertion' => $jwt,
             ];
-            
+
             curl_setopt($ch, CURLOPT_URL, 'https://oauth2.googleapis.com/token');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
@@ -136,6 +136,7 @@ class PushNotification extends Controller
             if (isset($tokenInfo['access_token'])) {
                 return $tokenInfo['access_token'];
             } else {
+                dd($response);
                 throw new Exception('Failed to obtain access token: ' . $response);
             }
         }else{
