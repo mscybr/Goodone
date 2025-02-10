@@ -126,7 +126,7 @@ class PushNotification extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
                         'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
                         'assertion' => $jwt,
                     ]));
