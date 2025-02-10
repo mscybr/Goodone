@@ -106,13 +106,14 @@ class PushNotification extends Controller
             $jwt = $base64UrlHeader . '.' . $base64UrlClaims . '.' . $base64UrlSignature;
 
             // Exchange the JWT for an access token
-            $ch = curl_init('https://oauth2.googleapis.com/token');
-
+            $ch = curl_init();
+            
             $data = [
                 'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
                 'assertion' => $jwt,
             ];
-
+            
+            curl_setopt($ch, CURLOPT_URL, 'https://oauth2.googleapis.com/token');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
