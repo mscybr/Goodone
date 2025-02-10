@@ -106,37 +106,22 @@ class PushNotification extends Controller
             $jwt = $base64UrlHeader . '.' . $base64UrlClaims . '.' . $base64UrlSignature;
 
             // Exchange the JWT for an access token
-            $ch = curl_init();
-
-            $data = [
-                'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-                'assertion' => $jwt,
-            ];
-
-            curl_setopt($ch, CURLOPT_URL, 'https://oauth2.googleapis.com/token');
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/x-www-form-urlencoded',
-            ]);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-
-            $response = curl_exec($ch);
-
-            if (curl_errno($ch)) {
-                echo 'Curl error: ' . curl_error($ch);
-            }
-
-            curl_close($ch);
-
-            // echo $response;
+            $response = file_get_contents('https://oauth2.googleapis.com/token', false, stream_context_create([
+                'http' => [
+                    'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
+                    'method'  => 'POST',
+                    'content' => http_build_query([
+                        'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+                        'assertion' => $jwt,
+                    ]),
+                ],
+            ]));
 
             $tokenInfo = json_decode($response, true);
 
             if (isset($tokenInfo['access_token'])) {
                 return $tokenInfo['access_token'];
             } else {
-                dd($response);
                 throw new Exception('Failed to obtain access token: ' . $response);
             }
         }else{
