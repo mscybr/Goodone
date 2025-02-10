@@ -106,22 +106,40 @@ class PushNotification extends Controller
             $jwt = $base64UrlHeader . '.' . $base64UrlClaims . '.' . $base64UrlSignature;
 
             // Exchange the JWT for an access token
-            $response = file_get_contents('https://oauth2.googleapis.com/token', false, stream_context_create([
-                'http' => [
-                    'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
-                    'method'  => 'POST',
-                    'content' => http_build_query([
+            // $response = file_get_contents('https://oauth2.googleapis.com/token', false, stream_context_create([
+            //     'http' => [
+            //         'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
+            //         'method'  => 'POST',
+            //         'content' => http_build_query([
+            //             'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+            //             'assertion' => $jwt,
+            //         ]),
+            //     ],
+            // ]));
+
+         $headers = [
+             'Content-Type: application/x-www-form-urlencoded',
+            ];
+                    // Initialize cURL
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://oauth2.googleapis.com/token');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
                         'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
                         'assertion' => $jwt,
-                    ]),
-                ],
-            ]));
+                    ]));
+
+            // Execute the request
+            $response = curl_exec($ch);
 
             $tokenInfo = json_decode($response, true);
 
             if (isset($tokenInfo['access_token'])) {
                 return $tokenInfo['access_token'];
             } else {
+                dd($response);
                 throw new Exception('Failed to obtain access token: ' . $response);
             }
         }else{
