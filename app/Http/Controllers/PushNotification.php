@@ -30,7 +30,7 @@ class PushNotification extends Controller
     protected function sendNotification($deviceToken, $title, $body)
     {
         $url = 'https://fcm.googleapis.com/v1/projects/goodone-73cff/messages:send';
-        $accessToken =  $this->generateAccessToken('goodone-73cff-70bd80fc69c6.json');
+        $accessToken =  $this->generateAccessToken('goodone-73cff-a404a8a9d747.json');
         if($accessToken){
 
             // Build the notification payload
