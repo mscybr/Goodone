@@ -57,7 +57,7 @@ class ServiceController extends Controller
                 $services[$key]["rating"] = $ratings_object;
             $services[$key]["ratings"] = $ratings;
             $services[$key]["orders"] = $orders;
-            $gall = ServiceGallary::Select("image")->Where([["user_id", $service["id"]]])->get();
+            $gall = ServiceGallary::Select("image")->Where([["user_id", $service["id"]]])->pluck("image");
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
         }
