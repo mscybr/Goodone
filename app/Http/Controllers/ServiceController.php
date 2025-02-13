@@ -99,7 +99,7 @@ class ServiceController extends Controller
      */
     public function get_category_services( Request $request, $category_id)
     {
-        $services = User::Where([["active", "=", true], ["category", "=", $category_id]])->get();
+        $services = User::Select("email", "phone", "full_name", "picture", "location", "cost_per_hour", "service", "years_of_experience", "about", "security_check", "verified_liscence", "id")->Where([["active", "=", true], ["category", "=", $category_id]])->get();
          foreach ($services as $key => $service ) {
             $id = $service["id"];
             // $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
@@ -108,8 +108,8 @@ class ServiceController extends Controller
             // $orders = Order::Where([["service_id", "=", $service["id"]]])->count();
             // $services[$key]["orders"] = $orders;
 
-            $orders = Order::Where([["service_id", "=", $id]])->count();
-            $ratings = Rating::With(['User' => function ($query) {
+            $orders = Order::Select("total_hours", "start_at", "price")->Where([["service_id", "=", $id]])->count();
+            $ratings = Rating::Select("message", "rate", "user_id")->With(['User' => function ($query) {
                 $query->select('id', 'full_name', "picture");
             }])->whereBelongsTo($service)->get();
              $total_ratings = 0;
@@ -122,7 +122,7 @@ class ServiceController extends Controller
                 $services[$key]["rating"] = $ratings_object;
             $services[$key]["ratings"] = $ratings;
             $services[$key]["orders"] = $orders;
-            $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
+            $gall = ServiceGallary::Select("image")->Where([["user_id", $service["id"]]])->pluck("image");
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
         }
