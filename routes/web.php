@@ -17,3 +17,7 @@ use App\Http\Controllers\AdminController;
 Route::get('/admin/category', [AdminController::class, "create_category"])->name("admin_create_category");
 Route::post('/admin/category', [AdminController::class, "store_category"])->name("admin_store_category");
 Route::get('/admin/category/delete', [AdminController::class, "delete_category"])->name("admin_delete_category");
+
+Route::get('/admin/subcategory', [AdminController::class, "create_subcategory"])->name("admin_create_subcategory");
+Route::post('/admin/subcategory', [AdminController::class, "store_subcategory"])->name("admin_store_subcategory");
+Route::get('/admin/subcategory/delete', [AdminController::class, "delete_subcategory"])->name("admin_delete_subcategory");
