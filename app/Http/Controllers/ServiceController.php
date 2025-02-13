@@ -25,7 +25,7 @@ class ServiceController extends Controller
         if($request->has('query')) $query = $request->input('query');
         if($request->has('filter')){
      
-            $services = User::Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
+            $services = User::Select("email", "phone", "full_name", "picture", "location", "cost_per_hour", "service", "category", "years_of_experience", "about", "security_check", "verified_liscence", "id")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
             function($a, $b) {
                 return $a <=> $b;
             }
