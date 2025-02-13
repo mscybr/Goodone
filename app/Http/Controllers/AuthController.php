@@ -90,12 +90,15 @@ class AuthController extends Controller
             'type' => 'in:customer,worker',
             'full_name' => 'string',
             'about' => 'string',
+            'country' => 'string',
+            'city' => 'string',
             'location' => 'string',
             'cost_per_hour' => 'numeric',
             'service' => 'string',
             "picture" => "file",
             "license" => "file",
             "category" => "exists:categories,id",
+            "subcategory_id" => "exists:subcategories,id",
             "active" => "boolean"
         ]);
         if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
