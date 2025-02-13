@@ -196,7 +196,7 @@ class ServiceController extends Controller
     {
         $user_id = auth("api")->user()->id;
 
-        $orders = Order::Select("total_hours", "start_at", "price", "location")->With(['Service' => function ($query) {
+        $orders = Order::Select("total_hours", "start_at", "price", "location", "service_id")->With(['Service' => function ($query) {
             $query->select('id', 'full_name', "picture");
         }])->Where([["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         // $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
