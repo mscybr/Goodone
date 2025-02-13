@@ -44,7 +44,7 @@ class ServiceController extends Controller
             // $services[$key]["orders"] = $orders;
 
             $orders = Order::Select("total_hours", "start_at", "price")->Where([["service_id", "=", $id]])->count();
-            $ratings = Rating::With(['User' => function ($query) {
+            $ratings = Rating::Select("message", "rate", "user")->With(['User' => function ($query) {
                 $query->select('id', 'full_name', "picture");
             }])->whereBelongsTo($service)->get();
              $total_ratings = 0;
