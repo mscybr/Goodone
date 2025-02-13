@@ -196,7 +196,10 @@ class ServiceController extends Controller
     {
         $user_id = auth("api")->user()->id;
 
-        $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
+        $orders = Order::Select("total_hours", "start_at", "price", "location", "user_id")->With(['User' => function ($query) {
+            $query->select('id', 'full_name', "picture");
+        }])->Where([["user_id", "=", $user_id], ["status", ">", "0"]])->get();
+        // $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
     }
 
@@ -209,7 +212,10 @@ class ServiceController extends Controller
     {
         $user_id = auth("api")->user()->id;
 
-        $orders = Order::Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
+        // $orders = Order::Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
+        $orders = Order::Select("total_hours", "start_at", "price", "location", "user_id")->With(['Service' => function ($query) {
+            $query->select('id', 'full_name', "picture");
+        }])->Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
     }
 
