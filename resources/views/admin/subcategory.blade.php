@@ -24,18 +24,28 @@
                 "value" => old("name"),
                 "placeholder" => "enter subcategory name",
                 "note" => ""
+          ],
+           (object)[
+                "name" => "category_id",
+                "type" => "select",
+                "label" => "category Name",
+                "value" => old("name"),
+                "placeholder" => "Select Category",
+                "note" => "",
+                "options" => $categories
               ]
             ];
             $table_headers = [
+              "Subcategory",
               "Category",
-              "Icon",
               "Delete"
             ];
             $table_data = [];
-            foreach ($categories as $category ) {
+            foreach ($subcategories as $subcategory ) {
               $table_data[] = (object)[
-                (object)["type"=> "string", "value" => $category->name],
-                (object)["type"=> "anchor", "value" => "Delete", "color" => "danger", "href"=> route("admin_delete_category", ["id"=>$category->id])],
+                (object)["type"=> "string", "value" => $subcategory->name],
+                (object)["type"=> "string", "value" => $subcategory->category->name],
+                (object)["type"=> "anchor", "value" => "Delete", "color" => "danger", "href"=> route("admin_delete_subcategory", ["id"=>$subcategory->id])],
             ];
             }
         @endphp

@@ -89,6 +89,11 @@
                 <div data-i18n="Analytics">Category</div>
               </a>
             </li>
+            <li class="menu-item">
+              <a href="{{route("admin_create_subcategory")}}" class="menu-link">
+                <div data-i18n="Analytics">Subcategory</div>
+              </a>
+            </li>
            
           </ul>
         </aside>

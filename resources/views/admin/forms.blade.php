@@ -24,6 +24,12 @@
             <label for="field" class="form-label"><?= $field_label ?></label>
             @if ($field_type == "textarea")
                 <textarea name="<?=$field_name?>" class="form-control" id="field" placeholder="<?=$placeholder?>"><?=$default_value?></textarea>
+            @elseif ($field_type == "select")
+                <select name="<?=$field_name?>" class="form-control" id="field" placeholder="<?=$placeholder?>">
+                    @foreach ($options as $option)
+                        <option value="<?= $option["value"] ?>"><?= $option["name"] ?></option>
+                    @endforeach
+                </select>
             @else
                 <input type="<?= $field_type ?>" name="<?=$field_name?>" class="form-control" id="field" placeholder="<?=$placeholder?>" value="<?=$default_value?>" >
             @endif
@@ -49,6 +55,12 @@
                     <label for="field" class="form-label"><?= $field->label ?></label>
                      @if ($field->type  == "textarea")
                         <textarea name="<?=$field->name?>" class="form-control" id="field" placeholder="<?=$field->placeholder?>"><?=$field->value?></textarea>
+                    @elseif ($field->type == "select")
+                        <select name="<?=$field->name?>" class="form-control" id="field"  placeholder="<?=$field->placeholder?>">
+                             <?php foreach($field->options as $option ){?>
+                                <option value="<?= $option["value"] ?>"><?= $option["name"] ?></option>
+                            <?php } ?>
+                        </select>
                     @else
                         <input type="<?= $field->type ?>" name="<?=$field->name?>" class="form-control" id="field" placeholder="<?=$field->placeholder?>" value="<?=$field->value?>" >
                     @endif

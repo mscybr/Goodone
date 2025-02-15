@@ -46,23 +46,15 @@ class AdminController extends Controller
 
     public function create_subcategory()
     {
-        return view('admin.subcategory', ["categories"=> Subcategory::all()]);
+        return view('admin.subcategory', ["categories"=> Category::get(["id as value", "name"]), "subcategories"=> Subcategory::all()]);
     }
 
     public function store_subcategory(Request $request)
     {
         $validation = $request->validate([
-            'name' => 'required|unique:categories,name',
-            "image" => "file|required",
+            'name' => 'required|unique:subcategories,name',
+            "category_id" => "required|exists:categories,id",
         ]);
-
-        if($request->file('image')){
-            $file = $request->file('image');
-            $temp = $file->store('public/images');
-            $_array = explode("/", $temp);
-            $file_name = $_array[ sizeof($_array) -1 ];
-            $validation["image"] = $file_name;
-        }
 
         $category = Subcategory::create($validation);
         return redirect()->back();
@@ -74,7 +66,7 @@ class AdminController extends Controller
     public function delete_subcategory(Request $request)
     {
          $validation = $request->validate([
-            'id' => 'required|exists:categories,id',
+            'id' => 'required|exists:subcategories,id',
         ]);
         Subcategory::find($validation["id"])->delete();
         return redirect()->back();

@@ -25,13 +25,21 @@ class ServiceController extends Controller
         if($request->has('query')) $query = $request->input('query');
         if($request->has('filter')){
      
-            $services = User::Select("city", "country", "email", "phone", "full_name", "picture", "location", "cost_per_hour", "service", "category", "years_of_experience", "about", "security_check", "verified_liscence", "id")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
+            $services = User::With(['Subcategory.Category' => function ($query) {
+                $query->select('id', 'name', "image");
+            }, 'Subcategory' => function ($query) {
+                $query->select('id', 'name', "category_id");
+            }])->Select("city", "country", "email", "phone", "full_name", "picture", "location", "cost_per_hour", "service", "subcategory_id", "years_of_experience", "about", "security_check", "verified_liscence", "id")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get()->sort(
             function($a, $b) {
                 return $a <=> $b;
             }
             );
         }else{
-            $services = User::Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get();
+            $services = User::With(['Subcategory.Category' => function ($query) {
+                $query->select('id', 'name', "image");
+            }, 'Subcategory' => function ($query) {
+                $query->select('id', 'name', "category_id");
+            }])->Select("city", "country", "email", "phone", "full_name", "picture", "location", "cost_per_hour", "service", "subcategory_id", "years_of_experience", "about", "security_check", "verified_liscence", "id")->Where([["active", "=", true], ["service", "LIKE", "%$query%"]])->get();
         }
         // dd($services);
         foreach ($services as $key => $service ) {
@@ -44,7 +52,7 @@ class ServiceController extends Controller
             // $services[$key]["orders"] = $orders;
 
             $orders = Order::Select("total_hours", "start_at", "price")->Where([["service_id", "=", $id]])->count();
-            $ratings = Rating::Select("message", "rate", "user_id")->With(['User' => function ($query) {
+            $ratings = Rating::Select("message", "rate", "user_id", "created_at")->With(['User' => function ($query) {
                 $query->select('id', 'full_name', "picture");
             }])->whereBelongsTo($service)->get();
              $total_ratings = 0;
@@ -99,7 +107,11 @@ class ServiceController extends Controller
      */
     public function get_category_services( Request $request, $category_id)
     {
-        $services = User::Select("city", "country", "email", "phone", "full_name", "picture", "location", "cost_per_hour", "service", "years_of_experience", "about", "security_check", "verified_liscence", "id")->Where([["active", "=", true], ["category", "=", $category_id]])->get();
+        $services = User::With(['Subcategory.Category' => function ($query) {
+                $query->select('id', 'name', "image");
+            }, 'Subcategory' => function ($query) {
+                $query->select('id', 'name', "category_id");
+            }])->Select("city", "country", "email", "phone", "full_name", "picture", "location", "cost_per_hour", "service", "subcategory_id", "years_of_experience", "about", "security_check", "verified_liscence", "id")->Where([["active", "=", true], ["category", "=", $category_id]])->get();
          foreach ($services as $key => $service ) {
             $id = $service["id"];
             // $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
@@ -109,7 +121,7 @@ class ServiceController extends Controller
             // $services[$key]["orders"] = $orders;
 
             $orders = Order::Select("total_hours", "start_at", "price")->Where([["service_id", "=", $id]])->count();
-            $ratings = Rating::Select("message", "rate", "user_id")->With(['User' => function ($query) {
+            $ratings = Rating::Select("message", "rate", "user_id", "created_at")->With(['User' => function ($query) {
                 $query->select('id', 'full_name', "picture");
             }])->whereBelongsTo($service)->get();
              $total_ratings = 0;
@@ -196,8 +208,10 @@ class ServiceController extends Controller
     {
         $user_id = auth("api")->user()->id;
 
-        $orders = Order::Select("total_hours", "start_at", "price", "location", "service_id")->With(['Service' => function ($query) {
-            $query->select('id', 'full_name', "picture");
+        $orders = Order::Select("total_hours", "start_at", "price", "location", "service_id", "status")->With(['Service' => function ($query) {
+            $query->select('id', 'full_name', "picture", "service", "subcategory_id", "cost_per_hour");
+        }, 'Service.Subcategory' => function ($query) {
+            $query->select('id', 'name');
         }])->Where([["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         // $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
@@ -213,7 +227,7 @@ class ServiceController extends Controller
         $user_id = auth("api")->user()->id;
 
         // $orders = Order::Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
-        $orders = Order::Select("total_hours", "start_at", "price", "location", "user_id")->With(['User' => function ($query) {
+        $orders = Order::Select("total_hours", "start_at", "price", "location", "user_id", "status")->With(['User' => function ($query) {
             $query->select('id', 'full_name', "picture");
         }])->Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);

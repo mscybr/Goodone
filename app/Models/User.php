@@ -33,6 +33,10 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function Subcategory(){
+        return $this->belongsTo('App\Models\Subcategory', 'subcategory_id');
+    }
+
     
     public function Rating(){
         return $this->hasMany('App\Models\Rating', 'id');
@@ -46,6 +50,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $hidden = [
+        'category',
+        'subcategory_id',
         'password',
         'remember_token',
         'license',
