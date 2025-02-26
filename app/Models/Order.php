@@ -12,7 +12,7 @@ class Order extends Model
     protected $guarded = ['id'];
 
     public function Service(){
-        return $this->belongsTo('App\Models\User', 'service_id');
+        return $this->belongsTo('App\Models\Service', 'service_id');
     }
     
     public function User(){

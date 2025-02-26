@@ -32,13 +32,15 @@ Route::group([
 ], function ($router) {
 
     Route::post('account/edit', [AuthController::class, "edit"])->name("api:edit");
-    Route::post('account/gallary/add', [AuthController::class, "add_to_gallary"])->name("api:add_to_gallary");
-    Route::post('account/gallary/remove', [AuthController::class, "remove_from_gallary"])->name("api:remove_from_gallary");
+    Route::post('account/gallary/add', [ServiceController::class, "add_to_gallary"])->name("api:add_to_gallary");
+    Route::post('account/gallary/remove', [ServiceController::class, "remove_from_gallary"])->name("api:remove_from_gallary");
     Route::post('service/rate', [ServiceController::class, "rate_service"])->name("api:rate_service");
+    Route::post('service/create', [ServiceController::class, "create_service"])->name("api:create_service");
 
     Route::post('service/order', [ServiceController::class, "order_service"])->name("api:order_service");
     Route::get('user/orders', [ServiceController::class, "get_orders"])->name("api:get_orders");
     Route::get('user/order', [ServiceController::class, "get_order"])->name("api:get_order");
+    Route::get('user/services', [ServiceController::class, "get_my_services"])->name("api:get_my_services");
 
     Route::get('service/orders', [ServiceController::class, "get_service_orders"])->name("api:get_service_orders");
 

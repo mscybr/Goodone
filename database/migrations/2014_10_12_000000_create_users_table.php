@@ -20,10 +20,6 @@ return new class extends Migration
             $table->enum('type', ["customer","worker"])->default('customer')->comment('customer/worker');
             $table->string('full_name');
             $table->string('picture');
-            $table->string('location')->nullable();
-            $table->string('license')->nullable();
-            $table->decimal('cost_per_hour')->nullable();
-            $table->string('service')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             // $table->bigInteger('category_id')->nullable();
             $table->rememberToken();

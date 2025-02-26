@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('service_gallary', function (Blueprint $table) {
             $table->id();
             $table->string("image");
-            $table->integer("user_id");
+            $table->integer("service_id");
             $table->timestamps();
         });
     }

@@ -19,61 +19,6 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', "register"]]);
     }
 
-    /**
-     * gallary
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function remove_from_gallary( Request $request)
-    {
-        $validation = $request->validate([
-            "id" => "required|exists:service_gallary,id",
-        ]);
-        $user_id = auth("api")->user()->id;
-        $validation["user_id"] = $user_id;
-        if ($validation) {
-            $del = ServiceGallary::Where("user_id", $user_id)->Where("id",$validation["id"])->delete();
-            // ddd($del);
-            $all = ServiceGallary::Where([["user_id", $user_id]])->get();
-            return response()->json($all);
-
-        }else{
-            $errors = $validator->errors();
-            return response()->json(['error' => 'Bad Request', 'details' => $errors], 400);
-        }
-
-    }
-
-    /**
-     * gallary
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function add_to_gallary( Request $request)
-    {
-        $validation = $request->validate([
-            "image" => "file|required",
-        ]);
-        $validation["user_id"] = auth("api")->user()->id;
-        if($request->file('image')){
-            $file = $request->file('image');
-            $temp = $file->store('public/images');
-            $_array = explode("/", $temp);
-            $file_name = $_array[ sizeof($_array) -1 ];
-            $validation["image"] = $file_name;
-        }
-
-
-        if ($validation) {
-            $gall = ServiceGallary::create($validation);
-            return response()->json($gall);
-
-        }else{
-            $errors = $validator->errors();
-            return response()->json(['error' => 'Bad Request', 'details' => $errors], 400);
-        }
-
-    }
 
     /**
      * edit
@@ -83,23 +28,12 @@ class AuthController extends Controller
     public function edit( Request $request)
     {
         $validation = $request->validate([
-            'years_of_experience' => "numeric",
             'email' => 'email|unique:users,email',
             'password' => 'string',
             'phone' => 'numeric',
             'type' => 'in:customer,worker',
             'full_name' => 'string',
-            'about' => 'string',
-            'country' => 'string',
-            'city' => 'string',
-            'location' => 'string',
-            'cost_per_hour' => 'numeric',
-            'service' => 'string',
             "picture" => "file",
-            "license" => "file",
-            "category" => "exists:categories,id",
-            "subcategory_id" => "exists:subcategories,id",
-            "active" => "boolean"
         ]);
         if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
         $validation["id"] = auth("api")->user()->id;
@@ -109,14 +43,6 @@ class AuthController extends Controller
             $_array = explode("/", $temp);
             $file_name = $_array[ sizeof($_array) -1 ];
             $validation["picture"] = $file_name;
-        }
-
-        if($request->file('license')){
-            $file = $request->file('license');
-            $temp = $file->store('public/images');
-            $_array = explode("/", $temp);
-            $file_name = $_array[ sizeof($_array) -1 ];
-            $validation["license"] = $file_name;
         }
 
         if ($validation) {
@@ -145,12 +71,8 @@ class AuthController extends Controller
             'phone' => 'required|numeric',
             'type' => 'required|in:customer,worker',
             'full_name' => 'required',
-            'location' => 'string',
-            'cost_per_hour' => 'numeric',
-            'service' => 'nullable',
             "device_token" => "required",
             "picture" => "file|required",
-            "license" => "file",
         ]);
          if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
         if($request->file('picture')){
@@ -161,22 +83,9 @@ class AuthController extends Controller
             $validation["picture"] = $file_name;
         }
 
-        if($request->file('license')){
-            $file = $request->file('license');
-            $temp = $file->store('public/images');
-            $_array = explode("/", $temp);
-            $file_name = $_array[ sizeof($_array) -1 ];
-            $validation["license"] = $file_name;
-        }
 
         if ($validation) {
             $user = User::create($validation);
-            // $credentials = request(['email', 'password']);
-            // $token = auth("api")->attempt($credentials);
-            // if (! $token = auth("api")->attempt($credentials)) {
-            //     return response()->json(['error' => 'Unauthorized'], 401);
-            // }
-            // $token = auth("api")->attempt($validation);
             return $this->respondWithToken(auth("api")->login($user));
         }else{
             $errors = $validator->errors();
