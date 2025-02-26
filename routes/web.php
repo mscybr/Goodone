@@ -14,6 +14,10 @@ use App\Http\Controllers\AdminController;
 |
 */
 
+Route::get('/admin/coupon', [AdminController::class, "create_coupon"])->name("admin_create_coupon");
+Route::post('/admin/coupon', [AdminController::class, "store_coupon"])->name("admin_store_coupon");
+Route::get('/admin/coupon/delete', [AdminController::class, "delete_coupon"])->name("admin_delete_coupon");
+
 Route::get('/admin/category', [AdminController::class, "create_category"])->name("admin_create_category");
 Route::post('/admin/category', [AdminController::class, "store_category"])->name("admin_store_category");
 Route::get('/admin/category/delete', [AdminController::class, "delete_category"])->name("admin_delete_category");

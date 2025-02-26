@@ -31,7 +31,7 @@
                     @endforeach
                 </select>
             @else
-                <input type="<?= $field_type ?>" name="<?=$field_name?>" class="form-control" id="field" placeholder="<?=$placeholder?>" value="<?=$default_value?>" >
+                <input step="any" type="<?= $field_type ?>" name="<?=$field_name?>" class="form-control" id="field" placeholder="<?=$placeholder?>" value="<?=$default_value?>" >
             @endif
             <?php if( $note !== null){?>
                 <div id="defaultFormControlHelp" class="form-text">
@@ -62,7 +62,7 @@
                             <?php } ?>
                         </select>
                     @else
-                        <input type="<?= $field->type ?>" name="<?=$field->name?>" class="form-control" id="field" placeholder="<?=$field->placeholder?>" value="<?=$field->value?>" >
+                        <input step="any" type="<?= $field->type ?>" name="<?=$field->name?>" class="form-control" id="field" placeholder="<?=$field->placeholder?>" value="<?=$field->value?>" >
                     @endif
                     <?php if( $field->note !== null){?>
                         <div id="defaultFormControlHelp" class="form-text">

@@ -3,15 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Coupon;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    
+
+    public function create_coupon()
+    {
+        return view('admin.coupons', ["coupons"=> Coupon::all()]);
+    }
+
+    public function store_coupon(Request $request)
+    {
+        $validation = $request->validate([
+            'coupon' => 'required|unique:coupons,coupon',
+            "max_usage" => "required",
+            "percentage" => "required",
+        ]);
+
+
+        $category = Coupon::create($validation);
+        return redirect()->back();
+        // return response()->json($category);
+
+    }
+
+      public function delete_coupon(Request $request)
+    {
+         $validation = $request->validate([
+            'id' => 'required|exists:coupons,id',
+        ]);
+        Coupon::find($validation["id"])->delete();
+        return redirect()->back();
+    }
+
     public function create_category()
     {
         return view('admin.category', ["categories"=> Category::all()]);
     }
+    
 
     public function store_category(Request $request)
     {

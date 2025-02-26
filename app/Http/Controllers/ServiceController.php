@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Service;
 use App\Models\Order;
 use App\Models\Rating;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use App\Models\ServiceGallary;
 use Illuminate\Support\Facades\DB;
@@ -438,11 +439,28 @@ class ServiceController extends Controller
             'total_hours' => 'integer|required',
             'start_at' => 'integer|required',
             'note' => 'string',
+            'coupon' => 'string',
             'location' => 'string|required',
             'service_id' => 'integer|required|exists:services,id',
         ]);
+        if($validation["coupon"]){
+            $coup = Coupon::Where("coupon", "=", $validation["coupon"]);
+            if( $coup->count() > 0  ){
+                $coupon = $coup->first();
+                if($coupon["times_used"] < $coupon["max_usage"]){
+
+                    $validation["coupon_id"] = $coupon["id"];
+                    $validation["coupon_percentage"] = $coupon["percentage"];
+                    $coupon->update(["times_used" => $coupon["times_used"] + 1]);
+                }
+            }
+        }
         $service = Service::Where("id", "=", $validation["service_id"])->first();
-        $validation["price"] = $service["cost_per_hour"] * $validation["total_hours"];
+        if($validation["coupon_percentage"]){
+            $validation["price"] = ($service["cost_per_hour"] * $validation["total_hours"]) * (1-($validation["coupon_percentage"]/100)) ;
+        }else{
+            $validation["price"] = $service["cost_per_hour"] * $validation["total_hours"] ;
+        }
         $validation["status"] = 1; //pending
         $validation["note"] = ""; //pending
         $user_id = auth("api")->user()->id;
@@ -590,5 +608,32 @@ class ServiceController extends Controller
         }
 
     }
+
+
+    
+     /**
+     * order_service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function check_coupon( Request $request)
+    {
+        $validation = $request->validate([
+            'coupon' => 'required',
+        ]);
+        $coup = Coupon::Where("coupon", "=", $validation["coupon"]);
+        if( $coup->count() > 0 ){
+            $coupon = $coup->first();
+            if($coupon["times_used"] < $coupon["max_usage"]){
+                return response()->json(['message' => 'Success', 'data' => $coup->select("percentage")->first()], 200);
+            }else{
+                return response()->json(['message' => 'Not found'], 404);
+            }
+        }else{
+            return response()->json(['message' => 'Not found'], 404);
+        }
+    }
+
+
 
 }
