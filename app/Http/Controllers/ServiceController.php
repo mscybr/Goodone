@@ -538,12 +538,12 @@ class ServiceController extends Controller
         $validation = $request->validate([
             'total_hours' => 'integer',
             'start_at' => 'integer',
-            'price' => 'numeric',
+            // 'price' => 'numeric',
             'note' => 'string',
             'location' => 'string',
             'order_id' => 'integer|required|exists:order,id',
         ]);
-        $user_id = auth("api")->user()->id;
+        // $user_id = auth("api")->user()->id;
 
         if ($validation) {
             $order = Order::find($validation["order_id"])->get();
