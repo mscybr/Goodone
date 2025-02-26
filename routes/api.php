@@ -38,6 +38,7 @@ Route::group([
     Route::post('service/create', [ServiceController::class, "create_service"])->name("api:create_service");
 
     Route::post('service/order', [ServiceController::class, "order_service"])->name("api:order_service");
+    Route::post('service/order/update', [ServiceController::class, "update_order"])->name("api:update_order");
     Route::get('user/orders', [ServiceController::class, "get_orders"])->name("api:get_orders");
     Route::get('user/order', [ServiceController::class, "get_order"])->name("api:get_order");
     Route::get('user/services', [ServiceController::class, "get_my_services"])->name("api:get_my_services");
