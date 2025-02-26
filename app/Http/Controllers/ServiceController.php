@@ -546,7 +546,7 @@ class ServiceController extends Controller
         // $user_id = auth("api")->user()->id;
 
         if ($validation) {
-            $order = Order::find($validation["order_id"])->get();
+            $order = Order::find($validation["order_id"])->first();
             $order->update($validation);
             return response()->json(['message' => 'Success', 'data' => $order], 200);
         }else{
