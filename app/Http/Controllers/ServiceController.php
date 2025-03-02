@@ -511,9 +511,9 @@ class ServiceController extends Controller
         $user_id = auth("api")->user()->id;
 
         // $orders = Order::Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
-        $orders = Order::Select("total_hours", "start_at", "price", "location", "user_id", "status")->With(['User' => function ($query) {
+        $orders = Order::join('services', "services.id", "=", "orders.service_id")->Select("", "orders.total_hours", "orders.start_at", "orders.price", "orders.location", "orders.user_id", "orders.status")->With(['User' => function ($query) {
             $query->select('id', 'full_name', "picture");
-        }])->Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
+        }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
     }
 
