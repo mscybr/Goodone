@@ -83,8 +83,8 @@ class ServiceController extends Controller
         $validation = $request->validate([
             'years_of_experience' => "numeric|required",
             'about' => 'string|required',
-            'country' => 'string|required',
-            'city' => 'string|required',
+            // 'country' => 'string|required',
+            // 'city' => 'string|required',
             'location' => 'string|required',
             'cost_per_hour' => 'numeric|required',
             'service' => 'string|required',
@@ -95,6 +95,8 @@ class ServiceController extends Controller
         ]);
         if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
         $validation["user_id"] = auth("api")->user()->id;
+        $validation["country"] = auth("api")->user()->country;
+        $validation["country"] = auth("api")->user()->country;
 
         if($request->file('license')){
             $file = $request->file('license');
@@ -460,7 +462,7 @@ class ServiceController extends Controller
             }
         }
         $service = Service::Where("id", "=", $validation["service_id"])->first();
-        if($validation["coupon_percentage"]){
+        if(isset($validation["coupon_percentage"])){
             $validation["price"] = ($service["cost_per_hour"] * $validation["total_hours"]) * (1-($validation["coupon_percentage"]/100)) ;
         }else{
             $validation["price"] = $service["cost_per_hour"] * $validation["total_hours"] ;

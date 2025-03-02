@@ -71,6 +71,8 @@ class AuthController extends Controller
             'phone' => 'required|numeric',
             'type' => 'required|in:customer,worker',
             'full_name' => 'required',
+            'city' => 'string',
+            'country' => 'string',
             "device_token" => "required",
             "picture" => "file|required",
         ]);
