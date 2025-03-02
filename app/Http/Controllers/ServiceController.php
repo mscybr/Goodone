@@ -491,7 +491,7 @@ class ServiceController extends Controller
     {
         $user_id = auth("api")->user()->id;
 
-        $orders = Order::Select("total_hours", "start_at", "price", "location", "service_id", "status")->With(['Service' => function ($query) {
+        $orders = Order::Select("total_hours", "start_at", "price", "location", "service_id", "status", "note")->With(['Service' => function ($query) {
             // $query->select('id', 'full_name', "picture", "service", "subcategory_id", "cost_per_hour");
             $query->join('users', "users.id", "=", "services.user_id")->select('services.id', 'users.full_name', "users.picture", "services.service", "services.subcategory_id", "services.cost_per_hour");
         }, 'Service.Subcategory' => function ($query) {
@@ -511,7 +511,7 @@ class ServiceController extends Controller
         $user_id = auth("api")->user()->id;
 
         // $orders = Order::Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
-        $orders = Order::join('services', "services.id", "=", "order.service_id")->Select("services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
+        $orders = Order::join('services', "services.id", "=", "order.service_id")->Select("order.note", "services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
             $query->select('id', 'full_name', "picture");
         }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
@@ -566,7 +566,10 @@ class ServiceController extends Controller
         return $this->change_order_status_by_user($request, 2);
     }
     public function cancel_order( Request $request ){
-        return $this->change_order_status_by_worker($request, 3);
+        $validation = $request->validate([
+            'reason' => 'string'
+        ]);
+        return $this->change_order_status_by_worker($request, 3, isset($validation["reason"]) ? $validation["reason"] : "");
     }
      /**
      * order_service
@@ -596,7 +599,7 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function change_order_status_by_worker( Request $request, $status)
+    protected function change_order_status_by_worker( Request $request, $status, $reason="")
     {
         $validation = $request->validate([
             'order_id' => 'integer|required|exists:order,id',
@@ -606,7 +609,12 @@ class ServiceController extends Controller
         $collection = Order::Where([["service_id", "=", $user_id], ["id", "=", $validation["order_id"]]]);
         if ($collection->count() > 0) {
             $order = $collection->first();
-            $order->update(["status" => $status]);
+            if($reason != ""){
+                $order->update(["status" => $status, "note" => $reason]);
+            }else{
+                $order->update(["status" => $status]);
+            }
+            
             return response()->json(['message' => 'Success', 'data' => $order], 200);
         }else{
             // $errors = $validator->errors();
