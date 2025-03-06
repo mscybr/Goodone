@@ -445,11 +445,11 @@ class ServiceController extends Controller
             'total_hours' => 'integer|required',
             'start_at' => 'integer|required',
             'note' => 'string',
-            'coupon' => 'string',
+            'coupon' => 'string|sometimes',
             'location' => 'string|required',
             'service_id' => 'integer|required|exists:services,id',
         ]);
-        if($validation["coupon"]){
+        if(isset($validation["coupon"])){
             $coup = Coupon::Where("coupon", "=", $validation["coupon"]);
             if( $coup->count() > 0  ){
                 $coupon = $coup->first();
