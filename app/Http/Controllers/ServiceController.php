@@ -69,12 +69,13 @@ class ServiceController extends Controller
                         "text" => $not["text"],
                         "user" => $order->service->full_name,
                         "picture" => $order->service->picture,
-                        "order_id" => $not["data"],
+                        "order_id" => intval($not["data"]),
+                        "created_at" => $not["created_at"]
                     ];
                 }
             }
         }
-        return response()->json($_notifications, 200);
+        return response()->json($notifications, 200);
 
     }
 
