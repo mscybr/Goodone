@@ -7,6 +7,7 @@ use App\Models\Service;
 use App\Models\Order;
 use App\Models\Rating;
 use App\Models\Coupon;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\ServiceGallary;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +47,39 @@ class ServiceController extends Controller
             $errors = $validator->errors();
             return response()->json(['error' => 'Bad Request', 'details' => $errors], 400);
         }
+
+    }
+
+    public function get_notifications ( Request $request ){
+        // Notification::create([
+        //     "user_id" => $order["user_id"],
+        //     "text" => "Your order had been canceled",
+        //     "data_type" => "order",
+        //     "data" => $validation["order_id"]
+        // ]);
+        $user = auth("api")->user();
+        $_notifications = Notification::Where([["user_id", "=", $user->id]])->orderBy("created_at", "DESC")->get();
+        $notifications = [];
+        foreach ($_notifications as $not) {
+            if( $not["data_type"] == "order" ){
+                $_order = Order::Select("id", "total_hours", "start_at", "price", "location", "service_id", "status", "note")->With(['Service' => function ($query) {
+                        // $query->select('id', 'full_name', "picture", "service", "subcategory_id", "cost_per_hour");
+                        $query->join('users', "users.id", "=", "services.user_id")->select('services.id', 'users.full_name', "users.picture", "services.service", "services.subcategory_id", "services.cost_per_hour");
+                    }, 'Service.Subcategory' => function ($query) {
+                        $query->select('id', 'name');
+                    }])->Where([["id", "=", $not["data"]]])->get();
+                if($_order->count() > 0){
+                    $order = $_order->first();
+                    $notifications[] = [
+                        "text" => $not["text"],
+                        "user" => $order->service->full_name,
+                        "picture" => $order->service->picture,
+                        "order_id" => $not["data"],
+                    ];
+                }
+            }
+        }
+        return response()->json($notifications, 200);
 
     }
 
@@ -560,6 +594,12 @@ class ServiceController extends Controller
                 $new_price = $old_price_per_hour *  $validation["total_hours"];
             }
             $validation["price"] = $new_price;
+            Notification::create([
+                "user_id" => $order["user_id"],
+                "text" => "Your order had been edited",
+                "data_type" => "order",
+                "data" => $order["id"]
+            ]);
             $order->update($validation);
             return response()->json(['message' => 'Success', 'data' => $order], 200);
         }else{
@@ -570,11 +610,27 @@ class ServiceController extends Controller
     }
 
     public function complete_order( Request $request ){
+        $validation = $request->validate([
+            'order_id' => 'integer|required|exists:order,id',
+        ]);
+        Notification::create([
+            "user_id" => $order["user_id"],
+            "text" => "Your order had been successfully completed",
+            "data_type" => "order",
+            "data" => $validation["order_id"]
+        ]);
         return $this->change_order_status_by_user($request, 2);
     }
     public function cancel_order( Request $request ){
         $validation = $request->validate([
-            'reason' => 'string'
+            'reason' => 'string',
+            'order_id' => 'integer|required|exists:order,id'
+        ]);
+        Notification::create([
+            "user_id" => $order["user_id"],
+            "text" => "Your order had been canceled",
+            "data_type" => "order",
+            "data" => $validation["order_id"]
         ]);
         return $this->change_order_status_by_worker($request, 3, isset($validation["reason"]) ? $validation["reason"] : "");
     }

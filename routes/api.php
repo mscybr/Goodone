@@ -42,6 +42,7 @@ Route::group([
     Route::get('user/orders', [ServiceController::class, "get_orders"])->name("api:get_orders");
     Route::get('user/order', [ServiceController::class, "get_order"])->name("api:get_order");
     Route::get('user/services', [ServiceController::class, "get_my_services"])->name("api:get_my_services");
+    Route::get('user/notifications', [ServiceController::class, "get_notifications"])->name("api:get_notifications");
 
     Route::get('service/orders', [ServiceController::class, "get_service_orders"])->name("api:get_service_orders");
 
