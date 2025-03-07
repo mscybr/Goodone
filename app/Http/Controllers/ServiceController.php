@@ -74,7 +74,7 @@ class ServiceController extends Controller
                 }
             }
         }
-        return response()->json($notifications, 200);
+        return response()->json($_notifications, 200);
 
     }
 
