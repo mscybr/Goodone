@@ -552,7 +552,14 @@ class ServiceController extends Controller
         // $user_id = auth("api")->user()->id;
 
         if ($validation) {
-            $order = Order::find($validation["order_id"])->first();
+            $order = Orxder::find($validation["order_id"])->first();
+            $new_price = $order["price"];
+            if(isset($validation["total_hours"])){
+
+                $old_price_per_hour = $order["price"] / $order["total_hours"];
+                $new_price = $old_price_per_hour *  $validation["total_hours"];
+            }
+            $validation["price"] = $new_price;
             $order->update($validation);
             return response()->json(['message' => 'Success', 'data' => $order], 200);
         }else{
