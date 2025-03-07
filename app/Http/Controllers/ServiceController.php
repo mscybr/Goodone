@@ -583,7 +583,7 @@ class ServiceController extends Controller
         ]);
         $user_id = auth("api")->user()->id;
 
-        $collection = Order::Where([["user_id", "=", $user_id], ["id", "=", $validation["order_id"]]]);
+        $collection = Order::Where([["id", "=", $validation["order_id"]]]);
         if ($collection->count() > 0) {
             $order = $collection->first();
             $order->update(["status" => $status]);
@@ -606,7 +606,7 @@ class ServiceController extends Controller
         ]);
         $user_id = auth("api")->user()->id;
 
-        $collection = Order::Where([["service_id", "=", $user_id], ["id", "=", $validation["order_id"]]]);
+        $collection = Order::Where([["id", "=", $validation["order_id"]]]);
         if ($collection->count() > 0) {
             $order = $collection->first();
             if($reason != ""){
