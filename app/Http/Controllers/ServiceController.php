@@ -51,12 +51,7 @@ class ServiceController extends Controller
     }
 
     public function get_notifications ( Request $request ){
-        // Notification::create([
-        //     "user_id" => $order["user_id"],
-        //     "text" => "Your order had been canceled",
-        //     "data_type" => "order",
-        //     "data" => $validation["order_id"]
-        // ]);
+
         $user = auth("api")->user();
         $_notifications = Notification::Where([["user_id", "=", $user->id]])->orderBy("created_at", "DESC")->get();
         $notifications = [];
@@ -613,6 +608,7 @@ class ServiceController extends Controller
         $validation = $request->validate([
             'order_id' => 'integer|required|exists:order,id',
         ]);
+        $order = Order::Where([["id", "=", $validation["order_id"]]])->first();
         Notification::create([
             "user_id" => $order["user_id"],
             "text" => "Your order had been successfully completed",
@@ -626,6 +622,7 @@ class ServiceController extends Controller
             'reason' => 'string',
             'order_id' => 'integer|required|exists:order,id'
         ]);
+        $order = Order::Where([["id", "=", $validation["order_id"]]])->first();
         Notification::create([
             "user_id" => $order["user_id"],
             "text" => "Your order had been canceled",
