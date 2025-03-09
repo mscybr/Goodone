@@ -582,7 +582,7 @@ class ServiceController extends Controller
         // $user_id = auth("api")->user()->id;
 
         if ($validation) {
-            $order = Order::find($validation["order_id"])->first();
+            $order = Order::Where([["order_id", "=", $validation["order_id"]]])->first();
             $new_price = $order["price"];
             if(isset($validation["total_hours"])){
 
