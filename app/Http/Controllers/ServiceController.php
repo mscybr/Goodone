@@ -11,6 +11,8 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\ServiceGallary;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
