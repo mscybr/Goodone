@@ -67,8 +67,8 @@ class ServiceController extends Controller
                     $order = $_order->first();
                     $notifications[] = [
                         "text" => $not["text"],
-                        "user" => $order->service->full_name,
-                        "picture" => $order->service->picture,
+                        "user" => $order->Service->full_name,
+                        "picture" => $order->Service->picture,
                         "order_id" => intval($not["data"]),
                         "created_at" => $not["created_at"]
                     ];
