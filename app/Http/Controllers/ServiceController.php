@@ -425,7 +425,15 @@ class ServiceController extends Controller
                 $ratings_object = ["rating" => $times_rated != 0 ? $total_ratings / $times_rated : 0, "times_rated" => $times_rated];
                 $services[$key]["rating"] = $ratings_object;
             $services[$key]["ratings"] = $ratings;
-            $services[$key]["orders"] = $orders;
+            $orders_by_date = [];
+            foreach ($orders as $order ) {
+                if(isset($orders_by_date[date("Y-m-d",$order["created_at"])])){
+                    $orders_by_date[date("Y-m-d",$order["created_at"])][] = $order;
+                }else{
+                    $orders_by_date[date("Y-m-d",$order["created_at"])] = [$order];
+                }
+            }
+            $services[$key]["orders"] = $orders_by_date;
             $gall = ServiceGallary::Select("image")->Where([["service_id", $service["id"]]])->pluck("image");
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
@@ -546,7 +554,15 @@ class ServiceController extends Controller
         $orders = Order::join('services', "services.id", "=", "order.service_id")->Select("order.id", "order.note", "services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
             $query->select('id', 'full_name', "picture");
         }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
-        return response()->json(['message' => 'Success', 'data' => $orders], 200);
+        $orders_by_date = [];
+        foreach ($orders as $order ) {
+            if(isset($orders_by_date[date("Y-m-d",$order["created_at"])])){
+                $orders_by_date[date("Y-m-d",$order["created_at"])][] = $order;
+            }else{
+                $orders_by_date[date("Y-m-d",$order["created_at"])] = [$order];
+            }
+        }
+        return response()->json(['message' => 'Success', 'data' => $orders_by_date], 200);
     }
 
      /**
