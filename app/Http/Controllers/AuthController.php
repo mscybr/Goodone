@@ -31,7 +31,9 @@ class AuthController extends Controller
             'email' => 'email|unique:users,email',
             'password' => 'string',
             'phone' => 'numeric',
-            'type' => 'in:customer,worker',
+            // 'type' => 'in:customer,worker',
+            'city' => 'string',
+            'country' => 'string',
             'full_name' => 'string',
             "picture" => "file",
         ]);
@@ -47,7 +49,7 @@ class AuthController extends Controller
 
         if ($validation) {
 
-            User::where('id',auth("api")->user()->id)->update($validation);
+            User::where([["id", "=", auth("api")->user()->id]])->update($validation);
             $updated = Auth("api")->user()->fresh();
             return response()->json($updated);
 
