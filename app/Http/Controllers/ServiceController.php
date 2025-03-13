@@ -433,7 +433,7 @@ class ServiceController extends Controller
                     $orders_by_date[date("Y-m-d",$order["created_at"])] = [$order];
                 }
             }
-            $services[$key]["orders"] = $orders_by_date;
+            // $services[$key]["orders"] = $orders_by_date;
             $gall = ServiceGallary::Select("image")->Where([["service_id", $service["id"]]])->pluck("image");
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
