@@ -406,34 +406,7 @@ class ServiceController extends Controller
             )->Where([["services.active", "=", true], ["users.id", "=", auth("api")->user()->id]])->get();
          foreach ($services as $key => $service ) {
             $id = $service["id"];
-            // $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
-            // // return response()->json($gall);
-            // $services[$key]["gallary"] = $gall;
-            // $orders = Order::Where([["service_id", "=", $service["id"]]])->count();
-            // $services[$key]["orders"] = $orders;
 
-            // $orders = Order::Select("id", "total_hours", "start_at", "price")->Where([["service_id", "=", $id]])->count();
-            // $ratings = Rating::Select("message", "rate", "user_id", "created_at")->With(['User' => function ($query) {
-            //     $query->select('id', 'full_name', "picture");
-            // }])->whereBelongsTo($service)->get();
-            //  $total_ratings = 0;
-            //     $times_rated = 0;
-            //     foreach ($ratings as $key2 => $rating) {
-            //         $times_rated++;
-            //         $total_ratings += $rating["rate"];
-            //     }
-            //     $ratings_object = ["rating" => $times_rated != 0 ? $total_ratings / $times_rated : 0, "times_rated" => $times_rated];
-            //     $services[$key]["rating"] = $ratings_object;
-            // $services[$key]["ratings"] = $ratings;
-            // $orders_by_date = [];
-            // foreach ($orders as $order ) {
-            //     if(isset($orders_by_date[date("Y-m-d",$order["created_at"])])){
-            //         $orders_by_date[date("Y-m-d",$order["created_at"])][] = $order;
-            //     }else{
-            //         $orders_by_date[date("Y-m-d",$order["created_at"])] = [$order];
-            //     }
-            // }
-            // $services[$key]["orders"] = $orders_by_date;
             $gall = ServiceGallary::Select("image")->Where([["service_id", $service["id"]]])->pluck("image");
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
