@@ -36,6 +36,7 @@ Route::group([
     Route::post('account/gallary/remove', [ServiceController::class, "remove_from_gallary"])->name("api:remove_from_gallary");
     Route::post('service/rate', [ServiceController::class, "rate_service"])->name("api:rate_service");
     Route::post('service/create', [ServiceController::class, "create_service"])->name("api:create_service");
+    Route::post('service/edit/{service}', [ServiceController::class, "edit_service"])->name("api:edit_service");
 
     Route::post('service/order', [ServiceController::class, "order_service"])->name("api:order_service");
     Route::post('service/order/update', [ServiceController::class, "update_order"])->name("api:update_order");

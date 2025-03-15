@@ -115,8 +115,8 @@ class ServiceController extends Controller
         $validation = $request->validate([
             'years_of_experience' => "numeric|required",
             'about' => 'string|required',
-            'country' => 'string|required',
-            'city' => 'string|required',
+            // 'country' => 'string|required',
+            // 'city' => 'string|required',
             'location' => 'string|required',
             'cost_per_hour' => 'numeric|required',
             'service' => 'string|required',
@@ -128,7 +128,7 @@ class ServiceController extends Controller
         if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
         $validation["user_id"] = auth("api")->user()->id;
         $validation["country"] = auth("api")->user()->country;
-        $validation["country"] = auth("api")->user()->country;
+        $validation["city"] = auth("api")->user()->city;
 
         if($request->file('license')){
             $file = $request->file('license');
@@ -140,21 +140,21 @@ class ServiceController extends Controller
 
         if ($validation) {
 
-            $service = Service::Where([["category_id", "=", $validation["category_id"]], ["user_id", "=", $validation["user_id"]], ["subcategory_id", "=", $validation["subcategory_id"]]]);
-            if($service->count() == 0){
+            // $service = Service::Where([["category_id", "=", $validation["category_id"]], ["user_id", "=", $validation["user_id"]], ["subcategory_id", "=", $validation["subcategory_id"]]]);
+            // if($service->count() == 0){
                 $service = Service::create($validation);
-            }else{
-                $service = $service->first();
-                $service->update($validation);
+            // }else{
+                // $service = $service->first();
+                // $service->update($validation);
                 // $service = $service->fresh();
-            }
+            // }
             // $service = Service::With(['User' => function ($query) {
             //     $query->select('id', 'email', "picture", "phone", "full_name");
             // }])->Where([["id", "=", $service["id"]]])->first();
             $service = Service::join('users', "users.id", "=", "services.user_id")->Where([["services.id", "=", $service["id"]]])->select(
                 "services.id",
-                "services.city",
-                "services.country",
+                "users.city",
+                "users.country",
                 "users.email",
                 "users.phone",
                 "users.full_name",
@@ -183,13 +183,13 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit_service( Request $request)
+    public function edit_service( Request $request, Service $service)
     {
         $validation = $request->validate([
             'years_of_experience' => "numeric",
             'about' => 'string',
-            'country' => 'string',
-            'city' => 'string',
+            // 'country' => 'string|required',
+            // 'city' => 'string|required',
             'location' => 'string',
             'cost_per_hour' => 'numeric',
             'service' => 'string',
@@ -212,21 +212,21 @@ class ServiceController extends Controller
 
         if ($validation) {
 
-            $service = Service::Where([["category_id", "=", $validation["category_id"]], ["user_id", "=", $validation["user_id"]], ["subcategory_id", "=", $validation["subcategory_id"]]]);
-            if($service->count() == 0){
-                $service = Service::create($validation);
-            }else{
-                $service = $service->first();
+            // $service = Service::Where([["category_id", "=", $validation["category_id"]], ["user_id", "=", $validation["user_id"]], ["subcategory_id", "=", $validation["subcategory_id"]]]);
+            // if($service->count() == 0){
+            //     $service = Service::create($validation);
+            // }else{
+                // $service = $service->first();
                 $service->update($validation);
                 // $service = $service->fresh();
-            }
+            // }
             // $service = Service::With(['User' => function ($query) {
             //     $query->select('id', 'email', "picture", "phone", "full_name");
             // }])->Where([["id", "=", $service["id"]]])->first();
             $service = Service::join('users', "users.id", "=", "services.user_id")->Where([["services.id", "=", $service["id"]]])->select(
                 "services.id",
-                "services.city",
-                "services.country",
+                "users.city",
+                "users.country",
                 "users.email",
                 "users.phone",
                 "users.full_name",
@@ -272,8 +272,8 @@ class ServiceController extends Controller
                 "services.id",
                 "users.id AS contractor_id",
                 "services.subcategory_id",
-                "services.city", 
-                "services.country", 
+                "users.city", 
+                "users.country", 
                 "users.email",
                 "users.phone",
                 "users.full_name",
@@ -308,8 +308,8 @@ class ServiceController extends Controller
             }])->join('users', "users.id", "=", "services.user_id")->select(
                 "services.subcategory_id",
                 "services.id",
-                "services.city", 
-                "services.country", 
+                "users.city", 
+                "users.country", 
                 "users.id AS contractor_id",
                 "users.email",
                 "users.phone",
@@ -402,8 +402,8 @@ class ServiceController extends Controller
             }])->join('users', "users.id", "=", "services.user_id")->select(
                 "services.id",
                 "services.subcategory_id",
-                "services.city", 
-                "services.country", 
+                "users.city", 
+                "users.country", 
                 "users.id AS contractor_id",
                 "users.email",
                 "users.phone",
@@ -462,8 +462,8 @@ class ServiceController extends Controller
                 // email, phone, full_name, picture, contractor_id, security_check, verified_liscence
                 "services.id",
                 "services.subcategory_id",
-                "services.city", 
-                "services.country", 
+                "users.city", 
+                "users.country", 
                 // "users.email",
                 // "users.phone",
                 // "users.full_name",
