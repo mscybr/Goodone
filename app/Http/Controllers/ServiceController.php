@@ -115,8 +115,8 @@ class ServiceController extends Controller
         $validation = $request->validate([
             'years_of_experience' => "numeric|required",
             'about' => 'string|required',
-            // 'country' => 'string|required',
-            // 'city' => 'string|required',
+            'country' => 'string|required',
+            'city' => 'string|required',
             'location' => 'string|required',
             'cost_per_hour' => 'numeric|required',
             'service' => 'string|required',
@@ -129,6 +129,78 @@ class ServiceController extends Controller
         $validation["user_id"] = auth("api")->user()->id;
         $validation["country"] = auth("api")->user()->country;
         $validation["country"] = auth("api")->user()->country;
+
+        if($request->file('license')){
+            $file = $request->file('license');
+            $temp = $file->store('public/images');
+            $_array = explode("/", $temp);
+            $file_name = $_array[ sizeof($_array) -1 ];
+            $validation["license"] = $file_name;
+        }
+
+        if ($validation) {
+
+            $service = Service::Where([["category_id", "=", $validation["category_id"]], ["user_id", "=", $validation["user_id"]], ["subcategory_id", "=", $validation["subcategory_id"]]]);
+            if($service->count() == 0){
+                $service = Service::create($validation);
+            }else{
+                $service = $service->first();
+                $service->update($validation);
+                // $service = $service->fresh();
+            }
+            // $service = Service::With(['User' => function ($query) {
+            //     $query->select('id', 'email', "picture", "phone", "full_name");
+            // }])->Where([["id", "=", $service["id"]]])->first();
+            $service = Service::join('users', "users.id", "=", "services.user_id")->Where([["services.id", "=", $service["id"]]])->select(
+                "services.id",
+                "services.city",
+                "services.country",
+                "users.email",
+                "users.phone",
+                "users.full_name",
+                "users.picture",
+                "services.location",
+                "services.cost_per_hour",
+                "services.service",
+                "services.years_of_experience",
+                "services.about",
+                "users.security_check",
+                "users.verified_liscence",
+            )->first();
+            // Service::where('id',auth("api")->user()->id)->update($validation);
+            // $updated = Auth("api")->user()->fresh();
+            return response()->json($service);
+
+        }else{
+            $errors = $validator->errors();
+            return response()->json(['error' => 'Bad Request', 'details' => $errors], 400);
+        }
+
+    }
+
+        /**
+     * edit_service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function edit_service( Request $request)
+    {
+        $validation = $request->validate([
+            'years_of_experience' => "numeric",
+            'about' => 'string',
+            'country' => 'string',
+            'city' => 'string',
+            'location' => 'string',
+            'cost_per_hour' => 'numeric',
+            'service' => 'string',
+            "license" => "file",
+            "category_id" => "exists:categories,id",
+            "subcategory_id" => "exists:subcategories,id",
+            "active" => "boolean"
+        ]);
+        $validation["user_id"] = auth("api")->user()->id;
+        // $validation["country"] = auth("api")->user()->country;
+        // $validation["country"] = auth("api")->user()->country;
 
         if($request->file('license')){
             $file = $request->file('license');
