@@ -387,22 +387,23 @@ class ServiceController extends Controller
             }, 'Subcategory' => function ($query) {
                 $query->select('id', 'name', "category_id");
             }])->join('users', "users.id", "=", "services.user_id")->select(
+                // email, phone, full_name, picture, contractor_id, security_check, verified_liscence
                 "services.id",
                 "services.subcategory_id",
                 "services.city", 
                 "services.country", 
-                "users.email",
-                "users.phone",
-                "users.full_name",
-                "users.picture",
-                "users.id AS contractor_id",
+                // "users.email",
+                // "users.phone",
+                // "users.full_name",
+                // "users.picture",
+                // "users.id AS contractor_id",
                 "services.location",
                 "services.cost_per_hour",
                 "services.service",
                 "services.years_of_experience",
                 "services.about",
-                "users.security_check",
-                "users.verified_liscence",
+                // "users.security_check",
+                // "users.verified_liscence",
             )->Where([["services.active", "=", true], ["users.id", "=", auth("api")->user()->id]])->get();
          foreach ($services as $key => $service ) {
             $id = $service["id"];
