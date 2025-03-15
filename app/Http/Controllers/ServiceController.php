@@ -529,10 +529,10 @@ class ServiceController extends Controller
         }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
         $orders_by_date = [];
         foreach ($orders as $order ) {
-            if(isset($orders_by_date[date("Y-m-d",$order["created_at"])])){
-                $orders_by_date[date("Y-m-d",$order["created_at"])][] = $order;
+            if(isset($orders_by_date[$order["created_at"]->format("Y-m-d")])){
+                $orders_by_date[$order["created_at"]->format("Y-m-d")][] = $order;
             }else{
-                $orders_by_date[date("Y-m-d",$order["created_at"])] = [$order];
+                $orders_by_date[$order["created_at"]->format("Y-m-d")] = [$order];
             }
         }
         return response()->json(['message' => 'Success', 'data' => $orders_by_date], 200);
