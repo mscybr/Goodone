@@ -560,6 +560,13 @@ class ServiceController extends Controller
 
         if ($validation) {
             $order = Order::create($validation);
+            Notification::create([
+                "user_id" => $service["user_id"],
+                "text" => "You have a new order on $service[service]",
+                "data_type" => "order",
+                "data" => $order["id"]
+            ]);
+            $this->notify_user($service["user_id"], "New Order", "You have a new order on $service[service]");
             return response()->json(['message' => 'Success', 'data' => $order], 200);
         }else{
             $errors = $validator->errors();
@@ -677,7 +684,7 @@ class ServiceController extends Controller
         ]);
         $order = Order::With(['Service'])->Where([["id", "=", $validation["order_id"]]])->first();
         Notification::create([
-            "user_id" => $order["user_id"],
+            "user_id" => $order->Service->user_id,
             "text" => "Your order had been successfully completed",
             "data_type" => "order",
             "data" => $validation["order_id"]
