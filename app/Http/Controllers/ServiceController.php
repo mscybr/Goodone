@@ -81,6 +81,21 @@ class ServiceController extends Controller
 
     }
 
+    public function get_balance ( Request $request ){
+
+        $user = auth("api")->user();
+        $balance = 0;
+        $orders = Order::join('services', "services.id", "=", "order.service_id")->Select("order.created_at", "order.id", "order.note", "services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
+            $query->select('id', 'full_name', "picture");
+        }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
+        
+        foreach ($orders as $order ) {
+            $balance += $order["total_hours"] * $order["price"];
+        }
+        return response()->json(["balance" => $balance ], 200);
+
+    }
+
 
     /**
      * gallary
@@ -117,7 +132,7 @@ class ServiceController extends Controller
             'about' => 'string|required',
             // 'country' => 'string|required',
             // 'city' => 'string|required',
-            'location' => 'string|required',
+            // 'location' => 'string|required',
             'cost_per_hour' => 'numeric|required',
             'service' => 'string|required',
             "license" => "file",
