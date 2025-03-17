@@ -32,6 +32,7 @@ Route::group([
 ], function ($router) {
 
     Route::post('account/edit', [AuthController::class, "edit"])->name("api:edit");
+    Route::post('account/change_state', [ServiceController::class, "edit_state"])->name("api:edit_state");
     Route::post('account/gallary/add', [ServiceController::class, "add_to_gallary"])->name("api:add_to_gallary");
     Route::post('account/gallary/remove', [ServiceController::class, "remove_from_gallary"])->name("api:remove_from_gallary");
     Route::post('service/rate', [ServiceController::class, "rate_service"])->name("api:rate_service");

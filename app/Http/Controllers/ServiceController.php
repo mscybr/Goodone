@@ -194,6 +194,29 @@ class ServiceController extends Controller
     }
 
         /**
+     * edit_state
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function edit_state( Request $request)
+    {
+        $validation = $request->validate([
+            "active" => "boolean"
+        ]);
+
+        if ($validation) {
+            $service = Service::Where([["user_id", "=", auth("api")->user()->id]]);
+            $service->update($validation);
+            return response()->json(["status" => "success"]);
+
+        }else{
+            $errors = $validator->errors();
+            return response()->json(['error' => 'Bad Request', 'details' => $errors], 400);
+        }
+
+    }
+
+        /**
      * edit_service
      *
      * @return \Illuminate\Http\JsonResponse
