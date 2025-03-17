@@ -32,6 +32,7 @@ class AuthController extends Controller
             'password' => 'string',
             'phone' => 'numeric',
             // 'type' => 'in:customer,worker',
+            'location' => 'string',
             'city' => 'string',
             'country' => 'string',
             'full_name' => 'string',
