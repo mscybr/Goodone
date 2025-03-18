@@ -105,12 +105,12 @@ class ServiceController extends Controller
     public function remove_from_gallary( Request $request)
     {
         $validation = $request->validate([
-            "id" => "required|exists:service_gallary,id",
+            "filename" => "required",
         ]);
 
         if ($validation) {
 
-            $del = ServiceGallary::Where("id",$validation["id"])->delete();
+            $del = ServiceGallary::Where("image",$validation["filename"])->delete();
             return response()->json($del);
 
         }else{
