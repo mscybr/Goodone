@@ -235,7 +235,7 @@ class ServiceController extends Controller
             "category_id" => "exists:categories,id",
             "subcategory_id" => "exists:subcategories,id",
             "active" => "boolean",
-            "service_id" => "exsits:services,id|required"
+            "service_id" => "exists:services,id|required"
         ]);
         // $validation["user_id"] = auth("api")->user()->id;
         // $validation["country"] = auth("api")->user()->country;
