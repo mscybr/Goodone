@@ -55,32 +55,36 @@
             ];
             $table_data = [];
             foreach ($requests as $request ) {
-              if($request["method"] == "bank"){
+              if($request['status'] == 0){
 
-                $table_data[] = (object)[
-                  (object)["type"=> "string", "value" => $request->method],
-                  (object)["type"=> "string", "value" => $request->amount],
-                  (object)["type"=> "string", "value" => $request->name],
-                  (object)["type"=> "string", "value" => $request->transit],
-                  (object)["type"=> "string", "value" => $request->institution],
-                  (object)["type"=> "string", "value" => $request->account],
-                  (object)["type"=> "string", "value" => ""],
-                  (object)["type"=> "anchor", "value" => "Complete", "color" => "success", "href"=> route("admin_accept_withdraw_requests", $request)],
-                  (object)["type"=> "anchor", "value" => "Cancel", "color" => "danger", "href"=> route("admin_reject_withdraw_requests", $request)],
-                ];
-              }else{
-                $table_data[] = (object)[
-                                (object)["type"=> "string", "value" => $request->method],
-                  (object)["type"=> "string", "value" => $request->amount],
-                  (object)["type"=> "string", "value" => ""],
-                  (object)["type"=> "string", "value" => ""],
-                  (object)["type"=> "string", "value" => ""],
-                  (object)["type"=> "string", "value" => ""],
-                  (object)["type"=> "string", "value" => $request->email],
-                  (object)["type"=> "anchor", "value" => "Complete", "color" => "success", "href"=> route("admin_accept_withdraw_requests", $request)],
-                  (object)["type"=> "anchor", "value" => "Cancel", "color" => "danger", "href"=> route("admin_reject_withdraw_requests", $request)],
-                ];
+                if($request["method"] == "bank"){
+
+                  $table_data[] = (object)[
+                    (object)["type"=> "string", "value" => $request->method],
+                    (object)["type"=> "string", "value" => $request->amount],
+                    (object)["type"=> "string", "value" => $request->name],
+                    (object)["type"=> "string", "value" => $request->transit],
+                    (object)["type"=> "string", "value" => $request->institution],
+                    (object)["type"=> "string", "value" => $request->account],
+                    (object)["type"=> "string", "value" => ""],
+                    (object)["type"=> "anchor", "value" => "Complete", "color" => "success", "href"=> route("admin_accept_withdraw_requests", $request)],
+                    (object)["type"=> "anchor", "value" => "Cancel", "color" => "danger", "href"=> route("admin_reject_withdraw_requests", $request)],
+                  ];
+                }else{
+                  $table_data[] = (object)[
+                                  (object)["type"=> "string", "value" => $request->method],
+                    (object)["type"=> "string", "value" => $request->amount],
+                    (object)["type"=> "string", "value" => ""],
+                    (object)["type"=> "string", "value" => ""],
+                    (object)["type"=> "string", "value" => ""],
+                    (object)["type"=> "string", "value" => ""],
+                    (object)["type"=> "string", "value" => $request->email],
+                    (object)["type"=> "anchor", "value" => "Complete", "color" => "success", "href"=> route("admin_accept_withdraw_requests", $request)],
+                    (object)["type"=> "anchor", "value" => "Cancel", "color" => "danger", "href"=> route("admin_reject_withdraw_requests", $request)],
+                  ];
+                }
               }
+
             }
         @endphp
         {{-- @include('admin.forms', ["title" => "Add a new coupon", "wrapper" => $wrapper, "data" => $data, "type" => "multi_fields_card_builder", "action" => route("admin_create_coupon"), "enctype" => "multipart/form-data", "method" => "POST" ]) --}}
