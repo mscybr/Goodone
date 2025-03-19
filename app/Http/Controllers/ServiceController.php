@@ -234,9 +234,10 @@ class ServiceController extends Controller
             "license" => "file",
             "category_id" => "exists:categories,id",
             "subcategory_id" => "exists:subcategories,id",
-            "active" => "boolean"
+            "active" => "boolean",
+            "service_id" => "exsits:services,id|required"
         ]);
-        $validation["user_id"] = auth("api")->user()->id;
+        // $validation["user_id"] = auth("api")->user()->id;
         // $validation["country"] = auth("api")->user()->country;
         // $validation["country"] = auth("api")->user()->country;
 
@@ -250,7 +251,7 @@ class ServiceController extends Controller
 
         if ($validation) {
 
-            // $service = Service::Where([["category_id", "=", $validation["category_id"]], ["user_id", "=", $validation["user_id"]], ["subcategory_id", "=", $validation["subcategory_id"]]]);
+            $service = Service::Where([["id", "=", $validation["service_id"]]]);
             // if($service->count() == 0){
             //     $service = Service::create($validation);
             // }else{
