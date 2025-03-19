@@ -141,13 +141,13 @@ class ServiceController extends Controller
         }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
         
         foreach ($orders as $order ) {
-            $balance += $order["total_hours"] * $order["price"];
+            $balance += $order["total_hours"] * $order["cost_per_hour"];
         }
         $balance -= $withdrawn;
         if($validation["amount"] >= $balance ){
             $validation["user_id"] = $user_id;
-            WithdrawRequest::create($validation);
-            // return response()->json(["balance" => $balance ], 200);
+            $request = WithdrawRequest::create($validation);
+            return response()->json(["status"=>"success", "data" => $request ], 200);
         }else{
             return response()->json(["status" => "failed, not enough balance" ], 402);
         }
