@@ -129,17 +129,14 @@ class ServiceController extends Controller
 
         $user = auth("api")->user();
         $user_id = $user->id;
-        $balance = 0;
+               $balance = 0;
         $withdrawn = 0;
         $requests = WithdrawRequest::Where([
             ["user_id", "=", $user_id],
             ['status', "<", 2]
         ])->get();
         foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
-        $orders = Order::join('services', "services.id", "=", "order.service_id")->Select("order.created_at", "order.id", "order.note", "services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
-            $query->select('id', 'full_name', "picture");
-        }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
-        
+        $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user_id], ["order.status", "=", 2]])->get();
         foreach ($orders as $order ) {
             $balance += $order["total_hours"] * $order["cost_per_hour"];
         }
