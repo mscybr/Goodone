@@ -19,7 +19,7 @@ class AdminController extends Controller
 
     public function withdraw_requests()
     {
-        return view('admin.withdrawals', ["requests"=> WithdrawRequest::Where([["status", "<", "2"]])]);
+        return view('admin.withdrawals', ["requests"=> WithdrawRequest::Where([["status", "<", "2"]])->get()]);
     }
 
     public function accept_withdraw_request( Request $request, WithdrawRequest $withdraw_request )

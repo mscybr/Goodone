@@ -86,7 +86,7 @@
         {{-- @include('admin.forms', ["title" => "Add a new coupon", "wrapper" => $wrapper, "data" => $data, "type" => "multi_fields_card_builder", "action" => route("admin_create_coupon"), "enctype" => "multipart/form-data", "method" => "POST" ]) --}}
       </div>
       <div class="row">
-        @include('admin.tables', ["title" => "Coupons", "headers" =>  $table_headers, "data" => $table_data]);
+        @include('admin.tables', ["title" => "Withdrawal requests", "headers" =>  $table_headers, "data" => $table_data]);
       </div>
     </div>
   </div>
