@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Subcategory;
+use App\Models\WithdrawRequest;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -14,6 +15,23 @@ class AdminController extends Controller
     public function create_coupon()
     {
         return view('admin.coupons', ["coupons"=> Coupon::all()]);
+    }
+
+    public function withdraw_requests()
+    {
+        return view('admin.withdrawals', ["requests"=> WithdrawRequest::Where([["status", "<", "2"]])]);
+    }
+
+    public function accept_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
+    {
+        $withdraw_request->update(["status" => "1"]);
+        return redirect()->back();
+    }
+
+    public function reject_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
+    {
+        $withdraw_request->update(["status" => "2"]);
+        return redirect()->back();
     }
 
     public function store_coupon(Request $request)
