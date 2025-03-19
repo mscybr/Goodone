@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\ServiceGallary;
+use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -125,7 +126,7 @@ class AuthController extends Controller
     public function me()
     {
         $user = auth("api")->user();
-        $_active = Services::Where([["user_id", "=", $user["id"]]]);
+        $_active = Service::Where([["user_id", "=", $user["id"]]]);
         $active = false;
         if($_active->count() > 0 ){
             $active = $_active->first()->active;
