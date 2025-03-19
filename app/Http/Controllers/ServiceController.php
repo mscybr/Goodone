@@ -84,6 +84,7 @@ class ServiceController extends Controller
     public function get_balance ( Request $request ){
 
         $user = auth("api")->user();
+        $user_id = $user->id;
         $balance = 0;
         $orders = Order::join('services', "services.id", "=", "order.service_id")->Select("order.created_at", "order.id", "order.note", "services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
             $query->select('id', 'full_name', "picture");
