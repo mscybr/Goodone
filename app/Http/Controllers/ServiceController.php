@@ -141,7 +141,7 @@ class ServiceController extends Controller
             $balance += $order["total_hours"] * $order["cost_per_hour"];
         }
         $balance -= $withdrawn;
-        if($validation["amount"] >= $balance ){
+        if($validation["amount"] <= $balance ){
             $validation["user_id"] = $user_id;
             $request = WithdrawRequest::create($validation);
             return response()->json(["status"=>"success", "data" => $request ], 200);
