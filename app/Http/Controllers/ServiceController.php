@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Rating;
 use App\Models\Coupon;
 use App\Models\Notification;
+use App\Models\WithdrawRequest;
 use Illuminate\Http\Request;
 use App\Models\ServiceGallary;
 use Illuminate\Support\Facades\DB;
@@ -86,6 +87,12 @@ class ServiceController extends Controller
         $user = auth("api")->user();
         $user_id = $user->id;
         $balance = 0;
+        $withdrawn = 0;
+        $requests = WithdrawRequest::Where([
+            ["user_id", "=", $user_id],
+            ['status', "<", 2]
+        ])->get();
+        foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
         $orders = Order::join('services', "services.id", "=", "order.service_id")->Select("order.created_at", "order.id", "order.note", "services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
             $query->select('id', 'full_name', "picture");
         }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
@@ -93,7 +100,60 @@ class ServiceController extends Controller
         foreach ($orders as $order ) {
             $balance += $order["total_hours"] * $order["price"];
         }
+        $balance -= $withdrawn;
         return response()->json(["balance" => $balance ], 200);
+
+    }
+
+    public function check_withdraw_status ( Request $request ){
+
+        $user = auth("api")->user();
+        $user_id = $user->id;
+        $requests = WithdrawRequest::Where([
+            ["user_id", "=", $user_id],
+            ['status', "<", 2]
+        ])->select("transit", "institution", "account", "name", "account", "email", "amount", "created_at", "status")->get();
+        return response()->json(["requests" => $requests ], 200);
+
+    }
+
+    public function withdraw_balance ( Request $request ){
+
+        $validation = $request->validate([
+            // "filename" => "required",
+            "amount" => "required|numeric",
+            "method" => "required|in:interac,bank",
+            "name" => "required_if:method,bank",
+            "transit" => "required_if:method,bank",
+            "institution" => "required_if:method,bank",
+            "account" => "required_if:method,bank",
+            "email" => "required_if:method,interac",
+        ]);
+
+        $user = auth("api")->user();
+        $user_id = $user->id;
+        $balance = 0;
+        $withdrawn = 0;
+        $requests = WithdrawRequest::Where([
+            ["user_id", "=", $user_id],
+            ['status', "<", 2]
+        ])->get();
+        foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
+        $orders = Order::join('services', "services.id", "=", "order.service_id")->Select("order.created_at", "order.id", "order.note", "services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
+            $query->select('id', 'full_name', "picture");
+        }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
+        
+        foreach ($orders as $order ) {
+            $balance += $order["total_hours"] * $order["price"];
+        }
+        $balance -= $withdrawn;
+        if($validation["amount"] >= $balance ){
+            $validation["user_id"] = $user_id;
+            WithdrawRequest::create($validation);
+            // return response()->json(["balance" => $balance ], 200);
+        }else{
+            return response()->json(["status" => "failed, not enough balance" ], 402);
+        }
 
     }
 

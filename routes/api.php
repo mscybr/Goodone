@@ -46,6 +46,8 @@ Route::group([
     Route::get('user/services', [ServiceController::class, "get_my_services"])->name("api:get_my_services");
     Route::get('user/notifications', [ServiceController::class, "get_notifications"])->name("api:get_notifications");
     Route::get('user/balance', [ServiceController::class, "get_balance"])->name("api:get_balance");
+    Route::post('user/balance/withdraw', [ServiceController::class, "withdraw_balance"])->name("api:withdraw_balance");
+    Route::get('user/balance/withdraw/requests', [ServiceController::class, "check_withdraw_status"])->name("api:check_withdraw_status");
 
     Route::get('service/orders', [ServiceController::class, "get_service_orders"])->name("api:get_service_orders");
 
