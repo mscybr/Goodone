@@ -98,7 +98,7 @@ class ServiceController extends Controller
             $balance += $order["total_hours"] * $order["price"];
         }
         $balance -= $withdrawn;
-        return response()->json(["balance" => $balance ], 200);
+        return response()->json(["balance" => $balance, "orders" => $orders ], 200);
 
     }
 
