@@ -19,8 +19,8 @@ Route::post('/admin/coupon', [AdminController::class, "store_coupon"])->name("ad
 Route::get('/admin/coupon/delete', [AdminController::class, "delete_coupon"])->name("admin_delete_coupon");
 
 Route::get('/admin/withdrawals', [AdminController::class, "withdraw_requests"])->name("admin_withdraw_requests");
-Route::post('/admin/withdrawals/{withdraw_request}/accept', [AdminController::class, "accept_withdraw_request"])->name("admin_accept_withdraw_requests");
-Route::post('/admin/withdrawals/{withdraw_request}/reject', [AdminController::class, "reject_withdraw_request"])->name("admin_reject_withdraw_requests");
+Route::get('/admin/withdrawals/{withdraw_request}/accept', [AdminController::class, "accept_withdraw_request"])->name("admin_accept_withdraw_requests");
+Route::get('/admin/withdrawals/{withdraw_request}/reject', [AdminController::class, "reject_withdraw_request"])->name("admin_reject_withdraw_requests");
 
 Route::get('/admin/category', [AdminController::class, "create_category"])->name("admin_create_category");
 Route::post('/admin/category', [AdminController::class, "store_category"])->name("admin_store_category");
