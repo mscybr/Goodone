@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class WithdrawRequest extends Model
 {
     use HasFactory;
-    protected $gaurded = ["id"];
+    protected $guarded = ['id'];
 }
