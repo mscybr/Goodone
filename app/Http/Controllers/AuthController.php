@@ -124,7 +124,16 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth("api")->user());
+        $user = auth("api")->user();
+        $_active = Services::Where([["user_id", "=", $user["id"]]]);
+        $active = false;
+        if($_active->count() > 0 ){
+            $active = $_active->first()->active;
+        }
+        $user["active"] = $active;
+        unset($user["liscence"]);
+        unset($user["location"]);
+        return response()->json($user);
     }
 
     /**
