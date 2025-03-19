@@ -77,8 +77,8 @@
                   (object)["type"=> "string", "value" => ""],
                   (object)["type"=> "string", "value" => ""],
                   (object)["type"=> "string", "value" => $request->email],
-                  (object)["type"=> "anchor", "value" => "Complete", "color" => "success", "href"=> route("admin_accept_withdraw_requests", $requst)],
-                  (object)["type"=> "anchor", "value" => "Cancel", "color" => "danger", "href"=> route("admin_reject_withdraw_requests", $requst)],
+                  (object)["type"=> "anchor", "value" => "Complete", "color" => "success", "href"=> route("admin_accept_withdraw_requests", $request)],
+                  (object)["type"=> "anchor", "value" => "Cancel", "color" => "danger", "href"=> route("admin_reject_withdraw_requests", $request)],
                 ];
               }
             }
