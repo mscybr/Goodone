@@ -568,9 +568,9 @@ class ServiceController extends Controller
                 "services.service",
                 "services.years_of_experience",
                 "services.about",
-                "services.active"
+                "services.active",
                 // "users.security_check",
-                // "users.verified_liscence",
+                "services.verified_liscence",
             )->Where([["users.id", "=", auth("api")->user()->id]])->get();
          foreach ($services as $key => $service ) {
             $id = $service["id"];
