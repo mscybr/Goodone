@@ -132,7 +132,7 @@ class AuthController extends Controller
             $active = $_active->first()->active;
         }
         $user["active"] = $active;
-        unset($user["liscence"]);
+        unset($user["verified_liscence"]);
         unset($user["location"]);
         return response()->json($user);
     }
