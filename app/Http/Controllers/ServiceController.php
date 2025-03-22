@@ -316,7 +316,7 @@ class ServiceController extends Controller
                 // $service = $service->first();
                 $service->update($validation);
                 // $service = $service->fresh();
-                 $service = Service::Where( [["id", "=", $id]]);
+                 $service = Service::Where( [["id", "=", $id]])->first();
             // }
             // $service = Service::With(['User' => function ($query) {
             //     $query->select('id', 'email', "picture", "phone", "full_name");
