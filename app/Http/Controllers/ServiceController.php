@@ -292,6 +292,7 @@ class ServiceController extends Controller
             "service_id" => "exists:services,id",
             "active" => "boolean"
         ]);
+
         // $validation["user_id"] = auth("api")->user()->id;
         // $validation["country"] = auth("api")->user()->country;
         // $validation["country"] = auth("api")->user()->country;
@@ -307,6 +308,7 @@ class ServiceController extends Controller
         if ($validation) {
 
             $service = Service::Where( [["id", "=", $validation["service_id"]]]);
+            unset($validation["service_id"]);
             // if($service->count() == 0){
             //     $service = Service::create($validation);
             // }else{
