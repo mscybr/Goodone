@@ -235,7 +235,7 @@ class ServiceController extends Controller
                 "services.years_of_experience",
                 "services.about",
                 "users.security_check",
-                "users.verified_liscence",
+                "services.verified_liscence",
             )->first();
             // Service::where('id',auth("api")->user()->id)->update($validation);
             // $updated = Auth("api")->user()->fresh();
@@ -331,7 +331,7 @@ class ServiceController extends Controller
                 "services.years_of_experience",
                 "services.about",
                 "users.security_check",
-                "users.verified_liscence",
+                "services.verified_liscence",
             )->first();
             // Service::where('id',auth("api")->user()->id)->update($validation);
             // $updated = Auth("api")->user()->fresh();
@@ -378,7 +378,7 @@ class ServiceController extends Controller
                 "services.years_of_experience",
                 "services.about",
                 "users.security_check",
-                "users.verified_liscence",
+                "services.verified_liscence",
             )->Where([["services.active", "=", true], ["services.service", "LIKE", "%$query%"]])->get()->sort(
             function($a, $b) {
                 return $a <=> $b;
@@ -415,7 +415,7 @@ class ServiceController extends Controller
                 "services.years_of_experience",
                 "services.about",
                 "users.security_check",
-                "users.verified_liscence",
+                "services.verified_liscence",
             )->Where([["services.active", "=", true], ["services.service", "LIKE", "%$query%"]])->get();
             // $services = User::With(['Subcategory.Category' => function ($query) {
             //     $query->select('id', 'name', "image");
@@ -509,7 +509,7 @@ class ServiceController extends Controller
                 "services.years_of_experience",
                 "services.about",
                 "users.security_check",
-                "users.verified_liscence",
+                "services.verified_liscence",
             )->Where([["services.active", "=", true], ["services.category_id", "=", $category_id]])->get();
          foreach ($services as $key => $service ) {
             $id = $service["id"];
