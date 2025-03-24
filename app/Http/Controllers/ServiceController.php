@@ -182,6 +182,9 @@ class ServiceController extends Controller
      */
     public function create_service( Request $request)
     {
+        $request->merge([
+            'use_old_liscence' => $request->input('use_old_liscence', false), // default to false
+        ]);
         $validation = $request->validate([
             'years_of_experience' => "numeric|required",
             'about' => 'string|required',
@@ -193,6 +196,7 @@ class ServiceController extends Controller
             "license" => "file",
             "category_id" => "exists:categories,id|required",
             "subcategory_id" => "exists:subcategories,id|required",
+            "use_old_liscence" => "boolean",
             "active" => "boolean"
         ]);
         if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
@@ -200,13 +204,22 @@ class ServiceController extends Controller
         $validation["country"] = auth("api")->user()->country;
         $validation["city"] = auth("api")->user()->city;
 
-        if($request->file('license')){
-            $file = $request->file('license');
-            $temp = $file->store('public/images');
-            $_array = explode("/", $temp);
-            $file_name = $_array[ sizeof($_array) -1 ];
-            $validation["license"] = $file_name;
+
+        if($validation["use_old_liscence"] == true){
+            $validation["license"] = $service = Service::Where([
+                ["user_id", "=", auth("api")->user()->id],
+                ["category_id", "=", $validation["category_id"]]
+                ])->first()["license"];
+        }else{
+            if($request->file('license')){
+                $file = $request->file('license');
+                $temp = $file->store('public/images');
+                $_array = explode("/", $temp);
+                $file_name = $_array[ sizeof($_array) -1 ];
+                $validation["license"] = $file_name;
+            }
         }
+
 
         if ($validation) {
 
