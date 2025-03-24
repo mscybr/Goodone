@@ -183,7 +183,7 @@ class ServiceController extends Controller
     public function create_service( Request $request)
     {
         $request->merge([
-            'use_old_liscence' => $request->input('use_old_liscence', false), // default to false
+            'use_old_liscence' => $request->input('use_old_liscence', true), // default to true
         ]);
         $validation = $request->validate([
             'years_of_experience' => "numeric|required",

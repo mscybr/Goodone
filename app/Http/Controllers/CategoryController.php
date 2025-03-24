@@ -23,7 +23,7 @@ class CategoryController extends Controller
                     ->where('category_id', $category["id"])
                     ->whereNotNull('license')
                     ->count() > 0;
-                    $categories[$key]["has_services_in_category"] = $has_services_in_category;
+                    $categories[$key]["has_liscence_in_category"] = $has_services_in_category;
                 }
             }
 
