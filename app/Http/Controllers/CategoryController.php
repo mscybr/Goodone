@@ -15,13 +15,16 @@ class CategoryController extends Controller
             }])->get();
         if(Auth("api")){
             $user = Auth("api")->user();
-            foreach ($categories as $key => $category ) {
-                $has_services_in_category = DB::table('services')
-                ->where('user_id', $user["id"])
-                ->where('category_id', $category["id"])
-                ->whereNotNull('license')
-                ->count() > 0;
-                $categories[$key]["has_services_in_category"] = $has_services_in_category;
+            if( $user["type"] == "worker" ){
+
+                foreach ($categories as $key => $category ) {
+                    $has_services_in_category = DB::table('services')
+                    ->where('user_id', $user["id"])
+                    ->where('category_id', $category["id"])
+                    ->whereNotNull('license')
+                    ->count() > 0;
+                    $categories[$key]["has_services_in_category"] = $has_services_in_category;
+                }
             }
 
         }
