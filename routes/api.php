@@ -55,7 +55,6 @@ Route::group([
     Route::post('service/order/cancel', [ServiceController::class, "cancel_order"])->name("api:cancel_order");
 
     Route::post('coupons/check', [ServiceController::class, "check_coupon"])->name("api:check_coupon");
-    Route::get('taxes', [ServiceController::class, "check_taxes"])->name("api:check_taxes");
     
 
     // chats
@@ -80,6 +79,8 @@ Route::group([
     Route::get('users/{id}', [ServiceController::class, "get_user"])->name("api:get_user");
 
     Route::post('chat/update_chat', [MessageController::class, "update_chat"])->name("api:update_chat");
+    Route::get('taxes', [ServiceController::class, "check_taxes"])->name("api:check_taxes");
+
 
     // Route::post('notification/all', [PushNotification::class, "notify_all"])->name("api:notify_all");
     Route::post('notification/{user_id}', [PushNotification::class, "notify_user"])->name("api:notify_user");
