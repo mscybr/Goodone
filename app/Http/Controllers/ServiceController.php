@@ -9,8 +9,10 @@ use App\Models\Rating;
 use App\Models\Coupon;
 use App\Models\Notification;
 use App\Models\WithdrawRequest;
-use Illuminate\Http\Request;
 use App\Models\ServiceGallary;
+use App\Models\RegionTax;
+use App\Models\AppSetting;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -645,6 +647,7 @@ class ServiceController extends Controller
             'note' => 'string',
             'coupon' => 'string|sometimes',
             'location' => 'string|required',
+            'region' => 'string|required',
             'service_id' => 'integer|required|exists:services,id',
         ]);
         if(isset($validation["coupon"])){
@@ -671,15 +674,33 @@ class ServiceController extends Controller
         $validation["user_id"] = $user_id;
 
         if ($validation) {
-            $order = Order::create($validation);
-            Notification::create([
-                "user_id" => $service["user_id"],
-                "text" => "You have a new order on $service[service]",
-                "data_type" => "order",
-                "data" => $order["id"]
-            ]);
-            $this->notify_user($service["user_id"], "New Order", "You have a new order on $service[service]");
-            return response()->json(['message' => 'Success', 'data' => $order], 200);
+            $platform_percentage = 0;
+            $_platform_percentage = AppSetting::Where([["key", "=", "platform_fees_percentage"]]);//platform_fees_percentage
+            if($_platform_percentage->count() > 0 ) $platform_percentage = $_platform_percentage->first()["value"];
+            $platform_fee = 0;
+            $_platform_fee = AppSetting::Where([["key", "=", "platform_fees"]]);//platform_fees_percentage
+            if($_platform_fee->count() > 0 ) $platform_fee = $_platform_fee->first()["value"];
+
+            $tax = RegionTax::whereRaw('LOWER(region) = ?', [strtolower($validation["region"])]);
+            if($tax->count() > 0){
+                // add platform fees before the taxes
+                $validation["price"] = ($validation["price"] * $platform_percentage / 100) + $validation["price"];
+                $validation["price"] += $platform_fee;
+                $region_tax = $tax->first()["percentage"];
+                // $order["region_tax"] = $region_tax;
+                $validation["price"] = ($validation["price"] * $region_tax / 100) + $validation["price"];
+                $order = Order::create($validation);
+                Notification::create([
+                    "user_id" => $service["user_id"],
+                    "text" => "You have a new order on $service[service]",
+                    "data_type" => "order",
+                    "data" => $order["id"]
+                ]);
+                $this->notify_user($service["user_id"], "New Order", "You have a new order on $service[service]");
+                return response()->json(['message' => 'Success', 'data' => $order], 200);
+            }else{
+                return response()->json(['message' => 'Failed, region not found'], 404);
+            }
         }else{
             $errors = $validator->errors();
             return response()->json(['error' => 'Bad Request', 'details' => $errors], 400);
@@ -895,9 +916,34 @@ class ServiceController extends Controller
             return response()->json(['message' => 'Not found'], 404);
         }
     }
+    
+    public function check_taxes( Request $request)
+    {
+        $validation = $request->validate([
+            'region' => 'required',
+        ]);
+        $platform_percentage = 0;
+        $_platform_percentage = AppSetting::Where([["key", "=", "platform_fees_percentage"]]);//platform_fees_percentage
+        if($_platform_percentage->count() > 0 ) $platform_percentage = $_platform_percentage->first()["value"];
+        $platform_fee = 0;
+        $_platform_fee = AppSetting::Where([["key", "=", "platform_fees"]]);//platform_fees_percentage
+        if($_platform_fee->count() > 0 ) $platform_fee = $_platform_fee->first()["value"];
+
+        $tax = RegionTax::whereRaw('LOWER(region) = ?', [strtolower($validation["region"])]);
+        if($tax->count() > 0){
+            $region_tax = $tax->first()["percentage"];
+            return response()->json(['message' => 'Success', 'data' => [
+                "region_taxes" => $region_tax,
+                "platform_fees_percentage" => $platform_percentage,
+                "platform_fees" => $platform_fee,
+            ]], 200);
+        }else{
+            return response()->json(['message' => 'Not found'], 404);
+        }
+    }
 
 
-       protected function notify_user($user_id, $title, $body){
+    protected function notify_user($user_id, $title, $body){
         $user_query = User::Where("id", "=", $user_id);
         if($user_query->count() > 0){
             $user = $user_query->first();

@@ -6,11 +6,43 @@ use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Subcategory;
 use App\Models\WithdrawRequest;
+use App\Models\AppSetting;
+use App\Models\RegionTax;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    
+
+
+    function edit_setting($key, $value){
+
+        $setting = AppSetting::Where("key", "=", $key);
+        if($setting->count() > 0){
+            $setting->update(["value" => $value]);
+        }else{
+            AppSetting::create(["key" => $key, "value" =>  $value]);
+        }
+
+    }
+
+    function get_app_settings(Request $request){
+        $_settings = AppSetting::all();
+        $settings = [];
+        foreach ($_settings as $setting) {
+            $settings[$setting->key] = $setting->value;
+        }
+        return view("admin.app_settings", ["settings" => $settings]);
+    }
+
+    function edit_app_settings(Request $request){
+
+        if(isset( $request->platform_fees ))  $this->edit_setting("platform_fees", $request->platform_fees);
+        if(isset( $request->platform_fees_percentage ))  $this->edit_setting("platform_fees_percentage", $request->platform_fees_percentage);
+        // if(isset( $request->platform_fees ))  $this->edit_setting("platform_fees", $request->platform_fees);
+        return redirect()->back();
+    }
+
+
 
     public function create_coupon()
     {
@@ -55,6 +87,35 @@ class AdminController extends Controller
             'id' => 'required|exists:coupons,id',
         ]);
         Coupon::find($validation["id"])->delete();
+        return redirect()->back();
+    }
+
+    public function create_region_tax()
+    {
+        return view('admin.region_taxes', ["regions"=> RegionTax::all()]);
+    }
+    
+
+    public function store_region_tax(Request $request)
+    {
+        $validation = $request->validate([
+            'region' => 'required',
+            'percentage' => 'required',
+        ]);
+
+        $category = RegionTax::create($validation);
+        return redirect()->back();
+        // return response()->json($category);
+
+    }
+
+
+    public function delete_region_tax(Request $request)
+    {
+         $validation = $request->validate([
+            'id' => 'required',
+        ]);
+        RegionTax::find($validation["id"])->delete();
         return redirect()->back();
     }
 

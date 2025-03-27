@@ -55,6 +55,7 @@ Route::group([
     Route::post('service/order/cancel', [ServiceController::class, "cancel_order"])->name("api:cancel_order");
 
     Route::post('coupons/check', [ServiceController::class, "check_coupon"])->name("api:check_coupon");
+    Route::get('taxes', [ServiceController::class, "check_taxes"])->name("api:check_taxes");
     
 
     // chats
