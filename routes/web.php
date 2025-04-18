@@ -33,6 +33,9 @@ Route::get('/admin/subcategory/delete', [AdminController::class, "delete_subcate
 Route::get('/admin/settings', [AdminController::class, "get_app_settings"])->name("admin_get_app_settings");
 Route::post('/admin/settings/edit', [AdminController::class, "edit_app_settings"])->name("admin_edit_app_settings");
 
+Route::get('/admin/default_images', [AdminController::class, "get_default_images"])->name("admin_get_default_images");
+Route::post('/admin/default_images/edit', [AdminController::class, "edit_default_images"])->name("admin_edit_default_images");
+
 Route::get('/admin/region_taxes', [AdminController::class, "create_region_tax"])->name("admin_create_region_tax");
 Route::post('/admin/region_taxes', [AdminController::class, "store_region_tax"])->name("admin_store_region_tax");
 Route::get('/admin/region_taxes/delete', [AdminController::class, "delete_region_tax"])->name("admin_delete_region_tax");

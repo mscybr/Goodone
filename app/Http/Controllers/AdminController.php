@@ -25,6 +25,38 @@ class AdminController extends Controller
 
     }
 
+    function get_default_images($type = "customer"){
+
+        $customer = AppSetting::Where("key", "=", "customer-image");
+        $provider = AppSetting::Where("key", "=", "provider-image");
+        $customer_image = "";
+        $provider_image = "";
+        if($customer_image->count() > 0){$customer_image->first();}
+        if($provider_image->count() > 0){$provider_image->first();}
+        return view("admin.default_images", ["customer_image" => $customer_image, $provider_image]);
+
+    }
+    
+    function edit_default_images(Request $request){
+
+        $validation = $request->validate([
+            "image" => "file|required",
+            "type" => "required"
+        ]);
+
+        if($request->file('image')){
+            $file = $request->file('image');
+            $temp = $file->store('public/images');
+            $_array = explode("/", $temp);
+            $file_name = $_array[ sizeof($_array) -1 ];
+            $validation["image"] = $file_name;
+        }
+
+        $this->edit_setting($validation["type"], $validation["image"]);
+
+        return redirect()->back();
+    }
+
     function get_app_settings(Request $request){
         $_settings = AppSetting::all();
         $settings = [];
