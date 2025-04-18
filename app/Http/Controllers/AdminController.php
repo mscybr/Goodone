@@ -33,7 +33,7 @@ class AdminController extends Controller
         $provider_image = "";
         if($customer->count() > 0){$customer_image->first();}
         if($provider->count() > 0){$provider_image->first();}
-        return view("admin.default_images", ["customer_image" => $customer_image, $provider_image]);
+        return view("admin.default_images", ["customer_image" => $customer_image, "provider_image" => $provider_image]);
 
     }
     
