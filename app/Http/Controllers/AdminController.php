@@ -49,19 +49,18 @@ class AdminController extends Controller
             $temp = $file->store('public/images');
             $_array = explode("/", $temp);
             $file_name = $_array[ sizeof($_array) -1 ];
-            $validation["customer_image"] = $file_name;
+            $customer_image = $file_name;
         }
         if($request->file('provider_image')){
             $file = $request->file('provider_image');
             $temp = $file->store('public/images');
             $_array = explode("/", $temp);
             $file_name = $_array[ sizeof($_array) -1 ];
-            $validation["provider_image"] = $file_name;
+            $provider_image = $file_name;
         }
 
-        if( $validation["customer_image"] ) $this->edit_setting("customer-image", $validation["customer_image"]);
-        if( $validation["provider_image"] ) $this->edit_setting("provider-image", $validation["provider_image"]);
-        
+        if( $provider_image ) $this->edit_setting("customer-image", $provider_image);
+        if( $customer_image ) $this->edit_setting("provider-image", $customer_image);
 
         return redirect()->back();
     }
