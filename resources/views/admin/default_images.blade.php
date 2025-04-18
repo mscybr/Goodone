@@ -21,7 +21,7 @@
                 "name" => "customer_image",
                 "type" => "file",
                 "label" => "Customer Default Image",
-                "value" => isset($settings["customer_image"]) ? $settings["customer_image"] : "",
+                "value" => isset($customer_image) ? $customer_image : "",
                 "placeholder" => "",
                 "note" => ""
               ],
@@ -29,7 +29,7 @@
                 "name" => "provider_image",
                 "type" => "file",
                 "label" => "Service Provider Default Image",
-                "value" => isset($settings["customer_image"]) ? $settings["customer_image"] : "",
+                "value" => isset($provider_image) ? $provider_image : "",
                 "placeholder" => "",
                 "note" => ""
               ],
