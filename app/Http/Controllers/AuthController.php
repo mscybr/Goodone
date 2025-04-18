@@ -93,8 +93,8 @@ class AuthController extends Controller
             $provider = AppSetting::Where("key", "=", "provider-image");
             $customer_image = "";
             $provider_image = "";
-            if($customer->count() > 0){$customer_image = $customer->first();}
-            if($provider->count() > 0){$provider_image = $provider->first();}
+            if($customer->count() > 0){$customer_image = $customer->first()->value;}
+            if($provider->count() > 0){$provider_image = $provider->first()->value;}
             if($validation["type"] == "worker") $validation["picture"] = $provider_image;
             if($validation["type"] != "worker") $validation["picture"] = $customer_image;
         
