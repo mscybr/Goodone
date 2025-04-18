@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ServiceGallary;
 use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AppSetting;
 
 class AuthController extends Controller
 {
@@ -78,7 +79,7 @@ class AuthController extends Controller
             'city' => 'string',
             'country' => 'string',
             "device_token" => "required",
-            "picture" => "file|required",
+            "picture" => "file|sometimes",
         ]);
          if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
         if($request->file('picture')){
@@ -87,6 +88,16 @@ class AuthController extends Controller
             $_array = explode("/", $temp);
             $file_name = $_array[ sizeof($_array) -1 ];
             $validation["picture"] = $file_name;
+        }else{
+            $customer = AppSetting::Where("key", "=", "customer-image");
+            $provider = AppSetting::Where("key", "=", "provider-image");
+            $customer_image = "";
+            $provider_image = "";
+            if($customer->count() > 0){$customer_image = $customer->first();}
+            if($provider->count() > 0){$provider_image = $provider->first();}
+            if($validation["type"] == "worker") $validation["picture"] = $provider_image;
+            if($validation["type"] != "worker") $validation["picture"] = $customer_image;
+        
         }
 
 
