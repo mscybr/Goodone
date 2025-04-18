@@ -47,7 +47,7 @@
             // ];
             // }
         @endphp
-        @include('admin.forms', ["title" => "Edit App Settings", "wrapper" => $wrapper, "data" => $data, "type" => "multi_fields_card_builder", "action" => route("admin_edit_app_settings"), "enctype" => "", "method" => "POST" ])
+        @include('admin.forms', ["title" => "Edit Default Images", "wrapper" => $wrapper, "data" => $data, "type" => "multi_fields_card_builder", "action" => route("admin_edit_default_images"), "enctype" => "", "method" => "POST" ])
 
       </div>
       <div class="row">
