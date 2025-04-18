@@ -31,8 +31,8 @@ class AdminController extends Controller
         $provider = AppSetting::Where("key", "=", "provider-image");
         $customer_image = "";
         $provider_image = "";
-        if($customer->count() > 0){$customer_image = $customer->first();}
-        if($provider->count() > 0){$provider_image = $provider->first();}
+        // if($customer->count() > 0){$customer_image = $customer->first();}
+        // if($provider->count() > 0){$provider_image = $provider->first();}
         return view("admin.default_images", ["customer_image" => $customer_image, "provider_image" => $provider_image]);
 
     }
