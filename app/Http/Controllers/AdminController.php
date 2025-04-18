@@ -59,8 +59,8 @@ class AdminController extends Controller
             $provider_image = $file_name;
         }
 
-        if( $provider_image ) $this->edit_setting("customer-image", $provider_image);
-        if( $customer_image ) $this->edit_setting("provider-image", $customer_image);
+        if( isset($provider_image) ) $this->edit_setting("customer-image", $provider_image);
+        if( isset($customer_image) ) $this->edit_setting("provider-image", $customer_image);
 
         return redirect()->back();
     }
