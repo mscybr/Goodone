@@ -39,10 +39,10 @@ class AdminController extends Controller
     
     function edit_default_images(Request $request){
 
-        $validation = $request->validate([
-            "customer_image" => "file",
-            "provider_image" => "file",
-        ]);
+        // $validation = $request->validate([
+        //     "customer_image" => "file",
+        //     "provider_image" => "file",
+        // ]);
 
         if($request->file('customer_image')){
             $file = $request->file('customer_image');
