@@ -40,19 +40,28 @@ class AdminController extends Controller
     function edit_default_images(Request $request){
 
         $validation = $request->validate([
-            "image" => "file|required",
-            "type" => "required"
+            "customer_image" => "file",
+            "provider_image" => "file",
         ]);
 
-        if($request->file('image')){
-            $file = $request->file('image');
+        if($request->file('customer_image')){
+            $file = $request->file('customer_image');
             $temp = $file->store('public/images');
             $_array = explode("/", $temp);
             $file_name = $_array[ sizeof($_array) -1 ];
-            $validation["image"] = $file_name;
+            $validation["customer_image"] = $file_name;
+        }
+        if($request->file('provider_image')){
+            $file = $request->file('provider_image');
+            $temp = $file->store('public/images');
+            $_array = explode("/", $temp);
+            $file_name = $_array[ sizeof($_array) -1 ];
+            $validation["provider_image"] = $file_name;
         }
 
-        $this->edit_setting($validation["type"], $validation["image"]);
+        if( $validation["customer_image"] ) $this->edit_setting("customer-image", $validation["customer_image"]);
+        if( $validation["provider_image"] ) $this->edit_setting("provider-image", $validation["provider_image"]);
+        
 
         return redirect()->back();
     }
