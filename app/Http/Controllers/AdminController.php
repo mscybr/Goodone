@@ -59,8 +59,8 @@ class AdminController extends Controller
             $validation["provider_image"] = $file_name;
         }
 
-        if( $validation["customer_image"] ) $this->edit_setting("customer-image", $validation["customer_image"]);
-        if( $validation["provider_image"] ) $this->edit_setting("provider-image", $validation["provider_image"]);
+        if( isset($validation["customer_image"]) ) $this->edit_setting("customer-image", $validation["customer_image"]);
+        if( isset($validation["provider_image"]) ) $this->edit_setting("provider-image", $validation["provider_image"]);
 
         return redirect()->back();
     }
