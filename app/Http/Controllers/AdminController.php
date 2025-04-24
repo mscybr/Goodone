@@ -8,11 +8,37 @@ use App\Models\Subcategory;
 use App\Models\WithdrawRequest;
 use App\Models\AppSetting;
 use App\Models\RegionTax;
+use App\Models\User;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
 
+
+    // users
+    function get_users(Request $request){
+        $users = User::all();
+        foreach ($users as $user ) {
+
+            $user_id = $user->id;
+            $balance = 0;
+            $withdrawn = 0;
+            $requests = WithdrawRequest::Where([
+                ["user_id", "=", $user_id],
+                ['status', "<", 2]
+            ])->get();
+            foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
+            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user_id], ["order.status", "=", 2]])->get();
+            foreach ($orders as $order ) {
+                $balance += $order["total_hours"] * $order["cost_per_hour"];
+            }
+            $balance -= $withdrawn;
+            $user["balance"] = $balance;
+
+        }
+        return view("admin.users", ["users" => $users]);
+    }
 
     function edit_setting($key, $value){
 

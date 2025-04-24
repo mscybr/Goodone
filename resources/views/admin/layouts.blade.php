@@ -90,6 +90,11 @@
               </a>
             </li>
             <li class="menu-item">
+              <a href="{{route("admin_get_users")}}" class="menu-link">
+                <div data-i18n="Analytics">Users</div>
+              </a>
+            </li>
+            <li class="menu-item">
               <a href="{{route("admin_withdraw_requests")}}" class="menu-link">
                 <div data-i18n="Analytics">Withdraw Requests</div>
               </a>
