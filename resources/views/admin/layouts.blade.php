@@ -85,6 +85,31 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item">
+              <a href="{{route("admin_get_app_settings")}}" class="menu-link">
+                <div data-i18n="Analytics">Settings</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="{{route("admin_withdraw_requests")}}" class="menu-link">
+                <div data-i18n="Analytics">Withdraw Requests</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="{{route("admin_create_region_tax")}}" class="menu-link">
+                <div data-i18n="Analytics">Regional Taxes</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="{{route("admin_get_default_images")}}" class="menu-link">
+                <div data-i18n="Analytics">Default Images</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="{{route("admin_create_coupon")}}" class="menu-link">
+                <div data-i18n="Analytics">Coupons</div>
+              </a>
+            </li>
+            <li class="menu-item">
               <a href="{{route("admin_create_category")}}" class="menu-link">
                 <div data-i18n="Analytics">Category</div>
               </a>
