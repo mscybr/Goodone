@@ -11,9 +11,13 @@ class CategoryController extends Controller
 {
     function index(Request $request)
     {
-        $categories = Category::Select("id", "name", "image")->With(['Subcategory' => function ($query) {
-                $query->select('id', 'name');
-            }])->get();
+        // $categories = Category::Select("id", "name", "image")->With(['Subcategory' => function ($query) {
+        //         $query->select('id', 'name');
+        //     }])->get();
+        $categories = Category::Select("id", "name", "image")->get();
+        foreach ($categories as $key => $category ) {
+            $categories[$key]["subcategory"] = $category->Subcategory();
+        }
         if(Auth("api")->user() != null){
             $user = Auth("api")->user();
             if( $user["type"] == "worker" ){
