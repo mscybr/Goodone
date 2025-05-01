@@ -16,7 +16,7 @@ class CategoryController extends Controller
         //     }])->get();
         $categories = Category::Select("id", "name", "image")->get();
         foreach ($categories as $key => $category ) {
-            $categories[$key]["subcategory"] = DB::table('subcategories')->where('category_id', $category["id"])->select('id', 'name');
+            $categories[$key]["subcategory"] = DB::table('subcategories')->where('category_id', $category["id"])->select('id', 'name')->get();
         }
         if(Auth("api")->user() != null){
             $user = Auth("api")->user();
