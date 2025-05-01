@@ -12,7 +12,7 @@ class CategoryController extends Controller
     function index(Request $request)
     {
         $categories = Category::Select("id", "name", "image")->With(['Subcategory' => function ($query) {
-                $query->select('id', 'name');
+                $query->select('id', 'name')->get();
             }])->get();
         if(Auth("api")->user() != null){
             $user = Auth("api")->user();
