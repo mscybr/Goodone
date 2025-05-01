@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Subcategory;
 
 class Category extends Model
 {
@@ -11,6 +12,6 @@ class Category extends Model
     protected $guarded = ['id'];
 
     public function Subcategory(){
-        return $this->hasMany('App\Models\Subcategory', 'category_id', 'id');
+        return $this->hasMany(Subcategory::class, 'category_id', 'id');
     }
 }
