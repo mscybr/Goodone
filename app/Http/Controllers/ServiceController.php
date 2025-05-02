@@ -398,7 +398,7 @@ class ServiceController extends Controller
                 "services.about",
                 "users.security_check",
                 "services.verified_liscence",
-            )->Where([["services.active", "=", true], ["users.active", "=", true], ["services.service", "LIKE", "%$query%"]])->OrWhere([["services.active", "=", true], ["users.full_name", "LIKE", "%$query%"]])->get()->sort(
+            )->Where([["services.active", "=", true], ["users.active", "=", true], ["services.service", "LIKE", "%$query%"]])->OrWhere([["services.active", "=", true], ["users.active", "=", true], ["users.full_name", "LIKE", "%$query%"]])->get()->sort(
             function($a, $b) {
                 return $a <=> $b;
             }
