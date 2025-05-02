@@ -40,6 +40,16 @@ class AdminController extends Controller
         return view("admin.users", ["users" => $users]);
     }
 
+    function block_user(Request $request, User $user){
+       $user->update(["active" => false]);
+       return redirect()->back();
+    }
+
+    function unblock_user(Request $request, User $user){
+       $user->update(["active" => true]);
+       return redirect()->back();
+    }
+
     function edit_setting($key, $value){
 
         $setting = AppSetting::Where("key", "=", $key);

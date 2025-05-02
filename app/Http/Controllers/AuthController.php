@@ -118,12 +118,13 @@ class AuthController extends Controller
      */
     public function login( )
     {
+        $user = User::Where("email", "=", $credentials["email"]);
+        if( $user->count() > 0 && $user->first()["active"] == false ) return response()->json(['error' => 'Account is deactivated'], 403);
         $credentials = request(['email', 'password']);
 
         if (! $token = auth("api")->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        $user = User::Where("email", "=", $credentials["email"]);
         $user->update(["device_token" => request("device_token")]);
 
         return $this->respondWithToken($token);

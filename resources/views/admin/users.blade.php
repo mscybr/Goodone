@@ -43,7 +43,7 @@
               "Orders Balance",
               // "Followers",
               // "Following",
-              // "Block",
+              "Block",
             ];
             $table_data = [];
             foreach ($users as $item ) {
@@ -57,7 +57,7 @@
                 // (object)["type"=> "string", "value" => $item->followers, "name" => "followers"],
                 // (object)["type"=> "string", "value" => $item->following, "name" => "following"],
 
-                // (object)["type"=> "anchor", "value" => $item->active == true ? "Block User" : "Unblock User", "name" => "", "href" => $item->active ? route("admin_block_user", $item) : route("admin_unblock_user", $item) , "color"=> $item->active ? "danger" : "success"],
+                (object)["type"=> "anchor", "value" => $item->active == true ? "Block User" : "Unblock User", "name" => "", "href" => $item->active ? route("admin_block_user", $item) : route("admin_unblock_user", $item) , "color"=> $item->active ? "danger" : "success"],
             ];
             }
         @endphp

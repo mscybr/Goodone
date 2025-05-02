@@ -43,7 +43,7 @@ Route::get('/admin/region_taxes/delete', [AdminController::class, "delete_region
 // users
 Route::get('/admin/users', [AdminController::class, "get_users"])->name("admin_get_users");
 // Route::get('users/{user}', [AdminController::class, "get_user"])->name("admin_get_user");
-// Route::get('users/{user}/block', [AdminController::class, "block_user"])->name("admin_block_user");
-// Route::get('users/{user}/unblock', [AdminController::class, "unblock_user"])->name("admin_unblock_user");
+Route::get('users/{user}/block', [AdminController::class, "block_user"])->name("admin_block_user");
+Route::get('users/{user}/unblock', [AdminController::class, "unblock_user"])->name("admin_unblock_user");
 // Route::post('users/{user}/edit', [AdminController::class, "edit_user"])->name("admin_edit_user");
 
