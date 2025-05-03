@@ -40,6 +40,39 @@ class AdminController extends Controller
         return view("admin.users", ["users" => $users]);
     }
 
+    // user
+    function get_user(Request $request, User $user){
+        return view("admin.user", ["user" => $user]);
+    }
+        function edit_user(Request $request, User $user){
+        // $user = User::Where("id", "=", $id);
+        if($user->count() > 0 ){
+            $validation = $request->validate([
+                'full_name' => 'sometimes|string',
+                'verified_liscence' => 'sometimes|boolean',
+                'security_check' => 'sometimes|boolean',
+                // 'password' => 'sometimes|string'
+            ]);
+            
+            
+            if(isset( $validation["password"] )) $validation["password"] = bcrypt($validation["password"]);
+            if(isset( $validation["verified_liscence"] )) $validation["verified_liscence"] = $validation["verified_liscence"] == 1 ? true : false;
+            if(isset( $validation["security_check"] )) $validation["security_check"] = $validation["security_check"] == 1 ? true : false;
+
+            // if($request->file('image')){
+            //     $file = $request->file('image');
+            //     $temp = $file->store('public/images');
+            //     $_array = explode("/", $temp);
+            //     $file_name = $_array[ sizeof($_array) -1 ];
+            //     $validation["image"] = $file_name;
+            // }
+            $user->update($validation);
+            return redirect()->back();
+        }else{
+            return redirect()->back();
+        }
+    }
+
     function block_user(Request $request, User $user){
        $user->update(["active" => false]);
        return redirect()->back();

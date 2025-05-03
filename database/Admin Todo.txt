@@ -1,0 +1,9 @@
+Admin Features:
+-Ban/Deactivate accounts( Notify )
+-Edit Accounts
+-View Services, Deactivate/Edit( Notify )
+-View Services Orders(  )
+-Transactions
+
+Stats:
+Daily, Monthly ( Orders / Revenue  )

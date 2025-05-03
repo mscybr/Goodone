@@ -48,8 +48,8 @@
             $table_data = [];
             foreach ($users as $item ) {
               $table_data[] = (object)[
-                // (object)["type"=> "anchor", "value" => $item->username, "name" => "username", "href" => route("admin_get_user", $item->id), "color"=>"success"],
-                (object)["type"=> "string", "value" => $item->full_name, "name" => "Name"],
+                (object)["type"=> "anchor", "value" => $item->full_name, "name" => "username", "href" => route("admin_get_user", $item), "color"=>"success"],
+                // (object)["type"=> "string", "value" => $item->full_name, "name" => "Name"],
                 (object)["type"=> "string", "value" => $item->email, "name" => "Email"],
                 (object)["type"=> "string", "value" => $item->phone, "name" => "Number"],
                 (object)["type"=> "string", "value" => $item->type == "worker" ? "Service Provider" : "Customer", "name" => "Account Type"],

@@ -27,9 +27,11 @@
             @elseif ($field_type == "select")
                 <select name="<?=$field_name?>" class="form-control" id="field" placeholder="<?=$placeholder?>">
                     @foreach ($options as $option)
-                        <option value="<?= $option["value"] ?>"><?= $option["name"] ?></option>
+                        <option value="<?= $option["value"] ?>" <?= $option["value"] == $default_value ? "selected" : "" ?>><?= $option["name"] ?></option>
                     @endforeach
                 </select>
+            @elseif ($field_type == "checkbox")
+                <input step="any" type="<?= $field_type ?>" name="<?=$field_name?>" id="field" placeholder="<?=$placeholder?>" value="<?=$default_value?>" >
             @else
                 <input step="any" type="<?= $field_type ?>" name="<?=$field_name?>" class="form-control" id="field" placeholder="<?=$placeholder?>" value="<?=$default_value?>" >
             @endif
@@ -58,13 +60,15 @@
                     @elseif ($field->type == "select")
                         <select name="<?=$field->name?>" class="form-control" id="field"  placeholder="<?=$field->placeholder?>">
                              <?php foreach($field->options as $option ){?>
-                                <option value="<?= $option["value"] ?>"><?= $option["name"] ?></option>
+                                <option value="<?= $option["value"] ?>" <?= $option["value"] == $field->value ? "selected" : "" ?>><?= $option["name"] ?></option>
                             <?php } ?>
                         </select>
+                    @elseif ($field->type  == "checkbox")
+                        <input step="any" type="<?= $field->type ?>" class="form-check" name="<?=$field->name?>"  id="field" placeholder="<?=$field->placeholder?>" value="<?=$field->value?>" >
                     @else
                         <input step="any" type="<?= $field->type ?>" name="<?=$field->name?>" class="form-control" id="field" placeholder="<?=$field->placeholder?>" value="<?=$field->value?>" >
                     @endif
-                    <?php if( $field->note !== null){?>
+                    <?php if( $field->note != null && $field->note != ""){?>
                         <div id="defaultFormControlHelp" class="form-text">
                             <?= $field->note ?>
                         </div>
