@@ -515,8 +515,8 @@ class ServiceController extends Controller
             }])->join('users', "users.id", "=", "services.user_id")->select(
                 "services.id",
                 "services.subcategory_id",
-                "users.city", 
-                "users.country", 
+                "users.city",
+                "users.country",
                 "users.id AS contractor_id",
                 "users.email",
                 "users.phone",
