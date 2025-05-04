@@ -16,9 +16,10 @@ class OtpMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($emailmessage)
+    public function __construct(public $emailmessage)
     {
-        $this->emailmessage = $emailmessage;
+        // public $emailmessage;
+        // $this->emailmessage = $emailmessage;
 
     }
 
