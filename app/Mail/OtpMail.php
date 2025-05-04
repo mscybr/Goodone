@@ -38,7 +38,7 @@ class OtpMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.OtpMail',
+            view: 'mail.otp',
         );
     }
 
