@@ -48,12 +48,17 @@ class SmsPasswordResetController extends Controller
     public function resetPassword(Request $request)
     {
         $request->validate([
-            'phone' => 'required|numeric',
+            'phone' => 'required_if:email,null|numeric',
+            'email' => 'required_if:phone,null',
             'reset_token' => 'required|numeric',
             'password' => 'required',
         ]);
 
-        $user = User::where('phone', $request->phone)->first();
+        if($request->phone){
+            $user = User::where('phone', $request->phone)->first();
+        }else{
+            $user = User::where('email', $request->email)->first();
+        }
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
