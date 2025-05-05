@@ -130,12 +130,12 @@ class AuthController extends Controller
         }
         $token = $this->createOtpCode($request->email);
         $sent_otp = $this->sendOtpCode($user->email, $token);
-        if($sent_otp){
+        // if($sent_otp){
 
             return response()->json(['message' => 'Otp code sent via email']);
-        }else{
-            return response()->json(['message' => 'Unable to sent Otp Code']);
-        }
+        // }else{
+            // return response()->json(['message' => 'Unable to sent Otp Code']);
+        // }
     }
 
         // Verify the reset code and reset the password
