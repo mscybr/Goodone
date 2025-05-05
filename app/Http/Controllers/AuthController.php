@@ -159,7 +159,7 @@ class AuthController extends Controller
         }
 
         // Check if token is valid and not expired
-        if ($user->reset_token !== $request->reset_token || $user->reset_token_expiry < now()) {
+        if ($user->reset_token !== $request->otp || $user->reset_token_expiry < now()) {
             return response()->json(['message' => 'Invalid or expired reset token'], 400);
         }
 
