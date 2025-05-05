@@ -373,36 +373,78 @@ class ServiceController extends Controller
     {
         // filtering method
         $query = "";
+        $category = "";
         if($request->has('query')) $query = $request->input('query');
+        if($request->has('category')) $query = $request->input('category');
         if($request->has('filter')){
 
-            $services = Service::With(['Subcategory.Category' => function ($query) {
-                $query->select('id', 'name', "image");
-            }, 'Subcategory' => function ($query) {
-                $query->select('id', 'name', "category_id");
-            }])->join('users', "users.id", "=", "services.user_id")
-            ->select(
-                "services.id",
-                "users.id AS contractor_id",
-                "services.subcategory_id",
-                "users.city", 
-                "users.country", 
-                "users.email",
-                "users.phone",
-                "users.full_name",
-                "users.picture",
-                "users.location",
-                "services.cost_per_hour",
-                "services.service",
-                "services.years_of_experience",
-                "services.about",
-                "users.security_check",
-                "services.verified_liscence",
-            )->Where([["services.active", "=", true], ["users.active", "=", true], ["services.about", "LIKE", "%$query%"]])->OrWhere([["services.active", "=", true], ["users.active", "=", true], ["users.full_name", "LIKE", "%$query%"]])->get()->sort(
-            function($a, $b) {
-                return $a <=> $b;
+            if($category != ""){
+
+                $services = Service::With(['Subcategory.Category' => function ($query) {
+                    $query->select('id', 'name', "image");
+                }, 'Subcategory' => function ($query) {
+                    $query->select('id', 'name', "category_id");
+                }])->join('users', "users.id", "=", "services.user_id")
+                ->select(
+                    "services.id",
+                    "users.id AS contractor_id",
+                    "services.subcategory_id",
+                    "users.city", 
+                    "users.country", 
+                    "users.email",
+                    "users.phone",
+                    "users.full_name",
+                    "users.picture",
+                    "users.location",
+                    "services.cost_per_hour",
+                    "services.service",
+                    "services.years_of_experience",
+                    "services.about",
+                    "users.security_check",
+                    "services.verified_liscence",
+                )
+                ->Where([["services.active", "=", true], ["users.active", "=", true], ["services.about", "LIKE", "%$query%"]])
+                ->OrWhere([["services.active", "=", true], ["users.active", "=", true], ["users.full_name", "LIKE", "%$query%"]])
+                ->get()->sort(
+                function($a, $b) {
+                    return $a <=> $b;
+                }
+                );
+            }else{
+
+                $services = Service::With(['Subcategory.Category' => function ($query) {
+                    $query->select('id', 'name', "image");
+                }, 'Subcategory' => function ($query) {
+                    $query->select('id', 'name', "category_id");
+                }])->join('users', "users.id", "=", "services.user_id")
+                ->select(
+                    "services.id",
+                    "users.id AS contractor_id",
+                    "services.subcategory_id",
+                    "users.city", 
+                    "users.country", 
+                    "users.email",
+                    "users.phone",
+                    "users.full_name",
+                    "users.picture",
+                    "users.location",
+                    "services.cost_per_hour",
+                    "services.service",
+                    "services.years_of_experience",
+                    "services.about",
+                    "users.security_check",
+                    "services.verified_liscence",
+                )
+                ->Where([["services.active", "=", true], ["users.active", "=", true], ["services.category_id", "=", $category], ["services.about", "LIKE", "%$query%"]])
+                ->OrWhere([["services.active", "=", true], ["users.active", "=", true], ["services.category_id", "=", $category], ["users.full_name", "LIKE", "%$query%"]])
+                ->get()->sort(
+                function($a, $b) {
+                    return $a <=> $b;
+                }
+                );
+
             }
-            );
+
 
             // $services = User::With(['Subcategory.Category' => function ($query) {
             //     $query->select('id', 'name', "image");
@@ -414,28 +456,55 @@ class ServiceController extends Controller
             // }
             // );
         }else{
-            $services = Service::With(['Subcategory.Category' => function ($query) {
-                $query->select('id', 'name', "image");
-            }, 'Subcategory' => function ($query) {
-                $query->select('id', 'name', "category_id");
-            }])->join('users', "users.id", "=", "services.user_id")->select(
-                "services.subcategory_id",
-                "services.id",
-                "users.city", 
-                "users.country", 
-                "users.id AS contractor_id",
-                "users.email",
-                "users.phone",
-                "users.full_name",
-                "users.picture",
-                "users.location",
-                "services.cost_per_hour",
-                "services.service",
-                "services.years_of_experience",
-                "services.about",
-                "users.security_check",
-                "services.verified_liscence",
-            )->Where([["services.active", "=", true], ["users.active", "=", true], ["services.about", "LIKE", "%$query%"]])->get();
+            if( $category == "" ){
+
+            
+                $services = Service::With(['Subcategory.Category' => function ($query) {
+                    $query->select('id', 'name', "image");
+                }, 'Subcategory' => function ($query) {
+                    $query->select('id', 'name', "category_id");
+                }])->join('users', "users.id", "=", "services.user_id")->select(
+                    "services.subcategory_id",
+                    "services.id",
+                    "users.city", 
+                    "users.country", 
+                    "users.id AS contractor_id",
+                    "users.email",
+                    "users.phone",
+                    "users.full_name",
+                    "users.picture",
+                    "users.location",
+                    "services.cost_per_hour",
+                    "services.service",
+                    "services.years_of_experience",
+                    "services.about",
+                    "users.security_check",
+                    "services.verified_liscence",
+                )->Where([["services.active", "=", true], ["users.active", "=", true], ["services.about", "LIKE", "%$query%"]])->get();
+            }else{
+                $services = Service::With(['Subcategory.Category' => function ($query) {
+                    $query->select('id', 'name', "image");
+                }, 'Subcategory' => function ($query) {
+                    $query->select('id', 'name', "category_id");
+                }])->join('users', "users.id", "=", "services.user_id")->select(
+                    "services.subcategory_id",
+                    "services.id",
+                    "users.city", 
+                    "users.country",
+                    "users.id AS contractor_id",
+                    "users.email",
+                    "users.phone",
+                    "users.full_name",
+                    "users.picture",
+                    "users.location",
+                    "services.cost_per_hour",
+                    "services.service",
+                    "services.years_of_experience",
+                    "services.about",
+                    "users.security_check",
+                    "services.verified_liscence",
+                )->Where([["services.active", "=", true], ["users.active", "=", true], ["services.category_id", "=", $category], ["services.about", "LIKE", "%$query%"]])->get();
+            }
             // $services = User::With(['Subcategory.Category' => function ($query) {
             //     $query->select('id', 'name', "image");
             // }, 'Subcategory' => function ($query) {

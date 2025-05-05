@@ -96,6 +96,8 @@ Route::group([
 ], function ($router) {
 
     Route::post('register', [AuthController::class, "register"])->name("api:register");
+    Route::post('sendVerificationCode', [AuthController::class, "sendVerificationCode"])->name("api:sendVerificationCode");
+    Route::post('verifyAccount', [AuthController::class, "verifyAccount"])->name("api:verifyAccount");
     Route::post('login', [AuthController::class, "login"])->name("api:login");
     Route::post('logout', [AuthController::class, "logout"])->name("api:logout");
     Route::post('refresh', [AuthController::class, "refresh"])->name("api:refresh");

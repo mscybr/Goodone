@@ -8,6 +8,9 @@ use App\Models\ServiceGallary;
 use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AppSetting;
+use Twilio\Rest\Client;
+use App\Mail\OtpMail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -103,12 +106,72 @@ class AuthController extends Controller
 
         if ($validation) {
             $user = User::create($validation);
-            return $this->respondWithToken(auth("api")->login($user));
+            $token = $this->createOtpCode($user->email);
+            $this->sendOtpCode($user->email, $token);
+            return response()->json(['message' => 'Successfully created account, Otp code is sent to email']);
+            // return $this->respondWithToken(auth("api")->login($user));
         }else{
             $errors = $validator->errors();
             return response()->json(['error' => 'Bad Request', 'details' => $errors], 400);
         }
 
+    }
+
+    public function sendVerificationCode( Request $request){
+        $request->validate([
+            // 'phone' => 'required|numeric',  // Ensure it's a valid phone number
+            'email' => 'required|string',  // Ensure it's a valid phone number
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        $token = $this->createOtpCode($request->email);
+        $sent_otp = $this->sendOtpCode($user->email, $token);
+        if($sent_otp){
+
+            return response()->json(['message' => 'Otp code sent via email']);
+        }else{
+            return response()->json(['message' => 'Unable to sent Otp Code']);
+        }
+    }
+
+        // Verify the reset code and reset the password
+    public function verifyAccount(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required_if:email,null|numeric',
+            'email' => 'required_if:phone,null',
+            'otp' => 'required|numeric',
+            // 'password' => 'required',
+        ]);
+
+        if($request->phone){
+            $user = User::where('phone', $request->phone)->first();
+        }else{
+            $user = User::where('email', $request->email)->first();
+        }
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Check if token is valid and not expired
+        if ($user->reset_token !== $request->reset_token || $user->reset_token_expiry < now()) {
+            return response()->json(['message' => 'Invalid or expired reset token'], 400);
+        }
+
+        
+        $user->update([
+            'reset_token' => null, // Clear the reset token
+            'reset_token_expiry' => null, // Clear the token expiry
+            'verified' => true
+        ]);
+
+        return $this->respondWithToken(auth("api")->login($user));
+        // return response()->json(['message' => 'Password reset successfully']);
     }
 
     /**
@@ -121,6 +184,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         $user = User::Where("email", "=", $credentials["email"]);
         if( $user->count() > 0 && $user->first()["active"] == false ) return response()->json(['error' => 'Account is deactivated'], 403);
+        if( $user->count() > 0 && $user->first()["verified"] == false ) return response()->json(['error' => 'Account is not verified'], 401);
 
         if (! $token = auth("api")->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -171,6 +235,24 @@ class AuthController extends Controller
         return $this->respondWithToken(auth("api")->refresh());
     }
 
+    protected function sendOtpCode($email, $token){
+        $this->sendEmail($email, "Your Otp code is: $token");
+    }
+
+    protected function createOtpCode($email)
+    {
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return 404;
+        }
+
+        // Generate a random token for password reset
+        $token = rand(100000, 999999);
+        $user->update(['reset_token' => $token, 'reset_token_expiry' => now()->addMinutes(5)]);
+        return $token;
+    }
+
     /**
      * Get the token array structure.
      *
@@ -185,5 +267,47 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth("api")->factory()->getTTL() * 60
         ]);
+    }
+
+     // Helper function to send SMS using Twilio
+    protected function sendSms($to, $message)
+    {
+        // some sms sending method
+        // return response()->json[["to"=>$to, 'message'=>$message]];
+        // $sid = env('TWILIO_SID');
+        // $auth_token = env('TWILIO_AUTH_TOKEN');
+        // $from = env('TWILIO_PHONE_NUMBER');
+
+        // $client = new Client($sid, $auth_token);
+
+        // $client->messages->create(
+        //     $to, // To phone number
+        //     [
+        //         'from' => $from,  // From Twilio phone number
+        //         'body' => $message
+        //     ]
+        // );
+    }
+
+    // Helper function to send SMS using Twilio
+    protected function sendEmail($to, $message)
+    {
+
+        Mail::to($to)->send(new OtpMail($message));
+        // some sms sending method
+        // return response()->json[["to"=>$to, 'message'=>$message]];
+        // $sid = env('TWILIO_SID');
+        // $auth_token = env('TWILIO_AUTH_TOKEN');
+        // $from = env('TWILIO_PHONE_NUMBER');
+
+        // $client = new Client($sid, $auth_token);
+
+        // $client->messages->create(
+        //     $to, // To phone number
+        //     [
+        //         'from' => $from,  // From Twilio phone number
+        //         'body' => $message
+        //     ]
+        // );
     }
 }
