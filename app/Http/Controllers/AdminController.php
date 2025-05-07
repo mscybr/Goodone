@@ -261,8 +261,10 @@ class AdminController extends Controller
          $validation = $request->validate([
             'id' => 'required|exists:categories,id',
         ]);
-        Category::find($validation["id"])->relatedItems()->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Category::find($validation["id"])->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         return redirect()->back();
     }
 
@@ -290,8 +292,9 @@ class AdminController extends Controller
          $validation = $request->validate([
             'id' => 'required|exists:subcategories,id',
         ]);
-        Subcategory::find($validation["id"])->relatedItems()->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Subcategory::find($validation["id"])->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return redirect()->back();
     }
 
