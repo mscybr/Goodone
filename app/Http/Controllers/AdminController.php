@@ -10,6 +10,7 @@ use App\Models\AppSetting;
 use App\Models\RegionTax;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
