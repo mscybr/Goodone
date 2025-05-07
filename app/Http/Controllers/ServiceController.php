@@ -208,10 +208,12 @@ class ServiceController extends Controller
 
 
         if($validation["use_old_liscence"] == true){
-            $validation["license"] = $service = Service::Where([
-                ["user_id", "=", auth("api")->user()->id],
-                ["category_id", "=", $validation["category_id"]]
-                ])->first()["license"];
+            if($request->file('license')){
+                $validation["license"] = $service = Service::Where([
+                    ["user_id", "=", auth("api")->user()->id],
+                    ["category_id", "=", $validation["category_id"]]
+                    ])->first()["license"];
+            }
         }else{
             if($request->file('license')){
                 $file = $request->file('license');
