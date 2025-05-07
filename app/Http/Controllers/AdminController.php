@@ -10,7 +10,6 @@ use App\Models\AppSetting;
 use App\Models\RegionTax;
 use App\Models\User;
 use App\Models\Order;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -262,10 +261,8 @@ class AdminController extends Controller
          $validation = $request->validate([
             'id' => 'required|exists:categories,id',
         ]);
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Category::find($validation["id"])->subcategory()->delete();
         Category::find($validation["id"])->delete();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
         return redirect()->back();
     }
 
@@ -293,9 +290,7 @@ class AdminController extends Controller
          $validation = $request->validate([
             'id' => 'required|exists:subcategories,id',
         ]);
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Subcategory::find($validation["id"])->delete();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return redirect()->back();
     }
 
