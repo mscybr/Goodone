@@ -261,7 +261,8 @@ class AdminController extends Controller
          $validation = $request->validate([
             'id' => 'required|exists:categories,id',
         ]);
-        Category::find($validation["id"])->forceDelete();
+        Category::find($validation["id"])->relatedItems()->delete();
+        Category::find($validation["id"])->delete();
         return redirect()->back();
     }
 
@@ -289,7 +290,8 @@ class AdminController extends Controller
          $validation = $request->validate([
             'id' => 'required|exists:subcategories,id',
         ]);
-        Subcategory::find($validation["id"])->forceDelete();
+        Subcategory::find($validation["id"])->relatedItems()->delete();
+        Subcategory::find($validation["id"])->delete();
         return redirect()->back();
     }
 
