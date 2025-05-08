@@ -264,8 +264,8 @@ class AdminController extends Controller
             'id' => 'required|exists:categories,id',
         ]);
         Schema::disableForeignKeyConstraints();
-        DB::delete('delete subcategories where category_id = ?', $validation["id"]);
-        DB::delete('delete category where id = ?', $validation["id"]);
+        DB::delete('delete subcategories where category_id = ?', [$validation["id"]]);
+        DB::delete('delete category where id = ?', [$validation["id"]]);
         Schema::enableForeignKeyConstraints();
         // Category::find($validation["id"])->delete();
         return redirect()->back();
