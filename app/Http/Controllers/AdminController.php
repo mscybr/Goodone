@@ -45,7 +45,7 @@ class AdminController extends Controller
 
     function get_services(Request $request){
         if(isset($request->user_id)){
-            $services = Service::Where(["user_id", "=", $request->user_id])->get();
+            $services = Service::Where(["user_id", "=", $request->user_id]);
             dd($services);
         }else{
             $services = Service::all();
