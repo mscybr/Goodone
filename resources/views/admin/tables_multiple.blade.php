@@ -24,7 +24,7 @@
                                 <td>{{$sub_element->value}}</td>
                                 <?php break; ?>
                             <?php case 'image': ?>
-                                <td><img style="max-height: 100px;" src="{{$sub_element->value}}" alt=""></td>
+                                <td><a href="{{$sub_element->value}}" target="_blank" rel="noopener noreferrer"><img style="max-height: 100px;" src="{{$sub_element->value}}" alt=""></a></td>
                                 <?php break; ?>
                             <?php case 'anchor': ?>
                                 <td><a href="{{$sub_element->href}}" class="btn btn-{{$sub_element->color}}">{{$sub_element->value}}</a></td>
