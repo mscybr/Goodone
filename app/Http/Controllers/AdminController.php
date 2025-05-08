@@ -48,7 +48,7 @@ class AdminController extends Controller
         foreach ($services as $service ) {
 
             $user = User::Where(["id", "=", $service->user_id])->first();
-            if($user == null){ $user = [["full_name" => "Deleted User"]]; }
+            if($user == null){ $user = (object)[["full_name" => "Deleted User"]]; }
             $user_id = $service->user_id;
             $total_orders = 0;
             $balance = 0;
