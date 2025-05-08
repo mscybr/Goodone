@@ -80,7 +80,7 @@ class AdminController extends Controller
        return redirect()->back();
     }
 
-    public function delete_coupon(Request $request, Service $service){
+    function delete_coupon(Request $request, Service $service){
     {
         $service->delete();
         return redirect()->back();
@@ -114,7 +114,8 @@ class AdminController extends Controller
     function get_user(Request $request, User $user){
         return view("admin.user", ["user" => $user]);
     }
-        function edit_user(Request $request, User $user){
+    
+    function edit_user(Request $request, User $user){
         // $user = User::Where("id", "=", $id);
         if($user->count() > 0 ){
             $validation = $request->validate([
@@ -219,29 +220,29 @@ class AdminController extends Controller
 
 
 
-    public function create_coupon()
+     function create_coupon()
     {
         return view('admin.coupons', ["coupons"=> Coupon::all()]);
     }
 
-    public function withdraw_requests()
+    function withdraw_requests()
     {
         return view('admin.withdrawals', ["requests"=> WithdrawRequest::Where([["status", "<", "2"]])->get()]);
     }
 
-    public function accept_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
+    function accept_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
     {
         $withdraw_request->update(["status" => "1"]);
         return redirect()->back();
     }
 
-    public function reject_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
+    function reject_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
     {
         $withdraw_request->update(["status" => "2"]);
         return redirect()->back();
     }
 
-    public function store_coupon(Request $request)
+    function store_coupon(Request $request)
     {
         $validation = $request->validate([
             'coupon' => 'required|unique:coupons,coupon',
@@ -256,7 +257,7 @@ class AdminController extends Controller
 
     }
 
-      public function delete_coupon(Request $request)
+      function delete_coupon(Request $request)
     {
          $validation = $request->validate([
             'id' => 'required|exists:coupons,id',
@@ -265,13 +266,13 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function create_region_tax()
+    function create_region_tax()
     {
         return view('admin.region_taxes', ["regions"=> RegionTax::all()]);
     }
     
 
-    public function store_region_tax(Request $request)
+    function store_region_tax(Request $request)
     {
         $validation = $request->validate([
             'region' => 'required',
@@ -285,7 +286,7 @@ class AdminController extends Controller
     }
 
 
-    public function delete_region_tax(Request $request)
+    function delete_region_tax(Request $request)
     {
          $validation = $request->validate([
             'id' => 'required',
@@ -294,13 +295,13 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function create_category()
+    function create_category()
     {
         return view('admin.category', ["categories"=> Category::all()]);
     }
     
 
-    public function store_category(Request $request)
+    function store_category(Request $request)
     {
         $validation = $request->validate([
             'name' => 'required|unique:categories,name',
@@ -322,7 +323,7 @@ class AdminController extends Controller
     }
 
 
-    public function delete_category(Request $request)
+    function delete_category(Request $request)
     {
          $validation = $request->validate([
             'id' => 'required|exists:categories,id',
@@ -335,12 +336,12 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function create_subcategory()
+    function create_subcategory()
     {
         return view('admin.subcategory', ["categories"=> Category::get(["id as value", "name"]), "subcategories"=> Subcategory::all()]);
     }
 
-    public function store_subcategory(Request $request)
+    function store_subcategory(Request $request)
     {
         $validation = $request->validate([
             'name' => 'required|unique:subcategories,name',
@@ -354,7 +355,7 @@ class AdminController extends Controller
     }
 
 
-    public function delete_subcategory(Request $request)
+    function delete_subcategory(Request $request)
     {
          $validation = $request->validate([
             'id' => 'required|exists:subcategories,id',
