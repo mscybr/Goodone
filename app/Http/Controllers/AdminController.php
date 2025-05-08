@@ -20,7 +20,7 @@ class AdminController extends Controller
 
 
     // users
-    function get_users(Request $request){
+    public function get_users(Request $request){
         $users = User::all();
         foreach ($users as $user ) {
 
@@ -43,7 +43,7 @@ class AdminController extends Controller
         return view("admin.users", ["users" => $users]);
     }
 
-    function get_services(Request $request){
+    public function get_services(Request $request){
         if(isset($request->user_id)){
             $services = Service::Where([["user_id", "=", $request->user_id]])->get();
         }else{
@@ -73,9 +73,9 @@ class AdminController extends Controller
             $service["user"] = $user;
         }
         return view("admin.services", ["services" => $services]);
-    }    
-    
-    function toggle_service_activation(Request $request, Service $service){
+    }
+
+    public function toggle_service_activation(Request $request, Service $service){
        if($service->active){
          $service->update(["active" => false]);
         }else{
@@ -85,14 +85,7 @@ class AdminController extends Controller
        return redirect()->back();
     }
 
-    function delete_coupon(Request $request, Service $service){
-    {
-        $service->delete();
-        return redirect()->back();
-    }
-
-
-    function get_service_providers(Request $request){
+     public function get_service_providers (Request $request) {
         $users = User::all();
         foreach ($users as $user ) {
 
@@ -115,12 +108,12 @@ class AdminController extends Controller
         return view("admin.service_providers", ["users" => $users]);
     }
 
-    // user
-    function get_user(Request $request, User $user){
+     // user
+    public function get_user(Request $request, User $user){
         return view("admin.user", ["user" => $user]);
     }
     
-    function edit_user(Request $request, User $user){
+    public function edit_user(Request $request, User $user){
         // $user = User::Where("id", "=", $id);
         if($user->count() > 0 ){
             $validation = $request->validate([
@@ -150,12 +143,13 @@ class AdminController extends Controller
     }
 
 
-    function unblock_user(Request $request, User $user){
+    public function unblock_user(Request $request, User $user){
        $user->update(["active" => true]);
        return redirect()->back();
     }
 
-    function edit_setting($key, $value){
+    
+    public function edit_setting($key, $value){
 
         $setting = AppSetting::Where("key", "=", $key);
         if($setting->count() > 0){
@@ -166,7 +160,7 @@ class AdminController extends Controller
 
     }
 
-    function get_default_images($type = "customer"){
+    public function get_default_images($type = "customer"){
 
         $customer = AppSetting::Where("key", "=", "customer-image");
         $provider = AppSetting::Where("key", "=", "provider-image");
@@ -178,7 +172,7 @@ class AdminController extends Controller
 
     }
     
-    function edit_default_images(Request $request){
+    public function edit_default_images(Request $request){
 
         // $validation = $request->validate([
         //     "customer_image" => "file",
@@ -206,7 +200,7 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    function get_app_settings(Request $request){
+    public function get_app_settings(Request $request){
         $_settings = AppSetting::all();
         $settings = [];
         foreach ($_settings as $setting) {
@@ -215,7 +209,7 @@ class AdminController extends Controller
         return view("admin.app_settings", ["settings" => $settings]);
     }
 
-    function edit_app_settings(Request $request){
+    public function edit_app_settings(Request $request){
 
         if(isset( $request->platform_fees ))  $this->edit_setting("platform_fees", $request->platform_fees);
         if(isset( $request->platform_fees_percentage ))  $this->edit_setting("platform_fees_percentage", $request->platform_fees_percentage);
@@ -226,29 +220,29 @@ class AdminController extends Controller
     
 
 
-     function create_coupon()
+     public function create_coupon()
     {
         return view('admin.coupons', ["coupons"=> Coupon::all()]);
     }
 
-    function withdraw_requests()
+    public function withdraw_requests()
     {
         return view('admin.withdrawals', ["requests"=> WithdrawRequest::Where([["status", "<", "2"]])->get()]);
     }
 
-    function accept_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
+    public function accept_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
     {
         $withdraw_request->update(["status" => "1"]);
         return redirect()->back();
     }
 
-    function reject_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
+    public function reject_withdraw_request( Request $request, WithdrawRequest $withdraw_request )
     {
         $withdraw_request->update(["status" => "2"]);
         return redirect()->back();
     }
 
-    function store_coupon(Request $request)
+    public function store_coupon(Request $request)
     {
         $validation = $request->validate([
             'coupon' => 'required|unique:coupons,coupon',
@@ -263,7 +257,7 @@ class AdminController extends Controller
 
     }
 
-      function delete_coupon(Request $request)
+      public function delete_coupon(Request $request)
     {
          $validation = $request->validate([
             'id' => 'required|exists:coupons,id',
@@ -272,13 +266,13 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    function create_region_tax()
+    public function create_region_tax()
     {
         return view('admin.region_taxes', ["regions"=> RegionTax::all()]);
     }
     
 
-    function store_region_tax(Request $request)
+    public function store_region_tax(Request $request)
     {
         $validation = $request->validate([
             'region' => 'required',
@@ -292,7 +286,7 @@ class AdminController extends Controller
     }
 
 
-    function delete_region_tax(Request $request)
+    public function delete_region_tax(Request $request)
     {
          $validation = $request->validate([
             'id' => 'required',
@@ -301,13 +295,13 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    function create_category()
+    public function create_category()
     {
         return view('admin.category', ["categories"=> Category::all()]);
     }
     
 
-    function store_category(Request $request)
+    public function store_category(Request $request)
     {
         $validation = $request->validate([
             'name' => 'required|unique:categories,name',
@@ -329,7 +323,7 @@ class AdminController extends Controller
     }
 
 
-    function delete_category(Request $request)
+    public function delete_category(Request $request)
     {
          $validation = $request->validate([
             'id' => 'required|exists:categories,id',
@@ -342,12 +336,12 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    function create_subcategory()
+    public function create_subcategory()
     {
         return view('admin.subcategory', ["categories"=> Category::get(["id as value", "name"]), "subcategories"=> Subcategory::all()]);
     }
 
-    function store_subcategory(Request $request)
+    public function store_subcategory(Request $request)
     {
         $validation = $request->validate([
             'name' => 'required|unique:subcategories,name',
@@ -361,7 +355,7 @@ class AdminController extends Controller
     }
 
 
-    function delete_subcategory(Request $request)
+    public function delete_subcategory(Request $request)
     {
          $validation = $request->validate([
             'id' => 'required|exists:subcategories,id',
@@ -372,5 +366,5 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    }
+    
 }
