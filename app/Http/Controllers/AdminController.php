@@ -47,7 +47,7 @@ class AdminController extends Controller
         $services = Service::all();
         foreach ($services as $service ) {
 
-            $user = User::Where(["id", "=", $service->user_id])->get();
+            $user = User::Where(["id", "=", $service->user_id])->first();
             $user_id = $user->id;
             $total_orders = 0;
             $balance = 0;
