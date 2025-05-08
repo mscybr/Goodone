@@ -10,6 +10,7 @@ use App\Models\AppSetting;
 use App\Models\RegionTax;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +42,50 @@ class AdminController extends Controller
         }
         return view("admin.users", ["users" => $users]);
     }
+
+    function get_services(Request $request){
+        $services = Service::all();
+        foreach ($services as $service ) {
+
+            $user = User::Where(["id", "=", $service->user_id])->get();
+            $user_id = $user->id;
+            $total_orders = 0;
+            $balance = 0;
+            $withdrawn = 0;
+            $requests = WithdrawRequest::Where([
+                ["user_id", "=", $user_id],
+                ['status', "<", 2]
+            ])->get();
+            foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
+            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user_id], ["order.status", "=", 2]])->get();
+            foreach ($orders as $order ) {
+                $balance += $order["total_hours"] * $order["cost_per_hour"];
+                $total_orders += $order["total_hours"] * $order["cost_per_hour"];
+            }
+            $balance -= $withdrawn;
+            $service["balance"] = $balance;
+            $service["total_orders"] = $total_orders;
+            $service["user"] = $user;
+        }
+        return view("admin.services", ["services" => $services]);
+    }    
+    
+    function toggle_service_activation(Request $request, Service $service){
+       if($service->active){
+         $service->update(["active" => false]);
+        }else{
+           $service->update(["active" => true]);
+       }
+
+       return redirect()->back();
+    }
+
+    public function delete_coupon(Request $request, Service $service){
+    {
+        $service->delete();
+        return redirect()->back();
+    }
+
 
     function get_service_providers(Request $request){
         $users = User::all();
@@ -98,10 +143,6 @@ class AdminController extends Controller
         }
     }
 
-    function block_user(Request $request, User $user){
-       $user->update(["active" => false]);
-       return redirect()->back();
-    }
 
     function unblock_user(Request $request, User $user){
        $user->update(["active" => true]);
