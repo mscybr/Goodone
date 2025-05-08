@@ -16,7 +16,7 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/admin/services', [AdminController::class, "get_services"])->name("admin_get_services");
 Route::post('/admin/services/{service}', [AdminController::class, "get_service"])->name("admin_get_service");
-Route::post('/admin/services/{service}/toggle_activation', [AdminController::class, "toggle_service_activation"])->name("admin_toggle_service_activation");
+Route::get('/admin/services/{service}/toggle_activation', [AdminController::class, "toggle_service_activation"])->name("admin_toggle_service_activation");
 Route::get('/admin/services/{service}/delete', [AdminController::class, "delete_service"])->name("admin_delete_service");
 
 Route::get('/admin/coupon', [AdminController::class, "create_coupon"])->name("admin_create_coupon");
