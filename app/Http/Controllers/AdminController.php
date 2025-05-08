@@ -42,6 +42,29 @@ class AdminController extends Controller
         return view("admin.users", ["users" => $users]);
     }
 
+    function get_service_providers(Request $request){
+        $users = User::all();
+        foreach ($users as $user ) {
+
+            $user_id = $user->id;
+            $balance = 0;
+            $withdrawn = 0;
+            $requests = WithdrawRequest::Where([
+                ["user_id", "=", $user_id],
+                ['status', "<", 2]
+            ])->get();
+            foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
+            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user_id], ["order.status", "=", 2]])->get();
+            foreach ($orders as $order ) {
+                $balance += $order["total_hours"] * $order["cost_per_hour"];
+            }
+            $balance -= $withdrawn;
+            $user["balance"] = $balance;
+
+        }
+        return view("admin.service_providers", ["users" => $users]);
+    }
+
     // user
     function get_user(Request $request, User $user){
         return view("admin.user", ["user" => $user]);

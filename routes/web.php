@@ -41,6 +41,7 @@ Route::post('/admin/region_taxes', [AdminController::class, "store_region_tax"])
 Route::get('/admin/region_taxes/delete', [AdminController::class, "delete_region_tax"])->name("admin_delete_region_tax");
 
 // users
+Route::get('/admin/get_service_providers', [AdminController::class, "get_service_providers"])->name("admin_get_service_providers");
 Route::get('/admin/users', [AdminController::class, "get_users"])->name("admin_get_users");
 Route::get('users/{user}', [AdminController::class, "get_user"])->name("admin_get_user");
 Route::get('users/{user}/block', [AdminController::class, "block_user"])->name("admin_block_user");
