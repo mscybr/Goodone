@@ -218,6 +218,7 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    
 
 
      function create_coupon()
