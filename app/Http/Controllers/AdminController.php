@@ -45,14 +45,13 @@ class AdminController extends Controller
 
     function get_services(Request $request){
         if(isset($request->user_id)){
-            $services = Service::Where(["user_id", "=", $request->user_id]);
-            dd($services);
+            $services = Service::Where([["user_id", "=", $request->user_id]]);
         }else{
             $services = Service::all();
         }
         foreach ($services as $service ) {
 
-            $user = User::Where(["id", "=", $service->user_id])->first();
+            $user = User::Where([["id", "=", $service->user_id]])->first();
             if($user == null){ $user = (object)["full_name" => "Deleted User"]; }
             $user_id = $service->user_id;
             $total_orders = 0;
