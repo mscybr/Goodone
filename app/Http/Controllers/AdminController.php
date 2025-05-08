@@ -11,6 +11,8 @@ use App\Models\RegionTax;
 use App\Models\User;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -261,10 +263,10 @@ class AdminController extends Controller
          $validation = $request->validate([
             'id' => 'required|exists:categories,id',
         ]);
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
         DB::delete('delete subcategories where category_id = ?', $validation["id"]);
         DB::delete('delete category where id = ?', $validation["id"]);
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
         // Category::find($validation["id"])->delete();
         return redirect()->back();
     }
