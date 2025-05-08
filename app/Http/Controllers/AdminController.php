@@ -262,7 +262,7 @@ class AdminController extends Controller
             'id' => 'required|exists:categories,id',
         ]);
         Category::find($validation["id"])->subcategory()->delete();
-        // Category::find($validation["id"])->delete();
+        Category::find($validation["id"])->delete();
         return redirect()->back();
     }
 
