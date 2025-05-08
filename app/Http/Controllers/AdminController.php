@@ -44,7 +44,11 @@ class AdminController extends Controller
     }
 
     function get_services(Request $request){
-        $services = Service::all();
+        if(isset($request->user_id)){
+            $services = Service::Where(["user_id", "=", $request->user_id]);
+        }else{
+            $services = Service::all();
+        }
         foreach ($services as $service ) {
 
             $user = User::Where(["id", "=", $service->user_id])->first();
