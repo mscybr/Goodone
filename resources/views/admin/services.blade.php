@@ -47,7 +47,7 @@
             $table_data = [];
             foreach ($services as $item ) {
               $table_data[] = (object)[
-                $item->user->id != null (object)["type"=> "anchor", "value" => $item->user->full_name, "name" => "Service", "href" => route("admin_get_user", $item->user_id), "color"=>"success"] : (object)["type"=> "string", "value" => $item->user->full_name, "name" => "User"],
+                $item->user->id != null ? (object)["type"=> "anchor", "value" => $item->user->full_name, "name" => "Service", "href" => route("admin_get_user", $item->user_id), "color"=>"success"] : (object)["type"=> "string", "value" => $item->user->full_name, "name" => "User"],
                 (object)["type"=> "string", "value" => $item->service, "name" => "Service"],
                 (object)["type"=> "string", "value" => $item->about, "name" => "About"],
                 (object)["type"=> "string", "value" => $item->cost_per_hour, "name" => "Cost Per Hour"],
