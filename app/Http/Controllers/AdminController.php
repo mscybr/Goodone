@@ -298,7 +298,6 @@ class AdminController extends Controller
         Schema::disableForeignKeyConstraints();
         DB::delete('delete from subcategories where id = ?', [$validation["id"]]);
         Schema::enableForeignKeyConstraints();
-        Subcategory::find($validation["id"])->delete();
         return redirect()->back();
     }
 
