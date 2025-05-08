@@ -95,6 +95,11 @@
               </a>
             </li>
             <li class="menu-item">
+              <a href="{{route("admin_get_services")}}" class="menu-link">
+                <div data-i18n="Analytics">Services</div>
+              </a>
+            </li>
+            <li class="menu-item">
               <a href="{{route("admin_withdraw_requests")}}" class="menu-link">
                 <div data-i18n="Analytics">Withdraw Requests</div>
               </a>
