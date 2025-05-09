@@ -37,10 +37,9 @@
             $table_headers = [
               // "Username",
               "Name",
-              "Email",
               "Services",
+              "Email",
               "Phone Number",
-              "Account Type",
               "Orders Balance",
               // "Followers",
               // "Following",
@@ -54,8 +53,7 @@
                 // (object)["type"=> "string", "value" => $item->full_name, "name" => "Name"],
                 (object)["type"=> "string", "value" => $item->email, "name" => "Email"],
                 (object)["type"=> "string", "value" => $item->phone, "name" => "Number"],
-                (object)["type"=> "string", "value" => $item->type == "worker" ? "Service Provider" : "Customer", "name" => "Account Type"],
-                (object)["type"=> "string", "value" => $item->balance, "name" => "Orders Balance"],
+                (object)["type"=> "string", "value" => "$".$item->balance, "name" => "Orders Balance"],
                 // (object)["type"=> "string", "value" => $item->followers, "name" => "followers"],
                 // (object)["type"=> "string", "value" => $item->following, "name" => "following"],
 

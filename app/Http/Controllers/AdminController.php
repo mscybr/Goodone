@@ -62,7 +62,7 @@ class AdminController extends Controller
                 ['status', "<", 2]
             ])->get();
             foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
-            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user_id], ["order.status", "=", 2]])->get();
+            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.id", "=", $service->id], ["order.status", "=", 2]])->get();
             foreach ($orders as $order ) {
                 $balance += $order["total_hours"] * $order["cost_per_hour"];
                 $total_orders += $order["total_hours"] * $order["cost_per_hour"];
