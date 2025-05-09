@@ -85,6 +85,7 @@ class AdminController extends Controller
        return redirect()->back();
     }
 
+
      public function get_service_providers (Request $request) {
         $users = User::Where([["type", "=", "worker"]])->get();
         foreach ($users as $user ) {
@@ -149,6 +150,41 @@ class AdminController extends Controller
     public function unblock_user(Request $request, User $user){
        $user->update(["active" => true]);
        return redirect()->back();
+    }
+
+    
+     public function get_orders (Request $request) {
+        if( isset($request->user_id) ){
+            $user = User::Where([["id", "=", $request->user_id]])->first();
+            if(is_null($user) == false){
+                if($user->type == "customer"){
+                    $orders = Order::Where([["user_id", "=", $request->user_id]])->get();
+                }else{
+                    $services = Service::Where([["user_id", "=", $request->user_id]])->get();
+                    foreach ($service as $service ) {
+                        $service_orders = Order::Where([["service_id", "=", $service->id]])->get();
+                        if(isset($orders)){
+                            $orders->merge($service_orders);
+                        }else{
+                            $orders = $service_orders;
+                        }
+                    }
+                }
+            }else{
+                $orders = [];
+            }
+        }elseif (isset($request->service_id)) {
+            $orders = Order::Where([["service_id", "=", $request->service_id]])->get();
+        }else{
+            $orders = Order::all();
+        }
+        foreach ($orders as $order ) {
+            $service = Service::Where([["id", "=", $order->service_id]])->first();
+            $user = User::Where([["id", "=", $order->user_id]])->first();
+            $order["user"] = $user;
+            $order["service"] = $service;
+        }
+        return view("admin.service_providers", ["users" => $users]);
     }
 
     

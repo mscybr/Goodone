@@ -53,3 +53,5 @@ Route::get('users/{user}/block', [AdminController::class, "block_user"])->name("
 Route::get('users/{user}/unblock', [AdminController::class, "unblock_user"])->name("admin_unblock_user");
 Route::post('users/{user}/edit', [AdminController::class, "edit_user"])->name("admin_edit_user");
 
+
+Route::get('/admin/orders', [AdminController::class, "get_orders"])->name("admin_get_orders");
