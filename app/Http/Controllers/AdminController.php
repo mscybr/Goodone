@@ -405,6 +405,26 @@ class AdminController extends Controller
         return view('admin.subcategory', ["categories"=> Category::get(["id as value", "name"]), "subcategories"=> Subcategory::all()]);
     }
 
+    
+        
+    public function edit_subcategory(Request $request, Subcategory $subcategory){
+
+        return view('admin.edit_subcategory', ["subcategory"=> $subcategory]);
+        
+    }
+        
+    public function update_subcategory(Request $request,  Subcategory $subcategory){
+
+        $update = [];
+
+        if(isset( $request->subcategory_name )) $update["name"] = $request->subcategory_name;
+
+        $subcategory->update($update);
+        return redirect(route("admin_create_subcategory"));
+        
+    }
+    
+
     public function store_subcategory(Request $request)
     {
         $validation = $request->validate([
