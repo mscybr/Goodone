@@ -359,7 +359,7 @@ class AdminController extends Controller
             $file_name = $_array[ sizeof($_array) -1 ];
             $update["image"] = $file_name;
         }
-        $category->update($validation);
+        $category->update($update);
         return redirect()->back();
         
     }
