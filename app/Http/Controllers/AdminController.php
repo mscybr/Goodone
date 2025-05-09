@@ -360,7 +360,7 @@ class AdminController extends Controller
             $update["image"] = $file_name;
         }
         $category->update($update);
-        return redirect()->back();
+        return redirect(route("admin_create_category"));
         
     }
     
