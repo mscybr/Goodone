@@ -21,7 +21,7 @@ class AdminController extends Controller
 
     // users
     public function get_users(Request $request){
-        $users = User::all();
+        $users = User::Where([["type", "=", "customer"]])->get();
         foreach ($users as $user ) {
 
             $user_id = $user->id;
@@ -86,7 +86,7 @@ class AdminController extends Controller
     }
 
      public function get_service_providers (Request $request) {
-        $users = User::all();
+        $users = User::Where([["type", "=", "worker"]])->get();
         foreach ($users as $user ) {
 
             $user_id = $user->id;

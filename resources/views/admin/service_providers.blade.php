@@ -38,6 +38,7 @@
               // "Username",
               "Name",
               "Email",
+              "Services",
               "Phone Number",
               "Account Type",
               "Orders Balance",
@@ -49,6 +50,7 @@
             foreach ($users as $item ) {
               $table_data[] = (object)[
                 (object)["type"=> "anchor", "value" => $item->full_name, "name" => "username", "href" => route("admin_get_user", $item), "color"=>"success"],
+                (object)["type"=> "anchor", "value" => "Services", "name" => "Services", "href" => route("admin_get_services", ["user_id" => $item->id]), "color"=>"success"],
                 // (object)["type"=> "string", "value" => $item->full_name, "name" => "Name"],
                 (object)["type"=> "string", "value" => $item->email, "name" => "Email"],
                 (object)["type"=> "string", "value" => $item->phone, "name" => "Number"],

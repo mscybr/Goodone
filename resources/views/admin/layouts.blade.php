@@ -90,8 +90,13 @@
               </a>
             </li>
             <li class="menu-item">
+              <a href="{{route("admin_get_service_providers")}}" class="menu-link">
+                <div data-i18n="Analytics">Service Providers</div>
+              </a>
+            </li>
+            <li class="menu-item">
               <a href="{{route("admin_get_users")}}" class="menu-link">
-                <div data-i18n="Analytics">Users</div>
+                <div data-i18n="Analytics">Customers</div>
               </a>
             </li>
             <li class="menu-item">
