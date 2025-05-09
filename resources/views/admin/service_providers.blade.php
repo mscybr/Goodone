@@ -40,7 +40,8 @@
               "Services",
               "Email",
               "Phone Number",
-              "Orders Balance",
+              "Balance",
+              "Total Orders",
               // "Followers",
               // "Following",
               "Block",
@@ -54,6 +55,7 @@
                 (object)["type"=> "string", "value" => $item->email, "name" => "Email"],
                 (object)["type"=> "string", "value" => $item->phone, "name" => "Number"],
                 (object)["type"=> "string", "value" => "$".$item->balance, "name" => "Orders Balance"],
+                (object)["type"=> "string", "value" => "$".$item->total_orders, "name" => "Orders Balance"],
                 // (object)["type"=> "string", "value" => $item->followers, "name" => "followers"],
                 // (object)["type"=> "string", "value" => $item->following, "name" => "following"],
 
