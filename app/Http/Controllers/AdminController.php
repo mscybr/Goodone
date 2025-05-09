@@ -338,6 +338,31 @@ class AdminController extends Controller
     {
         return view('admin.category', ["categories"=> Category::all()]);
     }
+
+        
+    public function edit_category(Request $request, Category $category){
+
+        return view('admin.edit_category', ["category"=> $category]);
+        
+    }
+        
+    public function update_category(Request $request, Category $category){
+
+        $update = [];
+
+        if(isset( $request->category_name )) $update["name"] = $request->category_name;
+
+        if($request->file('image')){
+            $file = $request->file('image');
+            $temp = $file->store('public/images');
+            $_array = explode("/", $temp);
+            $file_name = $_array[ sizeof($_array) -1 ];
+            $update["image"] = $file_name;
+        }
+        $category->update($validation);
+        return redirect()->back();
+        
+    }
     
 
     public function store_category(Request $request)
