@@ -37,7 +37,7 @@ Route::get('/admin/subcategory', [AdminController::class, "create_subcategory"])
 Route::get('/admin/subcategory/{subcategory}', [AdminController::class, "edit_subcategory"])->name("admin_edit_subcategory");
 Route::post('/admin/subcategory/{subcategory}', [AdminController::class, "update_subcategory"])->name("admin_update_subcategory");
 Route::post('/admin/subcategory', [AdminController::class, "store_subcategory"])->name("admin_store_subcategory");
-Route::get('/admin/subcategory/delete', [AdminController::class, "delete_subcategory"])->name("admin_delete_subcategory");
+Route::get('/admin/subcategory/{subcategory}/delete', [AdminController::class, "delete_subcategory"])->name("admin_delete_subcategory");
 
 Route::get('/admin/settings', [AdminController::class, "get_app_settings"])->name("admin_get_app_settings");
 Route::post('/admin/settings/edit', [AdminController::class, "edit_app_settings"])->name("admin_edit_app_settings");

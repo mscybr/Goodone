@@ -439,13 +439,11 @@ class AdminController extends Controller
     }
 
 
-    public function delete_subcategory(Request $request)
+    public function delete_subcategory(Request $request, Subcategory $subcategory)
     {
-         $validation = $request->validate([
-            'id' => 'required|exists:subcategories,id',
-        ]);
+        
         Schema::disableForeignKeyConstraints();
-        DB::delete('delete from subcategories where id = ?', [$validation["id"]]);
+        DB::delete('delete from subcategories where id = ?', [$subcategory->id]);
         Schema::enableForeignKeyConstraints();
         return redirect()->back();
     }
