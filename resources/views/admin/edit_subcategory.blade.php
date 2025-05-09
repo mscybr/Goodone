@@ -18,11 +18,11 @@
             };
             $data = [
               (object)[
-                "name" => "category_name",
+                "name" => "subcategory_name",
                 "type" => "text",
-                "label" => "Category Name",
-                "value" => old("category_name"),
-                "placeholder" => "enter category name",
+                "label" => "Subcategory Name",
+                "value" => old("subcategory_name"),
+                "placeholder" => "enter subcategory name",
                 "note" => ""
               ]
             ];
