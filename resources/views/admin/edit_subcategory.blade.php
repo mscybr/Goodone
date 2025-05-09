@@ -27,7 +27,7 @@
               ]
             ];
         @endphp
-        @include('admin.forms', ["title" => "Edit Category", "wrapper" => $wrapper, "data" => $data, "type" => "multi_fields_card_builder", "action" => route("admin_update_category", $category), "enctype" => "multipart/form-data", "method" => "POST" ])
+        @include('admin.forms', ["title" => "Edit Category", "wrapper" => $wrapper, "data" => $data, "type" => "multi_fields_card_builder", "action" => route("admin_update_subcategory", $subcategory), "enctype" => "multipart/form-data", "method" => "POST" ])
       </div>
       <div class="row">
         {{-- @include('admin.tables', ["title" => "Categories", "headers" =>  $table_headers, "data" => $table_data]); --}}
