@@ -810,8 +810,7 @@ class ServiceController extends Controller
         // $orders = Order::Where( [["service_id", "=", $user_id], ["status", ">", "0"]])->get();
         $orders = Order::join('services', "services.id", "=", "order.service_id")->join('subcategories', "subcategories.id", "=", "services.subcategory_id")->Select("order.created_at", "order.id", "order.note", "services.service", "services.id AS service_id", "services.cost_per_hour", "order.total_hours", "order.start_at", "order.price As total_price", "order.location", "order.user_id", "order.status")->With(['User' => function ($query) {
             $query->select('id', 'full_name', "picture");
-        }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->toSql();
-        dd($orders);
+        }])->Where( [["services.user_id", "=", $user_id], ["status", ">", "0"]])->get();
         $orders_by_date = [];
         foreach ($orders as $order ) {
             if(isset($orders_by_date[$order["created_at"]->format("Y-m-d")])){
