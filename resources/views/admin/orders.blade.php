@@ -34,6 +34,7 @@
             //     "note" => ""
             //   ],
             // ];
+            $table_data = [];
             if( request()->get("user_id") !== null ){
 
               $table_headers = [
@@ -45,7 +46,7 @@
                 "Discount",
                 "Location",
               ];
-              $table_data = [];
+              
               foreach ($orders as $item ) {
                   $dt = new DateTime();
 
