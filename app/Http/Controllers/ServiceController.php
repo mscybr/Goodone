@@ -794,6 +794,10 @@ class ServiceController extends Controller
         }, 'Service.Subcategory' => function ($query) {
             $query->select('id', 'name');
         }])->Where([["user_id", "=", $user_id], ["status", ">", "0"]])->get();
+        $total_orders = [];
+        foreach ($orders as $order ) {
+            if( is_null($order->service) == false && is_null($order->service->subcategory) == false ) $total_orders[] = $order;
+        }
         // $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
     }
