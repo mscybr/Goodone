@@ -55,6 +55,7 @@ class AdminController extends Controller
             if($user == null){ $user = (object)["full_name" => "Deleted User"]; }
             $user_id = $service->user_id;
             $total_orders = 0;
+            $total_discounts = 0;
             $orders = Order::select("*")->Where( [["order.service_id", "=", $service->id], ["order.status", "=", 2]])->get();
             foreach ($orders as $order ) {
                 $total_amount = $order->coupon_percentage == null ? $order->price : ($order->price / (100-$order->coupon_percentage)  ) * 100;
