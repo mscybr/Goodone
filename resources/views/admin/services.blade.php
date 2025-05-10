@@ -56,6 +56,7 @@
                 (object)["type"=> "string", "value" => $item->cost_per_hour, "name" => "Cost Per Hour"],
                 // (object)["type"=> "string", "value" => $item->country ? $item->country." / ".$item->city : $item->city, "name" => "City"],
                 (object)["type"=> "string", "value" => "$".$item->total_orders, "name" => "Total Orders"],
+                (object)["type"=> "string", "value" => "$".$item->total_discounts, "name" => "Total Discounts"],
                 (object)["type"=> "image", "value" => asset("storage/images/".$item->license)],
                 (object)["type"=> "anchor", "value" => "Delete", "name" => "Delete", "href" => route("admin_delete_service", $item) , "color"=> "danger"],
                 (object)["type"=> "anchor", "value" => $item->active ? "Deactivate" : "Activate", "name" => $item->active ? "Deactivate" : "Activate", "href" => route("admin_toggle_service_activation", $item) , "color"=> $item->active ? "danger"  : "success"],
