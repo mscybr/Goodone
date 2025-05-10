@@ -788,16 +788,12 @@ class ServiceController extends Controller
     {
         $user_id = auth("api")->user()->id;
 
-        $orders = Order::Select("order.id", "order.total_hours", "order.start_at", "order.price", "order.location", "order.service_id", "order.status", "order.note")->With(['Service' => function ($query) {
+        $orders = Order::Select("id", "total_hours", "start_at", "price", "location", "service_id", "status", "note")->With(['Service' => function ($query) {
             // $query->select('id', 'full_name', "picture", "service", "subcategory_id", "cost_per_hour");
-            $query->join('users', "users.id", "=", "services.user_id")->join('subcategories', "subcategories.id", "=", "services.subcategory_id")->select('services.id', 'users.full_name', "users.picture", "services.service", "services.subcategory_id", "services.cost_per_hour");
+            $query->join('users', "users.id", "=", "services.user_id")->select('services.id', 'users.full_name', "users.picture", "services.service", "services.subcategory_id", "services.cost_per_hour");
         }, 'Service.Subcategory' => function ($query) {
             $query->select('id', 'name');
         }])->Where([["user_id", "=", $user_id], ["status", ">", "0"]])->get();
-        $total_orders = [];
-        foreach ($orders as $order ) {
-            if(is_null($order->service) == false) $total_orders[] = $order; 
-        }
         // $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
     }
