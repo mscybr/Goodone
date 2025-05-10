@@ -799,7 +799,7 @@ class ServiceController extends Controller
             if( is_null($order->service) == false && is_null($order->service->subcategory) == false ) $total_orders[] = $order;
         }
         // $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
-        return response()->json(['message' => 'Success', 'data' => $orders], 200);
+        return response()->json(['message' => 'Success', 'data' => $total_orders], 200);
     }
 
      /**
