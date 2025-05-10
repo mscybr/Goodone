@@ -34,7 +34,7 @@
             //     "note" => ""
             //   ],
             // ];
-            if( isset(request()->get("user_id")) ){
+            if( request()->get("user_id") !== null ){
 
               $table_headers = [
                 "Service",
