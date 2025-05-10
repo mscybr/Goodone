@@ -47,14 +47,16 @@
               ];
               $table_data = [];
               foreach ($orders as $item ) {
+                  $dt = new DateTime();
+
                 $table_data[] = (object)[
                   (object)["type"=> "anchor", "value" => $item->service->service, "name" => "Service", "href" => route("admin_get_service", $item->service), "color"=>"success"],
                   (object)["type"=> "string", "value" => $item->status == 1 ? "Pending" : ($item->status == 2 ? "Completed" : "Canceled" ) , "name" => "Status"],
                   (object)["type"=> "string", "value" => $item->total_hours, "name" => "Total Hours"],
-                  (object)["type"=> "string", "value" => strtotime($item->start_at), "name" => "Starting Date"],
-                  (object)["type"=> "string", "value" => $item->location, "name" => "Location"],
+                  (object)["type"=> "string", "value" => $dt->setTimestamp( $item->start_at )->format("Y-m-d H:m:s"), "name" => "Starting Date"],
                   (object)["type"=> "string", "value" => $item->price, "name" => "Price"],
                   (object)["type"=> "string", "value" => $item->coupon_percentage == null ? 0 : ($item->price / (100-$item->coupon_percentage)  ) * $item->coupon_percentage, "name" => "Discount Amount"],
+                  (object)["type"=> "string", "value" => $item->location, "name" => "Location"],
                   // (object)["type"=> "image", "value" => asset("storage/images/".$item->license)],
                   // (object)["type"=> "anchor", "value" => "Delete", "name" => "Delete", "href" => route("admin_delete_service", $item) , "color"=> "danger"],
               ];
@@ -70,14 +72,16 @@
                 "Discount"
               ];
               foreach ($orders as $item ) {
+                $dt = new DateTime();
+
                 $table_data[] = (object)[
                   (object)["type"=> "anchor", "value" => $item->user->full_name, "name" => "User", "href" => route("admin_get_user", $item->user), "color"=>"success"],
                   (object)["type"=> "string", "value" => $item->status == 1 ? "Pending" : ($item->status == 2 ? "Completed" : "Canceled" ) , "name" => "Status"],
                   (object)["type"=> "string", "value" => $item->total_hours, "name" => "Total Hours"],
-                  (object)["type"=> "string", "value" => strtotime($item->start_at), "name" => "Starting Date"],
-                  (object)["type"=> "string", "value" => $item->location, "name" => "Location"],
+                  (object)["type"=> "string", "value" => $dt->setTimestamp( $item->start_at )->format("Y-m-d H:m:s"), "name" => "Starting Date"],
                   (object)["type"=> "string", "value" => $item->price, "name" => "Price"],
                   (object)["type"=> "string", "value" => $item->coupon_percentage == null ? 0 : ($item->price / (100-$item->coupon_percentage)  ) * $item->coupon_percentage, "name" => "Discount Amount"],
+                  (object)["type"=> "string", "value" => $item->location, "name" => "Location"],
                   // (object)["type"=> "image", "value" => asset("storage/images/".$item->license)],
                   // (object)["type"=> "anchor", "value" => "Delete", "name" => "Delete", "href" => route("admin_delete_service", $item) , "color"=> "danger"],
                 ];
