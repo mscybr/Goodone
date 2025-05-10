@@ -54,7 +54,7 @@
                   (object)["type"=> "string", "value" => strtotime($item->start_at), "name" => "Starting Date"],
                   (object)["type"=> "string", "value" => $item->location, "name" => "Location"],
                   (object)["type"=> "string", "value" => $item->price, "name" => "Price"],
-                  (object)["type"=> "string", "value" => $item->coupoun_percentage == null ? 0 : ($item->price / (100-$item->coupoun_percentage)  ) * $item->coupoun_percentage, "name" => "Discount Amount"],
+                  (object)["type"=> "string", "value" => $item->coupon_percentage == null ? 0 : ($item->price / (100-$item->coupon_percentage)  ) * $item->coupon_percentage, "name" => "Discount Amount"],
                   // (object)["type"=> "image", "value" => asset("storage/images/".$item->license)],
                   // (object)["type"=> "anchor", "value" => "Delete", "name" => "Delete", "href" => route("admin_delete_service", $item) , "color"=> "danger"],
               ];
@@ -77,7 +77,7 @@
                   (object)["type"=> "string", "value" => strtotime($item->start_at), "name" => "Starting Date"],
                   (object)["type"=> "string", "value" => $item->location, "name" => "Location"],
                   (object)["type"=> "string", "value" => $item->price, "name" => "Price"],
-                  (object)["type"=> "string", "value" => $item->coupoun_percentage == null ? 0 : ($item->price / (100-$item->coupoun_percentage)  ) * $item->coupoun_percentage, "name" => "Discount Amount"],
+                  (object)["type"=> "string", "value" => $item->coupon_percentage == null ? 0 : ($item->price / (100-$item->coupon_percentage)  ) * $item->coupon_percentage, "name" => "Discount Amount"],
                   // (object)["type"=> "image", "value" => asset("storage/images/".$item->license)],
                   // (object)["type"=> "anchor", "value" => "Delete", "name" => "Delete", "href" => route("admin_delete_service", $item) , "color"=> "danger"],
                 ];
