@@ -42,6 +42,7 @@
               "Cost Per Hour",
               // "Country / City",
               "Total Orders",
+              "Total Discounts",
               "License",
               "Delete",
             ];

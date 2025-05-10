@@ -55,21 +55,14 @@ class AdminController extends Controller
             if($user == null){ $user = (object)["full_name" => "Deleted User"]; }
             $user_id = $service->user_id;
             $total_orders = 0;
-            $balance = 0;
-            $withdrawn = 0;
-            $requests = WithdrawRequest::Where([
-                ["user_id", "=", $user_id],
-                ['status', "<", 2]
-            ])->get();
-            foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
-            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.id", "=", $service->id], ["order.status", "=", 2]])->get();
+            $orders = Order::select("*")->Where( [["order.service_id", "=", $service->id], ["order.status", "=", 2]])->get();
             foreach ($orders as $order ) {
-                $balance += $order["total_hours"] * $order["cost_per_hour"];
-                $total_orders += $order["total_hours"] * $order["cost_per_hour"];
+                $total_amount = $order->coupon_percentage == null ? $order->price : ($order->price / (100-$order->coupon_percentage)  ) * 100;
+                $total_discounts += ($order->price / (100-$order->coupon_percentage)  ) * $order->coupon_percentage;
+                $total_orders += $total_amount;
             }
-            $balance -= $withdrawn;
-            $service["balance"] = $balance;
             $service["total_orders"] = $total_orders;
+            $service["total_discounts"] = $total_discounts;
             $service["user"] = $user;
         }
         return view("admin.services", ["services" => $services]);
