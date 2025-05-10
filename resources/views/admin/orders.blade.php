@@ -41,9 +41,9 @@
                 "Order Status",
                 "Total Hours",
                 "Starting Time",
-                "Location",
                 "Total Price",
-                "Discount"
+                "Discount",
+                "Location",
               ];
               $table_data = [];
               foreach ($orders as $item ) {
@@ -67,9 +67,9 @@
                 "Order Status",
                 "Total Hours",
                 "Starting Time",
-                "Location",
                 "Total Price",
-                "Discount"
+                "Discount",
+                "Location",
               ];
               foreach ($orders as $item ) {
                 $dt = new DateTime();
