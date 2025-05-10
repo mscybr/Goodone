@@ -793,7 +793,7 @@ class ServiceController extends Controller
             $query->join('users', "users.id", "=", "services.user_id")->select('services.id', 'users.full_name', "users.picture", "services.service", "services.subcategory_id", "services.cost_per_hour");
         }, 'Service.Subcategory' => function ($query) {
             $query->select('id', 'name');
-        }])->Where([["user_id", "=", $user_id], ["status", ">", "0"]])->get();
+        }])->join('subcategories', "subcategories.id", "=", "services.subcategory_id")->Where([["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         // $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $orders], 200);
     }
