@@ -25,19 +25,16 @@ class AdminController extends Controller
         foreach ($users as $user ) {
 
             $user_id = $user->id;
-            $balance = 0;
-            $withdrawn = 0;
-            $requests = WithdrawRequest::Where([
-                ["user_id", "=", $user_id],
-                ['status', "<", 2]
-            ])->get();
-            foreach ( $requests as $request ) { $withdrawn += $request["amount"]; }
-            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user_id], ["order.status", "=", 2]])->get();
+            $total_orders = 0;
+            $total_discounts = 0;
+            $orders = Order::select("*")->Where( [["order.user_id", "=", $user_id], ["order.status", "=", 2]])->get();
             foreach ($orders as $order ) {
-                $balance += $order["total_hours"] * $order["cost_per_hour"];
+                $total_amount = $order->coupon_percentage == null ? $order->price : ($order->price / (100-$order->coupon_percentage)  ) * 100;
+                $total_discounts += ($order->price / (100-$order->coupon_percentage)  ) * $order->coupon_percentage;
+                $total_orders += $total_amount;
             }
-            $balance -= $withdrawn;
-            $user["balance"] = $balance;
+            $user["total_orders"] = $total_orders;
+            $user["total_discounts"] = $total_discounts;
 
         }
         return view("admin.users", ["users" => $users]);
