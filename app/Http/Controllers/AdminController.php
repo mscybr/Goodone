@@ -184,7 +184,7 @@ class AdminController extends Controller
             $order["user"] = $user;
             $order["service"] = $service;
         }
-        return view("admin.service_providers", ["users" => $users]);
+        return view("admin.orders", ["orders" => $orders]);
     }
 
     
