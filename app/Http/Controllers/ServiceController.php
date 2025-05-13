@@ -380,7 +380,7 @@ class ServiceController extends Controller
         if($request->has('category')) $query = $request->input('category');
         if($request->has('filter')){
 
-            if($category != ""){
+            if($category == ""){
 
                 $services = Service::With(['Subcategory.Category' => function ($query) {
                     $query->select('id', 'name', "image");
