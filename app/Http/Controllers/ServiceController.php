@@ -482,7 +482,10 @@ class ServiceController extends Controller
                     "services.about",
                     "users.security_check",
                     "services.verified_liscence",
-                )->Where([["services.active", "=", true], ["users.active", "=", true], ["services.about", "LIKE", "%$query%"]])->get();
+                )
+                // ->Where([["services.active", "=", true], ["users.active", "=", true], ["services.about", "LIKE", "%$query%"]])->get();
+                 ->Where([["services.active", "=", true], ["users.active", "=", true], ["services.about", "LIKE", "%$query%"]])
+                ->OrWhere([["services.active", "=", true], ["users.active", "=", true], ["users.full_name", "LIKE", "%$query%"]])->get();
             }else{
                 $services = Service::With(['Subcategory.Category' => function ($query) {
                     $query->select('id', 'name', "image");
@@ -505,7 +508,11 @@ class ServiceController extends Controller
                     "services.about",
                     "users.security_check",
                     "services.verified_liscence",
-                )->Where([["services.active", "=", true], ["users.active", "=", true], ["services.category_id", "=", $category], ["services.about", "LIKE", "%$query%"]])->get();
+                )
+                // ->Where([["services.active", "=", true], ["users.active", "=", true], ["services.category_id", "=", $category], ["services.about", "LIKE", "%$query%"]])->get();
+                ->Where([["services.active", "=", true], ["users.active", "=", true], ["services.category_id", "=", $category], ["services.about", "LIKE", "%$query%"]])
+                ->OrWhere([["services.active", "=", true], ["users.active", "=", true], ["services.category_id", "=", $category], ["users.full_name", "LIKE", "%$query%"]])
+                ->get();
             }
             // $services = User::With(['Subcategory.Category' => function ($query) {
             //     $query->select('id', 'name', "image");
