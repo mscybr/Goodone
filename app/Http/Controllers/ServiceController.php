@@ -547,6 +547,7 @@ class ServiceController extends Controller
             $gall = ServiceGallary::Select("image")->Where([["service_id", $service["id"]]])->pluck("image");
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
+            unset($services[$key]);
         }
         return response()->json($services);
     }
