@@ -45,13 +45,14 @@
               "Total Discounts",
               "License",
               "Delete",
+              "Activate/Deactivate",
             ];
             $table_data = [];
             foreach ($services as $item ) {
               $table_data[] = (object)[
                 isset($item->user->id) ? (object)["type"=> "anchor", "value" => $item->user->full_name, "name" => "Service", "href" => route("admin_get_user", $item->user_id), "color"=>"success"] : (object)["type"=> "string", "value" => $item->user->full_name, "name" => "User"],
                 (object)["type"=> "anchor", "value" => "Orders", "name" => "Service", "href" => route("admin_get_orders",["service_id" => $item->id]), "color"=>"success"],
-                (object)["type"=> "string", "value" => $item->service, "name" => "Service"],
+                (object)["type"=> "anchor", "value" => $item->service, "name" => "Service", "href" => route("admin_get_service", $item), "color"=>"success"],
                 (object)["type"=> "string", "value" => $item->about, "name" => "About"],
                 (object)["type"=> "string", "value" => $item->cost_per_hour, "name" => "Cost Per Hour"],
                 // (object)["type"=> "string", "value" => $item->country ? $item->country." / ".$item->city : $item->city, "name" => "City"],
