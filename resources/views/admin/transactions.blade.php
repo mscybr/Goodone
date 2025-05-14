@@ -53,7 +53,7 @@
                       (object)["type"=> "string", "value" => "Order", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Order Completed", "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item->updated_at )->format("Y-m-d H:m:s"), "name" => "Completion Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["updated_at"])->format("Y-m-d H:m:s"), "name" => "Completion Date"],
                     ];
                     $table_data[] = (object)[
                       (object)["type"=> "string", "value" => "Order", "name" => "Type"],
@@ -67,7 +67,7 @@
                       (object)["type"=> "string", "value" => "Order", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Order Canceled With message: ".$item->note, "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item->updated_at )->format("Y-m-d H:m:s"), "name" => "Cancelation Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["updated_at"])->format("Y-m-d H:m:s"), "name" => "Cancelation Date"],
                     ];
                     $table_data[] = (object)[
                       (object)["type"=> "string", "value" => "Order", "name" => "Type"],
@@ -91,7 +91,7 @@
                       (object)["type"=> "string", "value" => "Withdrawal", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Withdrawal Completed", "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item->updated_at )->format("Y-m-d H:m:s"), "name" => "Completion Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["updated_at"])->format("Y-m-d H:m:s"), "name" => "Completion Date"],
                     ];
                     $table_data[] = (object)[
                       (object)["type"=> "string", "value" => "Withdrawal", "name" => "Type"],
@@ -105,7 +105,7 @@
                       (object)["type"=> "string", "value" => "Withdrawal", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Withdrawal Rejected", "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item->updated_at )->format("Y-m-d H:m:s"), "name" => "Rejection Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["updated_at"])->format("Y-m-d H:m:s"), "name" => "Rejection Date"],
                     ];
                     $table_data[] = (object)[
                       (object)["type"=> "string", "value" => "Withdrawal", "name" => "Type"],
