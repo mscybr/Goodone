@@ -38,6 +38,7 @@
             if( request()->get("user_id") !== null ){
 
               $table_headers = [
+                "Order Id",
                 "Service",
                 "Order Status",
                 "Total Hours",
@@ -51,6 +52,7 @@
                   $dt = new DateTime();
 
                 $table_data[] = (object)[
+                  (object)["type"=> "string", "value" => $item->id, "name" => "Order Id"],
                   (object)["type"=> "anchor", "value" => $item->service->service, "name" => "Service", "href" => route("admin_get_service", $item->service), "color"=>"success"],
                   (object)["type"=> "string", "value" => $item->status == 1 ? "Pending" : ($item->status == 2 ? "Completed" : "Canceled" ) , "name" => "Status"],
                   (object)["type"=> "string", "value" => $item->total_hours, "name" => "Total Hours"],
