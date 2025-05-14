@@ -66,7 +66,7 @@
                     $table_data[] = (object)[
                       (object)["type"=> "string", "value" => "Order", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
-                      (object)["type"=> "string", "value" => "Order Canceled With message: ".$item->note, "name" => "Id"],
+                      (object)["type"=> "string", "value" => "Order Canceled With message: ".$item["values"]["note"], "name" => "Id"],
                       (object)["type"=> "string", "value" => ($item["values"]["updated_at"])->format("Y-m-d H:m:s"), "name" => "Cancelation Date"],
                     ];
                     $table_data[] = (object)[
