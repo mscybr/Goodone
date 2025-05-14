@@ -180,7 +180,7 @@ class AdminController extends Controller
     
      public function get_transactions (Request $request, User $user) {
         if($user->type == "customer"){
-            $transactions = Order::Where([["user_id", "=", $user->id], ["status", ">", 0]])->orderBy('updated_at','DESC')->get();
+            $total_transactions = Order::Where([["user_id", "=", $user->id], ["status", ">", 0]])->orderBy('updated_at','DESC')->get();
         }else{
             $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user->id], ["order.status", ">", 0]])->orderBy('orders.updated_at','DESC')->get();
             $withdrawals = WithdrawRequest::Where([["status", "<", "2"]])->orderBy('updated_at','DESC')->get();
