@@ -207,6 +207,7 @@
     <script src='{{asset("assets2/vendor/js/bootstrap.js")}}'></script>
     <script src='{{asset("assets2/vendor/libs/perfect-scrollbar/perfect-scrollbar.js")}}'></script>
     <script src="https://cdn.datatables.net/2.3.0/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.0/js/dataTables.bootstrap5.min.js"></script>
 
     <script src='{{asset("assets2/vendor/js/menu.js")}}'></script>
     <!-- endbuild -->
