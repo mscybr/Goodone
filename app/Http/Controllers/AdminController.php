@@ -195,6 +195,7 @@ class AdminController extends Controller
                     "values" => $item["values"]
                 ];
             }
+            dd($total_transactions);
 
             // $orders = Order::Where([["user_id", "=", $user->id], ["status", ">", 0]])->orderBy('updated_at','DESC')->get();
         }
