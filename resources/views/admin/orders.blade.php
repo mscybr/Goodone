@@ -66,8 +66,8 @@
               }
             }else{
                $table_headers = [
-                 "User",
-                 "Order Id",
+                "User",
+                "Order Id",
                 "Order Status",
                 "Total Hours",
                 "Starting Time",

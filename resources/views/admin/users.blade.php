@@ -37,6 +37,7 @@
             $table_headers = [
               // "Username",
               "Orders",
+              "Transactions",
               "Name",
               "Email",
               "Phone Number",
@@ -51,6 +52,7 @@
             foreach ($users as $item ) {
               $table_data[] = (object)[
                 (object)["type"=> "anchor", "value" => "Orders", "name" => "username", "href" => route("admin_get_orders", ["user_id"=>$item->id]), "color"=>"success"],
+                (object)["type"=> "anchor", "value" => "Orders", "name" => "Transactions", "href" => route("admin_get_transactions", $item), "color"=>"success"],
                 (object)["type"=> "anchor", "value" => $item->full_name, "name" => "username", "href" => route("admin_get_user", $item), "color"=>"success"],
                 // (object)["type"=> "string", "value" => $item->full_name, "name" => "Name"],
                 (object)["type"=> "string", "value" => $item->email, "name" => "Email"],

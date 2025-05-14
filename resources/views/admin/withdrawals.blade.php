@@ -43,6 +43,7 @@
             // ],
             // ];
             $table_headers = [
+              "Request Id",
               "Method",
               "Amount",
               "Name",
@@ -60,6 +61,7 @@
                 if($request["method"] == "bank"){
 
                   $table_data[] = (object)[
+                    (object)["type"=> "string", "value" => $request->id],
                     (object)["type"=> "string", "value" => $request->method],
                     (object)["type"=> "string", "value" => $request->amount],
                     (object)["type"=> "string", "value" => $request->name],
@@ -72,7 +74,8 @@
                   ];
                 }else{
                   $table_data[] = (object)[
-                                  (object)["type"=> "string", "value" => $request->method],
+                    (object)["type"=> "string", "value" => $request->id],
+                    (object)["type"=> "string", "value" => $request->method],
                     (object)["type"=> "string", "value" => $request->amount],
                     (object)["type"=> "string", "value" => ""],
                     (object)["type"=> "string", "value" => ""],

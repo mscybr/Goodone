@@ -180,9 +180,25 @@ class AdminController extends Controller
     
      public function get_transactions (Request $request, User $user) {
         if($user->type == "customer"){
-            
+            $transactions = Order::Where([["user_id", "=", $user->id], ["status", ">", 0]])->orderBy('updated_at','DESC')->get();
+        }else{
+            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user->id], ["order.status", ">", 0]])->orderBy('orders.updated_at','DESC')->get();
+            $withdrawals = WithdrawRequest::Where([["status", "<", "2"]])->orderBy('updated_at','DESC')->get();
+            $merged_dates_array = [];
+            foreach ($orders as $key => $order ) $merged_dates_array[] = ["type"=> "order", "id" => $key, "date" => $order->updated_at];
+            foreach ($withdrawals as $key => $withdrawal ) $merged_dates_array[] = ["type"=> "withdrawal", "id" => $key, "date" => $withdrawal->updated_at];
+            usort($merged_dates_array, fn($a, $b) => $a['date'] <=> $b['date']);
+            $total_transactions = [];
+            foreach ($merged_dates_array as $item ) {
+                $total_transactions [] = [
+                    "type" => $item["type"],
+                    "values" => $item["type"] == "order"? $orders[$item["id"]] : $withdrawals[$item["id"]]
+                ];
+            }
+
+            // $orders = Order::Where([["user_id", "=", $user->id], ["status", ">", 0]])->orderBy('updated_at','DESC')->get();
         }
-        return view("admin.orders", ["orders" => $orders]);
+        return view("admin.transactions", ["transactions" => $total_transactions]);
     }
 
     

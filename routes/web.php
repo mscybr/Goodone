@@ -59,3 +59,4 @@ Route::post('users/{user}/edit', [AdminController::class, "edit_user"])->name("a
 
 
 Route::get('/admin/orders', [AdminController::class, "get_orders"])->name("admin_get_orders");
+Route::get('/admin/transactions/{user}', [AdminController::class, "get_transactions"])->name("admin_get_transactions");
