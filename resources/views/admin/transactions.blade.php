@@ -59,7 +59,7 @@
                       (object)["type"=> "string", "value" => "Order", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Order Created", "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item["values"]["created_at"] )->format("Y-m-d H:m:s"), "name" => "Creation Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["created_at"])->format("Y-m-d H:m:s"), "name" => "Creation Date"],
                     ];
                   }else if( $item["values"]["status"] == 3 ){
 
@@ -73,14 +73,14 @@
                       (object)["type"=> "string", "value" => "Order", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Order Created", "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item["values"]["created_at"] )->format("Y-m-d H:m:s"), "name" => "Creation Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["created_at"])->format("Y-m-d H:m:s"), "name" => "Creation Date"],
                     ];
                   }else if( $item["values"]["status"] == 1 ){
                     $table_data[] = (object)[
                       (object)["type"=> "string", "value" => "Order", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Order Created", "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item["values"]["created_at"] )->format("Y-m-d H:m:s"), "name" => "Creation Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["created_at"])->format("Y-m-d H:m:s"), "name" => "Creation Date"],
                     ];
                   }
                 }else{
@@ -97,7 +97,7 @@
                       (object)["type"=> "string", "value" => "Withdrawal", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Withdrawal Request Created", "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item["values"]["created_at"] )->format("Y-m-d H:m:s"), "name" => "Creation Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["created_at"])->format("Y-m-d H:m:s"), "name" => "Creation Date"],
                     ];
                   }else if( $item["values"]["status"] == 2  ){
 
@@ -111,7 +111,7 @@
                       (object)["type"=> "string", "value" => "Withdrawal", "name" => "Type"],
                       (object)["type"=> "string", "value" => $item["values"]["id"], "name" => "Id"],
                       (object)["type"=> "string", "value" => "Withdrawal Request Rejected", "name" => "Id"],
-                      (object)["type"=> "string", "value" => $dt->setTimestamp( $item["values"]["created_at"] )->format("Y-m-d H:m:s"), "name" => "Creation Date"],
+                      (object)["type"=> "string", "value" => ($item["values"]["created_at"])->format("Y-m-d H:m:s"), "name" => "Creation Date"],
                     ];
                   }
                 }
