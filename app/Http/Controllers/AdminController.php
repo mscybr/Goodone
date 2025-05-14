@@ -187,7 +187,7 @@ class AdminController extends Controller
                 "values" => $order
             ];
         }else{
-            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user->id], ["order.status", ">", 0]])->orderBy('orders.updated_at','DESC')->get();
+            $orders = Order::join('services', "services.id", "=", "order.service_id")->select("services.*", "order.*")->Where( [["services.user_id", "=", $user->id], ["order.status", ">", 0]])->orderBy('order.updated_at','DESC')->get();
             $withdrawals = WithdrawRequest::Where([["status", "<", "2"]])->orderBy('updated_at','DESC')->get();
             $merged_dates_array = [];
             foreach ($orders as $order ) $merged_dates_array[] = ["type"=> "order", "values" => $order, "date" => $order->updated_at];
