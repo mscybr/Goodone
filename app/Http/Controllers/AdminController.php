@@ -177,6 +177,13 @@ class AdminController extends Controller
         }
         return view("admin.orders", ["orders" => $orders]);
     }
+    
+     public function get_transactions (Request $request, User $user) {
+        if($user->type == "customer"){
+            
+        }
+        return view("admin.orders", ["orders" => $orders]);
+    }
 
     
     public function edit_setting($key, $value){
