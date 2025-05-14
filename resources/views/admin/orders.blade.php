@@ -38,8 +38,8 @@
             if( request()->get("user_id") !== null ){
 
               $table_headers = [
-                "Order Id",
                 "Service",
+                "Order Id",
                 "Order Status",
                 "Total Hours",
                 "Starting Time",
@@ -52,8 +52,8 @@
                   $dt = new DateTime();
 
                 $table_data[] = (object)[
-                  (object)["type"=> "string", "value" => $item->id, "name" => "Order Id"],
                   (object)["type"=> "anchor", "value" => $item->service->service, "name" => "Service", "href" => route("admin_get_service", $item->service), "color"=>"success"],
+                  (object)["type"=> "string", "value" => $item->id, "name" => "Order Id"],
                   (object)["type"=> "string", "value" => $item->status == 1 ? "Pending" : ($item->status == 2 ? "Completed" : "Canceled" ) , "name" => "Status"],
                   (object)["type"=> "string", "value" => $item->total_hours, "name" => "Total Hours"],
                   (object)["type"=> "string", "value" => $dt->setTimestamp( $item->start_at )->format("Y-m-d H:m:s"), "name" => "Starting Date"],
@@ -66,7 +66,8 @@
               }
             }else{
                $table_headers = [
-                "User",
+                 "User",
+                 "Order Id"
                 "Order Status",
                 "Total Hours",
                 "Starting Time",
@@ -79,6 +80,7 @@
 
                 $table_data[] = (object)[
                   (object)["type"=> "anchor", "value" => $item->user->full_name, "name" => "User", "href" => route("admin_get_user", $item->user), "color"=>"success"],
+                  (object)["type"=> "string", "value" => $item->id, "name" => "Order Id"],
                   (object)["type"=> "string", "value" => $item->status == 1 ? "Pending" : ($item->status == 2 ? "Completed" : "Canceled" ) , "name" => "Status"],
                   (object)["type"=> "string", "value" => $item->total_hours, "name" => "Total Hours"],
                   (object)["type"=> "string", "value" => $dt->setTimestamp( $item->start_at )->format("Y-m-d H:m:s"), "name" => "Starting Date"],
