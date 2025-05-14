@@ -41,6 +41,7 @@
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.min.css">
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href='{{asset("assets2/vendor/fonts/boxicons.css")}}' />
@@ -205,6 +206,7 @@
     <script src='{{asset("assets2/vendor/libs/popper/popper.js")}}'></script>
     <script src='{{asset("assets2/vendor/js/bootstrap.js")}}'></script>
     <script src='{{asset("assets2/vendor/libs/perfect-scrollbar/perfect-scrollbar.js")}}'></script>
+    <script src="https://cdn.datatables.net/2.3.0/js/dataTables.min.js"></script>
 
     <script src='{{asset("assets2/vendor/js/menu.js")}}'></script>
     <!-- endbuild -->
@@ -213,6 +215,9 @@
 
     <!-- Main JS -->
     <script src='{{asset("assets2/js/main.js")}}'></script>
+    <script>
+      new DataTable('table');
+    </script>
 
     <!-- Page JS -->
 
