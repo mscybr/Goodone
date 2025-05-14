@@ -547,7 +547,8 @@ class ServiceController extends Controller
             $gall = ServiceGallary::Select("image")->Where([["service_id", $service["id"]]])->pluck("image");
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
-            if(is_null($services[$key]["subcategory"]))unset($services[$key]);
+            
+            if(Category::Where([["id", "=", $service["category_id"]]])->count() == 0) unset($services[$key]);
         }
         return response()->json($services);
     }
