@@ -12,6 +12,7 @@ use App\Models\WithdrawRequest;
 use App\Models\ServiceGallary;
 use App\Models\RegionTax;
 use App\Models\AppSetting;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
