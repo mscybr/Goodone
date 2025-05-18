@@ -549,7 +549,7 @@ class ServiceController extends Controller
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
             
-            if(Category::Where([["id", "=", $service["category_id"]]])->count() == 0) unset($services[$key]);
+            // if(Category::Where([["id", "=", $service["category_id"]]])->count() == 0) unset($services[$key]);
         }
         return response()->json($services);
     }
