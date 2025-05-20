@@ -183,7 +183,7 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
         $user = User::Where("email", "=", $credentials["email"]);
-        if( $user->count() > 0 && $user->first()["active"] == false ) return response()->json(['error' => 'Account is deactivated'], 403);
+        if( $user->count() > 0 && $user->first()["blocked"] == false ) return response()->json(['error' => 'Account is blocked'], 403);
         if( $user->count() > 0 && $user->first()["verified"] == false ) return response()->json(['error' => 'Account is not verified'], 401);
 
         if (! $token = auth("api")->attempt($credentials)) {
