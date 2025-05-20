@@ -44,7 +44,7 @@
               $table_data[] = (object)[
                 (object)["type"=> "anchor", "value" => $category->name, "color" => "success", "href"=> route("admin_edit_category", $category)],
                 (object)["type"=> "image", "value" => asset("storage/images/".$category->image)],
-                (object)["type"=> "anchor", "value" => "Delete", "color" => "danger", "href"=> route("admin_delete_category", ["id"=>$category->id])],
+                (object)["type"=> "anchor", "value" => "Delete", "color" => "danger", "href"=> route("admin_delete_category")],
             ];
             }
         @endphp

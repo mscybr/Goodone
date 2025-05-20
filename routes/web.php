@@ -31,7 +31,7 @@ Route::get('/admin/category', [AdminController::class, "create_category"])->name
 Route::post('/admin/category', [AdminController::class, "store_category"])->name("admin_store_category");
 Route::get('/admin/category/{category}', [AdminController::class, "edit_category"])->name("admin_edit_category");
 Route::post('/admin/category/{category}', [AdminController::class, "update_category"])->name("admin_update_category");
-Route::get('/admin/category/delete', [AdminController::class, "delete_category"])->name("admin_delete_category");
+Route::get('/admin/category/{category}/delete', [AdminController::class, "delete_category"])->name("admin_delete_category");
 
 Route::get('/admin/subcategory', [AdminController::class, "create_subcategory"])->name("admin_create_subcategory");
 Route::get('/admin/subcategory/{subcategory}', [AdminController::class, "edit_subcategory"])->name("admin_edit_subcategory");
