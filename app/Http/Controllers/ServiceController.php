@@ -378,7 +378,7 @@ class ServiceController extends Controller
         $query = "";
         $category = "";
         if($request->has('query')) $query = $request->input('query');
-        if($request->has('category')) $query = $request->input('category');
+        if($request->has('category')) $category = $request->input('category');
         if($request->has('filter')){
 
             if($category == ""){
@@ -549,7 +549,7 @@ class ServiceController extends Controller
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
             
-            // if(Category::Where([["id", "=", $service["category_id"]]])->count() == 0) unset($services[$key]);
+            if(Category::Where([["id", "=", $service["category_id"]]])->count() == 0) unset($services[$key]);
         }
         return response()->json($services);
     }
