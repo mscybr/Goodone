@@ -43,7 +43,7 @@
               $table_data[] = (object)[
                 (object)["type"=> "string", "value" => $category->name],
                 (object)["type"=> "image", "value" => asset("storage/images/".$category->image)],
-                (object)["type"=> "anchor", "value" => "Delete", "color" => "danger", "href"=> route("admin_delete_category", ["id"=>$category->id])],
+                (object)["type"=> "anchor", "value" => "Delete", "color" => "danger", "href"=> route("admin_delete_category", $category)],
             ];
         @endphp
         @include('admin.forms', ["title" => "Edit Category", "wrapper" => $wrapper, "data" => $data, "type" => "multi_fields_card_builder", "action" => route("admin_update_category", $category), "enctype" => "multipart/form-data", "method" => "POST" ])
