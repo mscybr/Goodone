@@ -524,6 +524,7 @@ class ServiceController extends Controller
         // dd($services);
         foreach ($services as $key => $service ) {
              $id = $service["id"];
+             $category_id = Service::Where([["id", "=", $id]])->first()["category_id"];
             // $gall = ServiceGallary::Where([["user_id", $service["id"]]])->get();
             // // return response()->json($gall);
             // $services[$key]["gallary"] = $gall;
@@ -549,7 +550,7 @@ class ServiceController extends Controller
             // return response()->json($gall);
             $services[$key]["gallary"] = $gall;
             
-            // if(Category::Where([["id", "=", $service["category_id"]]])->count() == 0) unset($services[$key]);
+            if(Category::Where([["id", "=", $category_id]])->count() == 0) unset($services[$key]);
         }
         return response()->json($services);
     }
