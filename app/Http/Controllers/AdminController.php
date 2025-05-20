@@ -138,8 +138,13 @@ class AdminController extends Controller
     }
 
 
+    public function block_user(Request $request, User $user){
+       $user->update(["blocked" => false]);
+       return redirect()->back();
+    }
+
     public function unblock_user(Request $request, User $user){
-       $user->update(["active" => true]);
+       $user->update(["blocked" => true]);
        return redirect()->back();
     }
 
