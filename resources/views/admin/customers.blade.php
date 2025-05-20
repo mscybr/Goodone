@@ -43,6 +43,7 @@
               "Orders Balance",
               // "Followers",
               // "Following",
+              "Activation",
               "Block",
             ];
             $table_data = [];
@@ -56,7 +57,7 @@
                 (object)["type"=> "string", "value" => $item->balance, "name" => "Orders Balance"],
                 // (object)["type"=> "string", "value" => $item->followers, "name" => "followers"],
                 // (object)["type"=> "string", "value" => $item->following, "name" => "following"],
-
+                (object)["type"=> "anchor", "value" => $item->active == true ? "Deactivate User" : "Activate User", "name" => "", "href" => $item->active ? route("admin_deactivate_user", $item) : route("admin_activate_user", $item) , "color"=> $item->active ? "danger" : "success"],
                 (object)["type"=> "anchor", "value" => $item->blocked == false ? "Block User" : "Unblock User", "name" => "", "href" => $item->blocked == false ? route("admin_block_user", $item) : route("admin_unblock_user", $item) , "color"=> $item->blocked == false ? "danger" : "success"],
             ];
             }

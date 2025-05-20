@@ -138,6 +138,17 @@ class AdminController extends Controller
     }
 
 
+    public function activate_user(Request $request, User $user){
+       $user->update(["active" => true]);
+       return redirect()->back();
+    }
+
+    public function deactivate_user(Request $request, User $user){
+       $user->update(["active" => false]);
+       return redirect()->back();
+    }
+
+
     public function block_user(Request $request, User $user){
        $user->update(["blocked" => true]);
        return redirect()->back();

@@ -55,6 +55,8 @@ Route::get('/admin/users', [AdminController::class, "get_users"])->name("admin_g
 Route::get('users/{user}', [AdminController::class, "get_user"])->name("admin_get_user");
 Route::get('users/{user}/block', [AdminController::class, "block_user"])->name("admin_block_user");
 Route::get('users/{user}/unblock', [AdminController::class, "unblock_user"])->name("admin_unblock_user");
+Route::get('users/{user}/activate', [AdminController::class, "activate_user"])->name("admin_activate_user");
+Route::get('users/{user}/deactivate', [AdminController::class, "deactivate_user"])->name("admin_deactivate_user");
 Route::post('users/{user}/edit', [AdminController::class, "edit_user"])->name("admin_edit_user");
 
 
