@@ -68,6 +68,7 @@
                $table_headers = [
                 "User",
                 "Order Id",
+                "Service Id",
                 "Order Status",
                 "Total Hours",
                 "Starting Time",
@@ -81,6 +82,7 @@
                 $table_data[] = (object)[
                   (object)["type"=> "anchor", "value" => $item->user->full_name, "name" => "User", "href" => route("admin_get_user", $item->user), "color"=>"success"],
                   (object)["type"=> "string", "value" => $item->id, "name" => "Order Id"],
+                  (object)["type"=> "string", "value" => $item->service_id, "name" => "Service Id"],
                   (object)["type"=> "string", "value" => $item->status == 1 ? "Pending" : ($item->status == 2 ? "Completed" : "Canceled" ) , "name" => "Status"],
                   (object)["type"=> "string", "value" => $item->total_hours, "name" => "Total Hours"],
                   (object)["type"=> "string", "value" => $dt->setTimestamp( $item->start_at )->format("Y-m-d H:m:s"), "name" => "Starting Date"],
