@@ -55,10 +55,10 @@ class AdminController extends Controller
         $end_today = new \DateTime('now');
         $end_today->modify('today 23:59:59');
 
-        $start_yesterday = new \DateTime('now');
-        $start_yesterday->modify('yesterday 00:00:00');
-        $end_yesterday = new \DateTime('now');
-        $end_yesterday->modify('yesterday 23:59:59');
+        $start_yesterday = new \DateTime('-1 day');
+        $start_yesterday->modify('today 00:00:00');
+        $end_yesterday = new \DateTime('-1 day');
+        $end_yesterday->modify('today 23:59:59');
 
         $stats_year = $this->aquire_stats($start_year, $end_year);
         $stats_month = $this->aquire_stats($start_month, $end_month);
