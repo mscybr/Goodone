@@ -745,10 +745,11 @@ class ServiceController extends Controller
             }
         }
         $service = Service::Where("id", "=", $validation["service_id"])->first();
+        $validation["price"] = $service["cost_per_hour"] * $validation["total_hours"] ;
         if(isset($validation["coupon_percentage"])){
-            $validation["price"] = ($service["cost_per_hour"] * $validation["total_hours"]) * (1-($validation["coupon_percentage"]/100)) ;
-        }else{
-            $validation["price"] = $service["cost_per_hour"] * $validation["total_hours"] ;
+            $discounted_amount = $validation["price"] * ($validation["coupon_percentage"]/100);
+            $validation["price"] -= $discounted_amount;
+            $validation["discounted_amount"] = $discounted_amount;
         }
         $validation["status"] = 1; //pending
         $validation["note"] = ""; //pending
@@ -766,11 +767,14 @@ class ServiceController extends Controller
             $tax = RegionTax::whereRaw('LOWER(region) = ?', [strtolower($validation["region"])]);
             if($tax->count() > 0){
                 // add platform fees before the taxes
-                $validation["price"] = ($validation["price"] * $platform_percentage / 100) + $validation["price"];
-                $validation["price"] += $platform_fee;
+                $platform_fee_amount = ($validation["price"] * $platform_percentage / 100);
+                $platform_fee_amount += $platform_fee;
+                $validation["platform_fee_amount"]= $platform_fee_amount;
+                $validation["price"] += $platform_fee_amount;
                 $region_tax = $tax->first()["percentage"];
-                // $order["region_tax"] = $region_tax;
-                $validation["price"] = ($validation["price"] * $region_tax / 100) + $validation["price"];
+                $taxed_amount = ($validation["price"] * $region_tax / 100);
+                $validation["taxed_amount"] = $taxed_amount;
+                $validation["price"] = $taxed_amount + $validation["price"];
                 $order = Order::create($validation);
                 Notification::create([
                     "user_id" => $service["user_id"],

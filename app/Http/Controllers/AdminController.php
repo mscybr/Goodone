@@ -11,12 +11,99 @@ use App\Models\RegionTax;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Service;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+
+
+    public function admin_home( Request $request ){
+        $stats_today = [
+            "users" => 0,
+            "services" => 0,
+            "orders" => 0,
+            "revenue" => 0,
+            "earnings" => 0
+        ];
+        $stats_month = [
+            "users" => 0,
+            "services" => 0,
+            "orders" => 0,
+            "revenue" => 0,
+            "earnings" => 0
+        ];
+        $start_year = new \DateTime('now');
+        $start_year->modify('first day of this year');
+        $end_year = new \DateTime('now');
+        $end_year->modify('last day of this year');
+
+        $start_month = new \DateTime('now');
+        $start_month->modify('first day of this month');
+        $end_month = new \DateTime('now');
+        $end_month->modify('last day of this month');
+
+        $start_past_month = new \DateTime('now');
+        $start_past_month->modify('first day of last month');
+        $end_past_month = new \DateTime('now');
+        $end_past_month->modify('last day of last month');
+
+        $start_today = new \DateTime('now');
+        $start_today->modify('today 00:00:00');
+        $end_today = new \DateTime('now');
+        $end_today->modify('today 23:59:59');
+
+        $start_yesterday = new \DateTime('now');
+        $start_yesterday->modify('yesterday 00:00:00');
+        $end_yesterday = new \DateTime('now');
+        $end_yesterday->modify('yesterday 23:59:59');
+
+        $stats_year = aquire_stats($start_year, $end_year);
+        $stats_month = aquire_stats($start_month, $end_month);
+        $stats_past_month = aquire_stats($start_today, $end_today);
+        $stats_day = aquire_stats($start_today, $end_today);
+        $stats_yesterday = aquire_stats($start_today, $end_today);
+
+        $stats_day["users_difference"] = (1 - ($stats_day["users"] / $stats_yesterday["users"])) * 100;
+        $stats_day["services_difference"] = (1 - ($stats_day["services"] / $stats_yesterday["services"])) * 100;
+        $stats_day["orders_difference"] = (1 - ($stats_day["orders"] / $stats_yesterday["orders"])) * 100;
+        $stats_day["revenue_difference"] = (1 - ($stats_day["revenue"] / $stats_yesterday["revenue"])) * 100;
+        $stats_day["earnings_difference"] = (1 - ($stats_day["earnings"] / $stats_yesterday["earnings"])) * 100;
+
+        $stats_month["users_difference"] = (1 - ($stats_month["users"] / $stats_past_month["users"])) * 100;
+        $stats_month["services_difference"] = (1 - ($stats_month["services"] / $stats_past_month["services"])) * 100;
+        $stats_month["orders_difference"] = (1 - ($stats_month["orders"] / $stats_past_month["orders"])) * 100;
+        $stats_month["revenue_difference"] = (1 - ($stats_month["revenue"] / $stats_past_month["revenue"])) * 100;
+        $stats_month["earnings_difference"] = (1 - ($stats_month["earnings"] / $stats_past_month["earnings"])) * 100;
+
+        return view("admin.index", [
+            "month_stats" => $stats_month,
+            "day_stats" => $stats_day,
+            "stats_year" => $stats_year
+        ]);
+    }
+
+    public function aquire_stats($from, $to){
+        $users = User::whereBetween("created_at", [$from, $to])->count();
+        $services = Service::whereBetween("created_at", [$from, $to])->count();
+        $all_orders = Order::Where([["status", "=", 2]])->whereBetween("created_at", [$from, $to]);
+        $orders = $all_orders->count();
+        $revenue = 0;
+        $earnings = 0;
+        foreach ($all_orders->get() as $order) {
+            $revenue += $order->price;
+            $earnings += $order->platform_fee_amount - $order->discounted_amount;
+        }
+        return [
+            "users" => $users,
+            "services" => $services,
+            "orders" => $orders,
+            "revenue" => $revenue,
+            "earnings" => $earnings,
+        ];
+    }
 
 
     // users
@@ -38,6 +125,15 @@ class AdminController extends Controller
 
         }
         return view("admin.users", ["users" => $users]);
+    }
+
+    public function get_service_ratings(Request $request, Service $service){
+        $ratings = Rating::With("user")->Where([["service_id", "=", $service->id]])->get();
+        return view("admin.ratings", ["ratings" => $ratings]);
+    }
+    public function delete_rating( Request $request, Rating $rating ){
+        $rating->delete();
+        return redirect()->back();
     }
 
     public function get_services(Request $request){

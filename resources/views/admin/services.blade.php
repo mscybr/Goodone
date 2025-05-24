@@ -37,6 +37,7 @@
             $table_headers = [
               "Owner",
               "Orders",
+              "Ratings",
               "Service",
               "About",
               "Cost Per Hour",
@@ -51,10 +52,11 @@
             foreach ($services as $item ) {
               $table_data[] = (object)[
                 isset($item->user->id) ? (object)["type"=> "anchor", "value" => $item->user->full_name, "name" => "User", "href" => route("admin_get_user", $item->user_id), "color"=>"success"] : (object)["type"=> "string", "value" => $item->user->full_name, "name" => "User"],
-                (object)["type"=> "anchor", "value" => "Orders", "name" => "Service", "href" => route("admin_get_orders",["service_id" => $item->id]), "color"=>"success"],
-                (object)["type"=> "string", "value" => $item->service, "name" => "Service"],
-                (object)["type"=> "string", "value" => $item->about, "name" => "About"],
-                (object)["type"=> "string", "value" => $item->cost_per_hour, "name" => "Cost Per Hour"],
+                (object)["type"=> "anchor", "value" => "Orders", "name" => "", "href" => route("admin_get_orders",["service_id" => $item->id]), "color"=>"success"],
+                (object)["type"=> "anchor", "value" => "Ratings", "name" => "", "href" => route("admin_get_service_ratings", $item), "color"=>"success"],
+                (object)["type"=> "string", "value" => $item->service, "name" => ""],
+                (object)["type"=> "string", "value" => $item->about, "name" => ""],
+                (object)["type"=> "string", "value" => $item->cost_per_hour, "name" => ""],
                 // (object)["type"=> "string", "value" => $item->country ? $item->country." / ".$item->city : $item->city, "name" => "City"],
                 (object)["type"=> "string", "value" => "$".$item->total_orders, "name" => "Total Orders"],
                 (object)["type"=> "string", "value" => "$".$item->total_discounts, "name" => "Total Discounts"],
