@@ -1015,7 +1015,7 @@ class ServiceController extends Controller
     public function get_tax_regions( Request $request)
     {
         
-        $taxes = RegionTax::select("region")->get();
+        $taxes = RegionTax::select("region")->pluck("region");
         return response()->json($taxes, 200);
 
     }
