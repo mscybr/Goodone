@@ -140,13 +140,13 @@ class AdminController extends Controller
             $stats_month["earnings_difference"] = $stats_month["earnings"] * 100;
         }
 
-        dd([
-            "month_stats" => $stats_month,
-            "day_stats" => $stats_day,
-            "stats_year" => $stats_year,
-            "stats_yesterday" => $stats_yesterday,
-            "stats_past_month" => $stats_past_month
-        ]);
+        // dd([
+        //     "month_stats" => $stats_month,
+        //     "day_stats" => $stats_day,
+        //     "stats_year" => $stats_year,
+        //     "stats_yesterday" => $stats_yesterday,
+        //     "stats_past_month" => $stats_past_month
+        // ]);
         return view("admin.index", [
             "month_stats" => $stats_month,
             "day_stats" => $stats_day,
