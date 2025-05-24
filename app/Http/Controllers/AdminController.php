@@ -102,11 +102,7 @@ class AdminController extends Controller
             $stats_day["earnings_difference"] = $stats_day["earnings"] * 100;
         }
 
-        $stats_month["users_difference"] = (1 - ($stats_month["users"] / $stats_past_month["users"])) * 100;
-        $stats_month["services_difference"] = (1 - ($stats_month["services"] / $stats_past_month["services"])) * 100;
-        $stats_month["orders_difference"] = (1 - ($stats_month["orders"] / $stats_past_month["orders"])) * 100;
-        $stats_month["revenue_difference"] = (1 - ($stats_month["revenue"] / $stats_past_month["revenue"])) * 100;
-        $stats_month["earnings_difference"] = (1 - ($stats_month["earnings"] / $stats_past_month["earnings"])) * 100;
+
 
         if($stats_past_month["users"] > 0){
             $stats_month["users_difference"] = (1 - ($stats_month["users"] / $stats_past_month["users"])) * 100;
