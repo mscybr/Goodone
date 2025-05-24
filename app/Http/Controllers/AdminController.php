@@ -637,5 +637,14 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    public function delete_service(Request $request, Service $service)
+    {
+        
+        Schema::disableForeignKeyConstraints();
+        DB::delete('delete from services where id = ?', [$service->id]);
+        Schema::enableForeignKeyConstraints();
+        return redirect()->back();
+    }
+
     
 }
