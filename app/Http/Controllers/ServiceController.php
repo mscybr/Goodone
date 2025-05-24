@@ -1038,6 +1038,7 @@ class ServiceController extends Controller
         if($_platform_fee->count() > 0 ) $platform_fee = $_platform_fee->first()["value"];
 
         $tax = RegionTax::whereRaw('LOWER(region) = ?', [strtolower($validation["region"])]);
+        if($tax->count() == 0) $tax = RegionTax::whereRaw('LOWER(region) = ?', ["international"]);
         if($tax->count() > 0){
             $region_tax = $tax->first()["percentage"];
             return response()->json(['message' => 'Success', 'data' => [
