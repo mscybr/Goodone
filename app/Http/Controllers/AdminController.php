@@ -66,17 +66,83 @@ class AdminController extends Controller
         $stats_day = $this->aquire_stats($start_today, $end_today);
         $stats_yesterday = $this->aquire_stats($start_today, $end_today);
 
-        $stats_day["users_difference"] = (1 - ($stats_day["users"] / $stats_yesterday["users"])) * 100;
-        $stats_day["services_difference"] = (1 - ($stats_day["services"] / $stats_yesterday["services"])) * 100;
-        $stats_day["orders_difference"] = (1 - ($stats_day["orders"] / $stats_yesterday["orders"])) * 100;
-        $stats_day["revenue_difference"] = (1 - ($stats_day["revenue"] / $stats_yesterday["revenue"])) * 100;
-        $stats_day["earnings_difference"] = (1 - ($stats_day["earnings"] / $stats_yesterday["earnings"])) * 100;
+        if($stats_yesterday["users"] > 0){
+            $stats_day["users_difference"] = (1 - ($stats_day["users"] / $stats_yesterday["users"])) * 100;
+        }else{
+            $stats_day["users_difference"] = $stats_day["users"] * 100;
+        }
+
+        if($stats_yesterday["services"] > 0){
+            $stats_day["services_difference"] = (1 - ($stats_day["services"] / $stats_yesterday["services"])) * 100;
+        }else{
+            $stats_day["services_difference"] = $stats_day["services"] * 100;
+        }
+
+        if($stats_yesterday["orders"] > 0){
+            $stats_day["orders_difference"] = (1 - ($stats_day["orders"] / $stats_yesterday["orders"])) * 100;
+        }else{
+            $stats_day["orders_difference"] = $stats_day["orders"] * 100;
+        }
+
+        if($stats_yesterday["revenue"] > 0){
+            $stats_day["revenue_difference"] = (1 - ($stats_day["revenue"] / $stats_yesterday["revenue"])) * 100;
+        }else{
+            $stats_day["revenue_difference"] = $stats_day["revenue"] * 100;
+        }
+
+        if($stats_yesterday["earnings"] > 0){
+            $stats_day["earnings_difference"] = (1 - ($stats_day["earnings"] / $stats_yesterday["earnings"])) * 100;
+        }else{
+            $stats_day["earnings_difference"] = $stats_day["earnings"] * 100;
+        }
+
+        if($stats_yesterday["earnings"] > 0){
+            $stats_day["earnings_difference"] = (1 - ($stats_day["earnings"] / $stats_yesterday["earnings"])) * 100;
+        }else{
+            $stats_day["earnings_difference"] = $stats_day["earnings"] * 100;
+        }
 
         $stats_month["users_difference"] = (1 - ($stats_month["users"] / $stats_past_month["users"])) * 100;
         $stats_month["services_difference"] = (1 - ($stats_month["services"] / $stats_past_month["services"])) * 100;
         $stats_month["orders_difference"] = (1 - ($stats_month["orders"] / $stats_past_month["orders"])) * 100;
         $stats_month["revenue_difference"] = (1 - ($stats_month["revenue"] / $stats_past_month["revenue"])) * 100;
         $stats_month["earnings_difference"] = (1 - ($stats_month["earnings"] / $stats_past_month["earnings"])) * 100;
+
+        if($stats_past_month["users"] > 0){
+            $stats_month["users_difference"] = (1 - ($stats_month["users"] / $stats_past_month["users"])) * 100;
+        }else{
+            $stats_month["users_difference"] = $stats_month["users"] * 100;
+        }
+
+        if($stats_past_month["services"] > 0){
+            $stats_month["services_difference"] = (1 - ($stats_month["services"] / $stats_past_month["services"])) * 100;
+        }else{
+            $stats_month["services_difference"] = $stats_month["services"] * 100;
+        }
+
+        if($stats_past_month["orders"] > 0){
+            $stats_month["orders_difference"] = (1 - ($stats_month["orders"] / $stats_past_month["orders"])) * 100;
+        }else{
+            $stats_month["orders_difference"] = $stats_month["orders"] * 100;
+        }
+
+        if($stats_past_month["revenue"] > 0){
+            $stats_month["revenue_difference"] = (1 - ($stats_month["revenue"] / $stats_past_month["revenue"])) * 100;
+        }else{
+            $stats_month["revenue_difference"] = $stats_month["revenue"] * 100;
+        }
+
+        if($stats_past_month["earnings"] > 0){
+            $stats_month["earnings_difference"] = (1 - ($stats_month["earnings"] / $stats_past_month["earnings"])) * 100;
+        }else{
+            $stats_month["earnings_difference"] = $stats_month["earnings"] * 100;
+        }
+        
+        if($stats_past_month["earnings"] > 0){
+            $stats_month["earnings_difference"] = (1 - ($stats_month["earnings"] / $stats_past_month["earnings"])) * 100;
+        }else{
+            $stats_month["earnings_difference"] = $stats_month["earnings"] * 100;
+        }
 
         return view("admin.index", [
             "month_stats" => $stats_month,
