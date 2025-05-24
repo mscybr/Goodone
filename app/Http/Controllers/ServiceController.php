@@ -552,7 +552,11 @@ class ServiceController extends Controller
             
             if(Category::Where([["id", "=", $category_id]])->count() == 0) unset($services[$key]);
         }
-        return response()->json($services);
+        $all_services = [];
+        foreach ($services as $service ) {
+            $all_services[] = $service;
+        }
+        return response()->json($all_services);
     }
 
     /**
