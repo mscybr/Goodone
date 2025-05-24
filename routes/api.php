@@ -80,6 +80,7 @@ Route::group([
 
     Route::post('chat/update_chat', [MessageController::class, "update_chat"])->name("api:update_chat");
     Route::get('taxes', [ServiceController::class, "check_taxes"])->name("api:check_taxes");
+    Route::get('regions', [ServiceController::class, "get_tax_regions"])->name("api:get_tax_regions");
 
 
     // Route::post('notification/all', [PushNotification::class, "notify_all"])->name("api:notify_all");

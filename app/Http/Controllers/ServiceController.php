@@ -1011,6 +1011,14 @@ class ServiceController extends Controller
         }
     }
     
+    public function get_tax_regions( Request $request)
+    {
+        
+        $taxes = RegionTax::select("region")->get();
+        return response()->json(['message' => 'Success', 'data' => $taxes ], 200);
+
+    }
+    
     public function check_taxes( Request $request)
     {
         $validation = $request->validate([
