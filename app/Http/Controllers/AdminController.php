@@ -62,9 +62,9 @@ class AdminController extends Controller
 
         $stats_year = $this->aquire_stats($start_year, $end_year);
         $stats_month = $this->aquire_stats($start_month, $end_month);
-        $stats_past_month = $this->aquire_stats($start_today, $end_today);
+        $stats_past_month = $this->aquire_stats($start_past_month, $end_past_month);
         $stats_day = $this->aquire_stats($start_today, $end_today);
-        $stats_yesterday = $this->aquire_stats($start_today, $end_today);
+        $stats_yesterday = $this->aquire_stats($start_yesterday, $end_yesterday);
 
         if($stats_yesterday["users"] > 0){
             $stats_day["users_difference"] = (1 - ($stats_day["users"] / $stats_yesterday["users"])) * 100;
