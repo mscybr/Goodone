@@ -140,7 +140,7 @@ class AdminController extends Controller
             $stats_month["earnings_difference"] = $stats_month["earnings"] * 100;
         }
 
-        ddd([
+        dd([
             "month_stats" => $stats_month,
             "day_stats" => $stats_day,
             "stats_year" => $stats_year,

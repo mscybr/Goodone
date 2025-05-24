@@ -769,6 +769,7 @@ class ServiceController extends Controller
             if($_platform_fee->count() > 0 ) $platform_fee = $_platform_fee->first()["value"];
 
             $tax = RegionTax::whereRaw('LOWER(region) = ?', [strtolower($validation["region"])]);
+            if($tax->count() == 0) $tax = RegionTax::whereRaw('LOWER(region) = ?', ["international"]);
             if($tax->count() > 0){
                 // add platform fees before the taxes
                 $platform_fee_amount = ($validation["price"] * $platform_percentage / 100);
