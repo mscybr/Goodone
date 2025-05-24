@@ -19,7 +19,7 @@
                       <div class="col-sm-5 text-center text-sm-left">
                         <div class="card-body pb-0 px-0 px-md-4">
                           <img
-                            src="{{ asset('assets2/img/illustrations/llustrations/man-with-laptop-light.png')}}"
+                            src="{{ asset('assets2/img/illustrations/man-with-laptop-light.png')}}"
                             height="140"
                             alt="View Badge User"
                             data-app-dark-img="illustrations/man-with-laptop-dark.png"
