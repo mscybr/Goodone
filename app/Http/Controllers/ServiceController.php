@@ -1016,7 +1016,7 @@ class ServiceController extends Controller
     {
         
         $taxes = RegionTax::select("region")->get();
-        return response()->json(['message' => 'Success', 'data' => $taxes ], 200);
+        return response()->json($taxes, 200);
 
     }
     
