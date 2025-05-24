@@ -60,11 +60,11 @@ class AdminController extends Controller
         $end_yesterday = new \DateTime('now');
         $end_yesterday->modify('yesterday 23:59:59');
 
-        $stats_year = aquire_stats($start_year, $end_year);
-        $stats_month = aquire_stats($start_month, $end_month);
-        $stats_past_month = aquire_stats($start_today, $end_today);
-        $stats_day = aquire_stats($start_today, $end_today);
-        $stats_yesterday = aquire_stats($start_today, $end_today);
+        $stats_year = $this->aquire_stats($start_year, $end_year);
+        $stats_month = $this->aquire_stats($start_month, $end_month);
+        $stats_past_month = $this->aquire_stats($start_today, $end_today);
+        $stats_day = $this->aquire_stats($start_today, $end_today);
+        $stats_yesterday = $this->aquire_stats($start_today, $end_today);
 
         $stats_day["users_difference"] = (1 - ($stats_day["users"] / $stats_yesterday["users"])) * 100;
         $stats_day["services_difference"] = (1 - ($stats_day["services"] / $stats_yesterday["services"])) * 100;
