@@ -810,13 +810,18 @@ class ServiceController extends Controller
 
         $orders = Order::Select("id", "total_hours", "start_at", "price", "location", "service_id", "status", "note")->With(['Service' => function ($query) {
             // $query->select('id', 'full_name', "picture", "service", "subcategory_id", "cost_per_hour");
-            $query->join('users', "users.id", "=", "services.user_id")->select('services.id', 'users.full_name', "users.picture", "services.service", "services.subcategory_id", "services.cost_per_hour");
+            $query->join('users', "users.id", "=", "services.user_id")->select('services.id', 'users.full_name', "users.picture", "services.service", "services.user_id", "services.subcategory_id", "services.cost_per_hour");
         }, 'Service.Subcategory' => function ($query) {
             $query->select('id', 'name');
         }])->Where([["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         $total_orders = [];
         foreach ($orders as $order ) {
-            if( is_null($order->service) == false && is_null($order->service->subcategory) == false ) $total_orders[] = $order;
+            if( is_null($order->service) == false && is_null($order->service->subcategory) == false ){
+                $contractor = User::Where([["id", "=", $order->service->user_id]])->select(["full_name", "picture"])->first();
+                $order["service"]["full_name"] = $contractor->full_name;
+                $order["service"]["picture"] = $contractor->picture;
+                $total_orders[] = $order;
+            } 
         }
         // $orders = Order::Where( [["user_id", "=", $user_id], ["status", ">", "0"]])->get();
         return response()->json(['message' => 'Success', 'data' => $total_orders], 200);
