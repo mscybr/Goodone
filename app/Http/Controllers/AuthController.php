@@ -214,6 +214,20 @@ class AuthController extends Controller
     }
 
     /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete_account()
+    {
+        $user = auth("api")->user();
+        $user->delete();
+        return response()->json([
+            "message" => "Successfully deleted account"
+        ]);
+    }
+
+    /**
      * Log the user out (Invalidate the token).
      *
      * @return \Illuminate\Http\JsonResponse

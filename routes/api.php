@@ -103,8 +103,9 @@ Route::group([
     Route::post('logout', [AuthController::class, "logout"])->name("api:logout");
     Route::post('refresh', [AuthController::class, "refresh"])->name("api:refresh");
     Route::post('me', [AuthController::class, "me"])->name("api:me");
-
+    
     Route::post('password/reset/code', [SmsPasswordResetController::class, 'sendResetCode']);  // Send SMS reset code
     Route::post('password/reset', [SmsPasswordResetController::class, 'resetPassword']);  
+    Route::post('deleteAcount', [AuthController::class, "delete_account"])->name("api:delete_account");
 
 });
