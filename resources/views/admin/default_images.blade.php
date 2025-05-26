@@ -62,7 +62,7 @@
      function getimagehtml(imageurl){
       return `<div style="
     max-width: 65px;
-"><img src="{{  }}" class="img-fluid"></div>`
+"><img src="${imageurl}" class="img-fluid"></div>`
      };
 
      document.querySelector("body > div > div.layout-container > div > div > div.container-xxl.flex-grow-1.container-p-y > div > div.col-6.mx-auto > form > div > div > div:nth-child(2)")
