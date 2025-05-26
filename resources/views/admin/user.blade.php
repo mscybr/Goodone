@@ -48,7 +48,7 @@
             (object)[
                 "name" => "verified_liscence",
                 "type" => "select",
-                "label" => "Security check",
+                "label" => "Liscence Verification",
                 "value" => $user->verified_liscence == true ?  1 : 0,
                 "placeholder" => "Liscense Verification Status",
                 "note" => "",
