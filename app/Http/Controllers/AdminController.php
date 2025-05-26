@@ -406,8 +406,8 @@ class AdminController extends Controller
         $provider_image = "";
         $current_customer_image = "";
         $current_provider_image = "";
-        if($customer->count() > 0){$current_customer_image = $customer->first();}
-        if($provider->count() > 0){$current_provider_image = $provider->first();}
+        if($customer->count() > 0){$current_customer_image = $customer->first()->value;}
+        if($provider->count() > 0){$current_provider_image = $provider->first()->value;}
         return view("admin.default_images", ["customer_image" => $customer_image, "provider_image" => $provider_image, "current_provider_image" => $current_provider_image, "current_customer_image" => $current_customer_image]);
 
     }
