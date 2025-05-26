@@ -56,8 +56,8 @@
     </div>
   </div>
   <script>
-     var customer_image = {{ $customer_image }};
-     var provider_image = {{ $provider_image }};
-     
+     var customer_image = {{ $current_customer_image }};
+     var provider_image = {{ $current_provider_image }};
+
     </script>
 @endsection
