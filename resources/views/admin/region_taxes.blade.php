@@ -42,8 +42,8 @@
             $table_data = [];
             foreach ($regions as $region ) {
               $table_data[] = (object)[
-                (object)["type"=> "string", "value" => $region->region],
-                (object)["type"=> "string", "value" => $region->percentage],
+                (object)["type"=> "string", "value" => $region->region, "editable" => true],
+                (object)["type"=> "string", "value" => $region->percentage, "editable" => true],
                 (object)["type"=> "anchor", "value" => "Delete", "color" => "danger", "href"=> route("admin_delete_region_tax", ["id"=>$region->id])],
             ];
             }
@@ -51,7 +51,11 @@
         @include('admin.forms', ["title" => "Add a new region", "wrapper" => $wrapper, "data" => $data, "type" => "multi_fields_card_builder", "action" => route("admin_store_region_tax"), "enctype" => "multipart/form-data", "method" => "POST" ])
       </div>
       <div class="row">
-        @include('admin.tables', ["title" => "Regional Taxes", "headers" =>  $table_headers, "data" => $table_data]);
+         @include('admin.tables_multiple', ["tables"=> [
+            ["title" => "Regional Taxes", "headers" =>  $table_headers, "data" => $table_data],
+            // ["title" => "Verified Users", "headers" =>  $verfied_headers, "data" => $verfied_table_data],
+          ]]);
+          
       </div>
     </div>
   </div>
