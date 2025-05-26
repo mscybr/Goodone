@@ -56,8 +56,20 @@
     </div>
   </div>
   <script>
-     var customer_image = "<?= $current_customer_image ?>";
-     var provider_image = "<?= $current_provider_image ?>";
+     var customer_image = "<?= asset("storage/images/".$current_customer_image)  ?>";
+     var provider_image = "<?= asset("storage/images/".$current_provider_image)  ?>";
+
+     function getimagehtml(imageurl){
+      return `<div style="
+    max-width: 65px;
+"><img src="{{  }}" class="img-fluid"></div>`
+     };
+
+     document.querySelector("body > div > div.layout-container > div > div > div.container-xxl.flex-grow-1.container-p-y > div > div.col-6.mx-auto > form > div > div > div:nth-child(2)")
+     .insertAdjacentHTML("afterEnd", getimagehtml(customer_image))
+     document.querySelector("body > div > div.layout-container > div > div > div.container-xxl.flex-grow-1.container-p-y > div > div.col-6.mx-auto > form > div > div > div:nth-child(1)")
+     .insertAdjacentHTML("afterEnd", getimagehtml(provider_image))
+
 
     </script>
 @endsection
