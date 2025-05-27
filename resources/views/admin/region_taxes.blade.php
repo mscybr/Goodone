@@ -63,7 +63,7 @@
   <script>
     let all_editable_props = document.querySelectorAll("td[editable='true']");
     all_editable_props.forEach(element => {
-      element.onclick = fire_edit_behaviour(element);
+      element.onclick = fire_edit_behaviour(element).bind(null, element);
     });
     function fire_edit_behaviour(td_element){
       if(td_element.querySelector("form")){
