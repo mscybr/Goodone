@@ -21,16 +21,16 @@
                     <?php foreach( $element as $sub_element ){
                         switch ($sub_element->type) {
                             case 'string': ?>
-                                <td editable="{{isset($sub_element->editable) ? "true" : "false"}}">{{$sub_element->value}}</td>
+                                <td editable="{{isset($sub_element->editable) ? "true" : "false"}}" action="{{isset($sub_element->action) ? $sub_element->action : ""}}" name="{{isset($sub_element->name) ? $sub_element->name : ""}}">{{$sub_element->value}}</td>
                                 <?php break; ?>
                             <?php case 'image': ?>
-                                <td editable="{{isset($sub_element->editable) ? "true" : "false"}}"><a href="{{$sub_element->value}}" target="_blank" rel="noopener noreferrer"><img style="max-height: 100px;" src="{{$sub_element->value}}" alt=""></a></td>
+                                <td editable="{{isset($sub_element->editable) ? "true" : "false"}}" action="{{isset($sub_element->action) ? $sub_element->action : ""}}" name="{{isset($sub_element->name) ? $sub_element->name : ""}}"><a href="{{$sub_element->value}}" target="_blank" rel="noopener noreferrer"><img style="max-height: 100px;" src="{{$sub_element->value}}" alt=""></a></td>
                                 <?php break; ?>
                             <?php case 'anchor': ?>
-                                <td editable="{{isset($sub_element->editable) ? "true" : "false"}}"><a href="{{$sub_element->href}}" class="btn btn-{{$sub_element->color}}">{{$sub_element->value}}</a></td>
+                                <td editable="{{isset($sub_element->editable) ? "true" : "false"}}" action="{{isset($sub_element->action) ? $sub_element->action : ""}}" name="{{isset($sub_element->name) ? $sub_element->name : ""}}"><a href="{{$sub_element->href}}" class="btn btn-{{$sub_element->color}}">{{$sub_element->value}}</a></td>
                                 <?php break; ?>
                             <?php case 'modal': ?>
-                                <td editable="{{isset($sub_element->editable) ? "true" : "false"}}"><button type="button" data-bs-toggle="modal" data-bs-target="#{{ $sub_element->target }}" class="btn btn-{{$sub_element->color}}">{{$sub_element->value}}</button></td>
+                                <td editable="{{isset($sub_element->editable) ? "true" : "false"}}" action="{{isset($sub_element->action) ? $sub_element->action : ""}}" name="{{isset($sub_element->name) ? $sub_element->name : ""}}"><button type="button" data-bs-toggle="modal" data-bs-target="#{{ $sub_element->target }}" class="btn btn-{{$sub_element->color}}">{{$sub_element->value}}</button></td>
                                 <?php break; ?>
                     <?php }} ?>
 

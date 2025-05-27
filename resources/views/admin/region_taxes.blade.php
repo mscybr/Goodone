@@ -1,5 +1,7 @@
 @extends('admin.layouts')
 @section('content')
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Region Taxes</span> </h4>
 
@@ -42,8 +44,8 @@
             $table_data = [];
             foreach ($regions as $region ) {
               $table_data[] = (object)[
-                (object)["type"=> "string", "value" => $region->region, "editable" => true],
-                (object)["type"=> "string", "value" => $region->percentage, "editable" => true],
+                (object)["type"=> "string", "value" => $region->region, "editable" => true, "action" => route("admin_edit_region_tax", $region), "name" =>"region" ],
+                (object)["type"=> "string", "value" => $region->percentage, "editable" => true, "action" => route("admin_edit_region_tax", $region), "name" =>"percentage"],
                 (object)["type"=> "anchor", "value" => "Delete", "color" => "danger", "href"=> route("admin_delete_region_tax", ["id"=>$region->id])],
             ];
             }
@@ -55,8 +57,37 @@
             ["title" => "Regional Taxes", "headers" =>  $table_headers, "data" => $table_data],
             // ["title" => "Verified Users", "headers" =>  $verfied_headers, "data" => $verfied_table_data],
           ]]);
-          
       </div>
     </div>
   </div>
+  <script>
+    let all_editable_props = document.querySelectorAll("td[editable='true']");
+    all_editable_props.forEach(element => {
+      element.onclick = fire_edit_behaviour(element);
+    });
+    function fire_edit_behaviour(td_element){
+      if(td_element.querySelector("form")){
+        submit_form();
+      }else{
+        edit_field();
+      }
+    }
+    function submit_form( td_element_button ){
+      td_element = td_element_button.parentElement;
+      td_element.innerHTML = td_element.querySelector("input").value;
+    }
+    function edit_field( td_element){
+      let action = td_element.getAttribute("action");
+      let name = td_element.getAttribute("name");
+      let current_value = td_element.innerHTML;
+      td_element.innerHTML = formcreator(action, name, current_value);
+    }
+     function formcreator(action_url, name, current_value){
+      let inputs = ` <input class="form-control me-3" name="${name}" placeholder="${current_value}">`;
+      return `<form action="${action_url}" target="dummyframe" class="d-flex">
+        ${inputs}
+       <button  class="btn btn-success">Edit</button>
+      </form>`
+    }
+  </script>
 @endsection

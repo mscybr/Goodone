@@ -524,6 +524,18 @@ class AdminController extends Controller
         // return response()->json($category);
 
     }
+            
+    public function edit_region_tax(Request $request, RegionTax $region){
+
+        $update = [];
+
+        if(isset( $request->region )) $update["region"] = $request->region;
+        if(isset( $request->percentage )) $update["percentage"] = $request->percentage;
+        $region->update($update);
+        return redirect()->back();
+
+    }
+    
 
 
     public function delete_region_tax(Request $request)
