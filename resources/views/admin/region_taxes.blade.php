@@ -87,7 +87,7 @@
       </form>`
     }
     all_editable_props.forEach(element => {
-      element.onclick = fire_edit_behaviour(element).bind(null, element);
+      element.onClick = fire_edit_behaviour.bind(null, element);
     });
   
   </script>
