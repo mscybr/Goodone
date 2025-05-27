@@ -67,9 +67,9 @@
     });
     function fire_edit_behaviour(td_element){
       if(td_element.querySelector("form")){
-        submit_form();
+        submit_form(td_element.querySelector("button"));
       }else{
-        edit_field();
+        edit_field(td_element);
       }
     }
     function submit_form( td_element_button ){
