@@ -52,7 +52,7 @@ Route::post('/admin/default_images/edit', [AdminController::class, "edit_default
 Route::get('/admin/region_taxes', [AdminController::class, "create_region_tax"])->name("admin_create_region_tax");
 Route::post('/admin/region_taxes', [AdminController::class, "store_region_tax"])->name("admin_store_region_tax");
 Route::get('/admin/region_taxes/delete', [AdminController::class, "delete_region_tax"])->name("admin_delete_region_tax");
-Route::post('/admin/region_taxes/{region}', [AdminController::class, "edit_region_tax"])->name("admin_edit_region_tax");
+Route::post('/admin/region_taxes/{region}', [AdminController::class, "edit_region_tax"])->name("admin_edit_region_tax")->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 // users
 Route::get('/admin/get_service_providers', [AdminController::class, "get_service_providers"])->name("admin_get_service_providers");
