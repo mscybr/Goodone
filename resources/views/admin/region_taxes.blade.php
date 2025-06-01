@@ -72,7 +72,7 @@
     }
     function submit_form( td_element_button ){
       td_element = td_element_button.parentElement;
-      td_element.onclick = fire_edit_behaviour.bind(null, element);
+      td_element.ondblclick = fire_edit_behaviour.bind(null, element);
       td_element.innerHTML = td_element.querySelector("input").value != null ? td_element.querySelector("input").value : td_element.querySelector("input").placeholder;
     }
     function edit_field( td_element){
@@ -85,11 +85,11 @@
       let inputs = `<input class="form-control me-3" name="${name}" placeholder="${current_value}">`;
       return `<form action="${action_url}" target="dummyframe" class="d-flex">
         ${inputs}
-       <button onclick=submit_form(this) class="btn btn-success">Edit</button>
+       <button ondblclick=submit_form(this) class="btn btn-success">Edit</button>
       </form>`
     }
     all_editable_props.forEach(element => {
-      element.onclick = fire_edit_behaviour.bind(null, element);
+      element.ondblclick = fire_edit_behaviour.bind(null, element);
     });
   
   </script>
