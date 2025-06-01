@@ -83,7 +83,7 @@
     }
      function formcreator(action_url, name, current_value){
       let inputs = `<input class="form-control me-3" name="${name}" placeholder="${current_value}">`;
-      return `<form action="${action_url}" target="dummyframe" class="d-flex">
+      return `<form method="POST" action="${action_url}" target="dummyframe" class="d-flex">
         ${inputs}
        <button ondblclick=submit_form(this) class="btn btn-success">Edit</button>
       </form>`
