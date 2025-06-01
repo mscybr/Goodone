@@ -72,6 +72,7 @@
     }
     function submit_form( td_element_button ){
       td_element = td_element_button.parentElement;
+      td_element.onclick = fire_edit_behaviour.bind(null, element);
       td_element.innerHTML = td_element.querySelector("input").value != null ? td_element.querySelector("input").value : td_element.querySelector("input").placeholder;
     }
     function edit_field( td_element){
