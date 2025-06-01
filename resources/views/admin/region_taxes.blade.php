@@ -64,15 +64,15 @@
     let all_editable_props = document.querySelectorAll("td[editable='true']");
       function fire_edit_behaviour(td_element){
         console.log("Test");
-      if(td_element.querySelector("form")){
-        submit_form(td_element.querySelector("button"));
-      }else{
+      if(td_element.querySelector("form") == false){
+      //   submit_form(td_element.querySelector("button"));
+      // }else{
         edit_field(td_element);
       }
     }
     function submit_form( td_element_button ){
       td_element = td_element_button.parentElement;
-      td_element.innerHTML = td_element.querySelector("input").value;
+      td_element.innerHTML = td_element.querySelector("input").value != null ? td_element.querySelector("input").value : td_element.querySelector("input").placeholder;
     }
     function edit_field( td_element){
       let action = td_element.getAttribute("action");
@@ -84,7 +84,7 @@
       let inputs = ` <input class="form-control me-3" name="${name}" placeholder="${current_value}">`;
       return `<form action="${action_url}" target="dummyframe" class="d-flex">
         ${inputs}
-       <button  class="btn btn-success">Edit</button>
+       <button onclick=submit_form(this) class="btn btn-success">Edit</button>
       </form>`
     }
     all_editable_props.forEach(element => {
